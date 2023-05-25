@@ -4,6 +4,9 @@ import com.backend.budgetboss.user.dtos.CreateUserDTO;
 import com.backend.budgetboss.user.dtos.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,19 +29,23 @@ public class UserController {
 
     @PostMapping("/register")
     @Operation(summary = "Register new user", description = "Register a new user with the given email and password")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody CreateUserDTO user) {
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody CreateUserDTO user,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         logger.info("/api/users/register POST request received: {}", user);
-        UserResponseDTO response = userService.registerUser(user);
-        logger.info("/api/users/register created user: {}", response);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        UserResponseDTO userResponse = userService.registerUser(user, request, response);
+        logger.info("/api/users/register created user: {}", userResponse);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     @Operation(summary = "Login user", description = "Login a user with the given email and password")
-    public ResponseEntity<UserResponseDTO> login(@RequestBody CreateUserDTO user) {
+    public ResponseEntity<UserResponseDTO> login(@RequestBody CreateUserDTO user,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) {
         logger.info("/api/users/login POST request received: {}", user);
-        UserResponseDTO response = userService.loginUser(user);
-        logger.info("/api/users/login logged in user: {}", response);
-        return ResponseEntity.ok(response);
+        UserResponseDTO userResponse = userService.loginUser(user, request, response);
+        logger.info("/api/users/login logged in user: {}", userResponse);
+        return ResponseEntity.ok(userResponse);
     }
 }

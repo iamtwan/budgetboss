@@ -16,7 +16,7 @@ const SignUpForm = ({ onToggleForm }) => {
         };
 
         try {
-            const response = await axios.post(`http://localhost:8080/api/users/register/api/users/register`, formData, {
+            const response = await axios.post(`http://localhost:8080/api/users/register`, formData, {
                 withCredentials: true,
             });
             console.log(response.data);

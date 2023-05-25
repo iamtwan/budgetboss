@@ -1,14 +1,21 @@
 package com.backend.budgetboss.user;
 
 import com.backend.budgetboss.security.UserDetailsImpl;
+import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
 import com.backend.budgetboss.user.dtos.CreateUserDTO;
 import com.backend.budgetboss.user.dtos.UserResponseDTO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +24,8 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper modelMapper,
@@ -29,20 +38,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO registerUser(CreateUserDTO createUserDTO) {
+    public UserResponseDTO registerUser(CreateUserDTO createUserDTO,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) {
+        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
+            throw new UserAlreadyExistsException("User already exists for email: " + createUserDTO.getEmail());
+        }
+
+        String temp = createUserDTO.getPassword();
         createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
-        User user = modelMapper.map(createUserDTO, User.class);
-        return modelMapper.map(userRepository.save(user), UserResponseDTO.class);
+        User user = userRepository.save(modelMapper.map(createUserDTO, User.class));
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), temp)
+        );
+        setAuthenticationContext(authentication, request, response);
+
+        return modelMapper.map(user, UserResponseDTO.class);
     }
 
     @Override
-    public UserResponseDTO loginUser(CreateUserDTO createUserDTO) {
+    public UserResponseDTO loginUser(CreateUserDTO createUserDTO,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), createUserDTO.getPassword())
         );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        setAuthenticationContext(authentication, request, response);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return modelMapper.map(userDetails, UserResponseDTO.class);
+    }
+
+    private void setAuthenticationContext(Authentication authentication,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) {
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+        context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
     }
 }
