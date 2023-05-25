@@ -15,10 +15,17 @@ const SignUpForm = ({ onToggleForm }) => {
             password: e.target.password.value,
         };
 
+        const response = await axios.post(`http://localhost:8080/api/users/register`, formData, {
+            withCredentials: true
+        });
+
         try {
+<<<<<<< HEAD
             const response = await axios.post(`http://localhost:8080/api/users/register`, formData, {
                 withCredentials: true,
             });
+=======
+>>>>>>> 915ece7dd0c0a5a89983995d44849e92eb1ca32a
             console.log(response.data);
         } catch (error) {
             if (error.response && error.response.data) {
@@ -37,12 +44,12 @@ const SignUpForm = ({ onToggleForm }) => {
             <div className="d-flex justify-content-center mt-3">
                 <form className="d-flex flex-column" onSubmit={handleSignUp}>
                     <div className="mb-3">
-                        <label for="exampleInputEmail1" className="form-label">Email Address</label>
+                        <label htmlFor="exampleInputEmail1" className="form-label">Email Address</label>
                         <input required type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
                         <div id="emailHelp" className="form-text">We'll never share your email with anyone else!</div>
                     </div>
                     <div className="col-auto">
-                        <label for="inputPassword6" className="col-form-label">Password</label>
+                        <label htmlFor="inputPassword6" className="col-form-label">Password</label>
                         <div className="row g-3 align-items-center mb-1">
                             <div className="col-auto">
                                 <input required minLength="8" maxLength="20" type="password" name="password" id="inputPassword6" className="form-control" aria-labelledby="passwordHelpInline" placeholder="Password" />
