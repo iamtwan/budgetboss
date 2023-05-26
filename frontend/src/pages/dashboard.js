@@ -2,32 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import withAuth from '../components/ProtectedRoute';
 
-// const App = () => {
-//     const [linkToken, setLinkToken] = useState(null);
-
-//     const generateToken = async () => {
-//         try {
-//             const response = await axios.get("http://localhost:8080/api/accounts/token", {
-//                 withCredentials: true,
-//             });
-//             setLinkToken(response.data.linkToken);
-//         } catch (err) {
-//             console.log(err);
-//         }
-//     };
-
-//     useEffect(() => {
-//         generateToken();
-//     }, []);
-
-//     return linkToken != null ? <Link linkToken={linkToken} /> : (<button type="button" onClick={generateToken}>Connect Acct</button>)
-// }
 
 const Link = ({ linkToken }) => {
-    const onSuccess = React.useCallback((public_token) => {
-        axios.post("http://localhost:8080/api/accounts/token", {
+    const onSuccess = React.useCallback((public_token, metadata) => {
+        axios.post("http://localhost:8080/api/items/token", {
             publicToken: public_token,
+            metadata: institution.institution_id,
         }, { withCredentials: true });
     });
 
@@ -41,7 +23,7 @@ const Link = ({ linkToken }) => {
     return (
         <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-secondary btn-sm"
             onClick={() => open()}
             disabled={!ready}
         >
@@ -56,7 +38,7 @@ const DashboardPage = () => {
 
     const generateToken = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/accounts/token", {
+            const response = await axios.get("http://localhost:8080/api/items/token", {
                 withCredentials: true,
             });
             setLinkToken(response.data.linkToken);
@@ -74,6 +56,7 @@ const DashboardPage = () => {
         generateToken();
     }, []);
 
+
     return (
         <main className="vh-100">
             <h1 className="text-uppercase">Budget Boss</h1>
@@ -82,7 +65,7 @@ const DashboardPage = () => {
                     <div className="d-flex justify-content-evenly p-0 m-2 h-50">
                         <div className="container border m-2 d-flex flex-column">
                             <div className="d-inline-flex align-items-center">
-                                <h3 className="d-inline-block">Accounts</h3>
+                                <h3 className="me-2">Accounts</h3>
                                 {linkToken && <Link linkToken={linkToken} />}
                             </div>
                             <div className="row h-100">
@@ -177,4 +160,4 @@ const DashboardPage = () => {
 };
 
 
-export default DashboardPage;
+export default withAuth(DashboardPage);
