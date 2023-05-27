@@ -5,12 +5,12 @@ import DashboardPage from './dashboard';
 
 
 const HomePage = () => {
-  return (
-    <div>
-      <h1 className="text-uppercase">Budget Boss</h1>
-      <LoginSignUpPage />
-    </div>
-  );
+    return (
+        <div>
+            <h1 className="text-uppercase">Budget Boss</h1>
+            <LoginSignUpPage />
+        </div>
+    );
 };
 
 export default HomePage;

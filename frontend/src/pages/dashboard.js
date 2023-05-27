@@ -3,14 +3,21 @@ import { usePlaidLink } from 'react-plaid-link';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import withAuth from '../components/ProtectedRoute';
-
+import InvestmentAccountsPage from '../components/InvestmentAccountsPage';
+import CashAccountsPage from '../components/CashAccountsPage';
+import CreditAccountsPage from '@/components/CreditAccountsPage';
 
 const Link = ({ linkToken }) => {
-    const onSuccess = React.useCallback((public_token, metadata) => {
-        axios.post("http://localhost:8080/api/items/token", {
-            publicToken: public_token,
-            metadata: institution.institution_id,
-        }, { withCredentials: true });
+    const onSuccess = React.useCallback(async (public_token, metadata) => {
+        try {
+            const response = await axios.post("http://localhost:8080/api/items/token", {
+                publicToken: public_token,
+                institutionId: metadata.institution.institution_id,
+                institutionName: metadata.institution.name
+            }, { withCredentials: true });
+        } catch(err) {
+            console.log(err);
+        }
     });
 
     const config = {
@@ -32,21 +39,33 @@ const Link = ({ linkToken }) => {
     );
 };
 
+const filterAccounts = (accounts, type) => accounts.map(({ accounts: instAccounts, ...institution }) => ({
+    ...institution,
+    accounts: instAccounts.filter(account => account.type === type),
+}));
+
 const DashboardPage = () => {
-    const [userAccounts, setUserAccounts] = useState([]);
     const [linkToken, setLinkToken] = useState(null);
+    const [depositories, setDepositories] = useState([]);
+    const [creditAccounts, setCreditAccounts] = useState([]);
+    const [investmentAccounts, setInvestmentAccounts] = useState([]);
 
     const generateToken = async () => {
         try {
             const response = await axios.get("http://localhost:8080/api/items/token", {
                 withCredentials: true,
             });
+
             setLinkToken(response.data.linkToken);
 
-            const accountsResponse = await axios.get("http://localhost:8080/api/??????", {
+            const accountsResponse = await axios.get("http://localhost:8080/api/items", {
                 withCredentials: true,
             });
-            setUserAccounts(accountsResponse.data.accounts);
+
+            console.log(accountsResponse);
+            setDepositories(filterAccounts(accountsResponse.data, "DEPOSITORY"));
+            setCreditAccounts(filterAccounts(accountsResponse.data, "CREDIT"));
+            setInvestmentAccounts(filterAccounts(accountsResponse.data, "INVESTMENT"));
         } catch (err) {
             console.log(err);
         }
@@ -55,7 +74,6 @@ const DashboardPage = () => {
     useEffect(() => {
         generateToken();
     }, []);
-
 
     return (
         <main className="vh-100">
@@ -69,79 +87,9 @@ const DashboardPage = () => {
                                 {linkToken && <Link linkToken={linkToken} />}
                             </div>
                             <div className="row h-100">
-                                <div className="col border m-2">
-                                    <h4 className="text-uppercase">Cash Accounts</h4>
-                                    <ul className="list-group list-group-flush">
-                                        {userAccounts.map((account) => (
-                                            <li className="list-group-item" key={account.id}>
-                                                <p className="fw-bolder mb-1">{account.institution}</p>
-                                                <div className="d-flex justify-content-between ms-3 mb-n1">
-                                                    <p className="fw-medium">{account.type}</p>
-                                                    <p className="me-4">-</p>
-                                                    <p>{account.balance}</p>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className="col border m-2">
-                                    <h4 className="text-uppercase">Credit Accounts</h4>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">
-                                            <p className="fw-bolder mb-1">Institution (plaid item)</p>
-                                            <div className="d-flex justify-content-between ms-3 mb-n1">
-                                                <p className="fw-medium">(account type/name)</p>
-                                                <p className="me-4">-</p>
-                                                <p>(balance)</p>
-                                            </div>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <p className="fw-bolder mb-1">Institution (plaid item)</p>
-                                            <div className="d-flex justify-content-between ms-3">
-                                                <p className="fw-medium">(account type/name)</p>
-                                                <p className="me-4">-</p>
-                                                <p>(balance)</p>
-                                            </div>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <p className="fw-bolder mb-1">Institution (plaid item)</p>
-                                            <div className="d-flex justify-content-between ms-3">
-                                                <p className="fw-medium">(account type/name)</p>
-                                                <p className="me-4">-</p>
-                                                <p>(balance)</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="col border m-2">
-                                    <h4 className="text-uppercase">Investment Accounts</h4>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">
-                                            <p className="fw-bolder mb-1">Institution (plaid item)</p>
-                                            <div className="d-flex justify-content-between ms-3 mb-n1">
-                                                <p className="fw-medium">(investment type/name)</p>
-                                                <p className="me-4">-</p>
-                                                <p>(value)</p>
-                                            </div>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <p className="fw-bolder mb-1">Institution (plaid item)</p>
-                                            <div className="d-flex justify-content-between ms-3">
-                                                <p className="fw-medium">(investment type/name)</p>
-                                                <p className="me-4">-</p>
-                                                <p>(value)</p>
-                                            </div>
-                                        </li>
-                                        <li className="list-group-item mb-n1">
-                                            <p className="fw-bolder mb-1">Institution (plaid item)</p>
-                                            <div className="d-flex justify-content-between ms-3">
-                                                <p className="fw-medium">(investment type/name)</p>
-                                                <p className="me-4">-</p>
-                                                <p>(value)</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <CashAccountsPage depositories={depositories} />
+                                <CreditAccountsPage creditAccounts={creditAccounts} />
+                                <InvestmentAccountsPage investmentAccounts={investmentAccounts} />
                             </div>
                         </div>
                     </div>
@@ -156,7 +104,7 @@ const DashboardPage = () => {
                 </div>
             </div>
         </main>
-    )
+    );
 };
 
 
