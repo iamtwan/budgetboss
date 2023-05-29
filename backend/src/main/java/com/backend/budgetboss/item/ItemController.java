@@ -1,8 +1,6 @@
 package com.backend.budgetboss.item;
 
 import com.backend.budgetboss.item.dto.ItemResponseDTO;
-import com.backend.budgetboss.token.dto.PublicTokenDTO;
-import com.plaid.client.model.LinkTokenCreateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;

@@ -1,7 +1,6 @@
 package com.backend.budgetboss.item;
 
 import com.backend.budgetboss.item.dto.ItemResponseDTO;
-import com.backend.budgetboss.token.dto.PublicTokenDTO;
 import com.backend.budgetboss.item.exception.AccountRequestException;
 import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.user.User;
@@ -9,6 +8,7 @@ import com.backend.budgetboss.user.util.UserUtil;
 import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
                     .accountsGet(request)
                     .execute();
 
-            if (!response.isSuccessful()) {
+            if (!response.isSuccessful() || response.body() == null) {
                 throw new AccountRequestException("Unable to retrieve accounts for item: " + item.getId(), response.code());
             }
 
@@ -56,6 +56,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public void deleteItem(Long itemId) throws IOException {
         User user = userUtil.getUser();
 
@@ -66,13 +67,12 @@ public class ItemServiceImpl implements ItemService {
             throw new TokenCreationException("Item does not belong to user: " + user.getEmail());
         }
 
+        itemRepository.delete(item);
         ItemRemoveRequest request = new ItemRemoveRequest().accessToken(item.getAccessToken());
         Response<ItemRemoveResponse> response = plaidApi.itemRemove(request).execute();
 
         if (!response.isSuccessful()) {
             throw new TokenCreationException("Unable to remove item: " + itemId);
         }
-
-        itemRepository.delete(item);
     }
 }
