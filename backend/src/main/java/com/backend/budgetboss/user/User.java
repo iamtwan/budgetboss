@@ -1,10 +1,8 @@
 package com.backend.budgetboss.user;
 
-import com.backend.budgetboss.account.Account;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.backend.budgetboss.item.Item;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Account> accounts = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -50,12 +48,12 @@ public class User {
         this.password = password;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     @Override
@@ -77,7 +75,7 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", accounts=" + accounts.size() +
+                ", items=" + items.size() +
                 '}';
     }
 }

@@ -15,17 +15,10 @@ const SignUpForm = ({ onToggleForm }) => {
             password: e.target.password.value,
         };
 
-        const response = await axios.post(`http://localhost:8080/api/users/register`, formData, {
-            withCredentials: true
-        });
-
         try {
-<<<<<<< HEAD
             const response = await axios.post(`http://localhost:8080/api/users/register`, formData, {
-                withCredentials: true,
+                withCredentials: true
             });
-=======
->>>>>>> 915ece7dd0c0a5a89983995d44849e92eb1ca32a
             console.log(response.data);
         } catch (error) {
             if (error.response && error.response.data) {

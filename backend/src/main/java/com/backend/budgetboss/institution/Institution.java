@@ -1,26 +1,22 @@
-package com.backend.budgetboss.account;
+package com.backend.budgetboss.institution;
 
-import com.plaid.client.model.AccountBase;
+import com.backend.budgetboss.account.Account;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "accounts")
-public class Account extends AccountBase {
+@Table(name = "institutions")
+public class Institution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "Account name is required")
     private String name;
 
-    @NotBlank(message = "Institution name is required")
-    private String institutionName;
-
-    @NotBlank(message = "Account balance is required")
-    private double balance;
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Account> accounts = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -30,30 +26,28 @@ public class Account extends AccountBase {
         this.id = id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    public double getBalance() {
-        return balance;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return Objects.equals(id, account.id);
+        Institution that = (Institution) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
@@ -63,11 +57,10 @@ public class Account extends AccountBase {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "Institution{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", institutionName='" + institutionName + '\'' +
-                ", balance=" + balance +
+                ", accounts=" + accounts +
                 '}';
     }
 }

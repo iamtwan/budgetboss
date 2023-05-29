@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,6 +22,15 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    @Operation(summary = "Get current user", description = "Get the current user")
+    public ResponseEntity<UserResponseDTO> getCurrentUser() {
+        logger.info("/api/users GET request received");
+        UserResponseDTO userResponse = userService.getUser();
+        logger.info("/api/users got current user: {}", userResponse);
+        return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/register")

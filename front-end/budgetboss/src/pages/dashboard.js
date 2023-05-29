@@ -8,10 +8,17 @@ const App = () => {
 
     const generateToken = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/accounts/token", {
+            const response = await axios.get("http://localhost:8080/api/items/token", {
                 withCredentials: true,
             });
+
             setLinkToken(response.data.linkToken);
+
+            const userResponse = await axios.get("http://localhost:8080/api/items", {
+                withCredentials: true, 
+            });
+            console.log(userResponse);
+
         } catch (err) {
             console.log(err);
         }
@@ -25,10 +32,14 @@ const App = () => {
 }
 
 const Link = props => {
-    const onSuccess = React.useCallback((public_token) => {
-        const response = axios.post("http://localhost:8080/api/accounts/token", {
+    const onSuccess = React.useCallback(async (public_token, metadata) => {
+        const response = await axios.post("http://localhost:8080/api/items/token", {
             publicToken: public_token,
+            institutionId: metadata.institution.institution_id,
+            institutionName: metadata.institution.institution_name
         }, { withCredentials: true });
+
+        console.log(response);
     });
 
     const config = {

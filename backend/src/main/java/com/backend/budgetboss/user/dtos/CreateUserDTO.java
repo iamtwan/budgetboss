@@ -8,7 +8,7 @@ public class CreateUserDTO {
     private String email;
 
     @Size(min = 8, max = 20, message = "Password must be 8 to 20 characters long")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^!&+=])[A-Za-z\\d@#$%^&+=]+$",
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^!&+=])[A-Za-z\\d@#$%!^&+=]+$",
             message = "Password must be contain at least one lowercase letter, "
                     + "one uppercase letter, one symbol, and one digit.")
     @NotBlank(message = "Password cannot be empty")
