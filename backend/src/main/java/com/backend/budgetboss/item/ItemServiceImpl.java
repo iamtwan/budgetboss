@@ -1,9 +1,9 @@
 package com.backend.budgetboss.item;
 
 import com.backend.budgetboss.item.dto.ItemResponseDTO;
-import com.backend.budgetboss.item.dto.PublicTokenDTO;
+import com.backend.budgetboss.token.dto.PublicTokenDTO;
 import com.backend.budgetboss.item.exception.AccountRequestException;
-import com.backend.budgetboss.item.exception.TokenCreationException;
+import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.util.UserUtil;
 import com.plaid.client.model.*;
@@ -53,60 +53,6 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return itemResponseDTOs;
-    }
-
-    @Override
-    public LinkTokenCreateResponse createLinkToken() throws IOException {
-        User user = userUtil.getUser();
-
-        LinkTokenCreateRequestUser requestUser = new LinkTokenCreateRequestUser()
-                .clientUserId(String.valueOf(user.getId()));
-
-        LinkTokenCreateRequest request = new LinkTokenCreateRequest()
-                .user(requestUser)
-                .clientName("Budget Boss")
-                .products(List.of(Products.TRANSACTIONS))
-                .countryCodes(List.of(CountryCode.US))
-                .language("en");
-
-        Response<LinkTokenCreateResponse> response = plaidApi
-                .linkTokenCreate(request)
-                .execute();
-
-        if (!response.isSuccessful()) {
-            throw new TokenCreationException("Unable to create link token for user: " + user.getEmail());
-        }
-
-        return response.body();
-    }
-
-    @Override
-    public void exchangePublicToken(PublicTokenDTO publicToken) throws IOException {
-        User user = userUtil.getUser();
-
-        if (itemRepository.existsByUserAndInstitutionId(user, publicToken.getInstitutionId())) {
-            throw new TokenCreationException("User already has an item for institution: " + publicToken.getInstitutionId());
-        }
-
-        ItemPublicTokenExchangeRequest request = new ItemPublicTokenExchangeRequest()
-                .publicToken(publicToken.getPublicToken());
-
-        Response<ItemPublicTokenExchangeResponse> response = plaidApi
-                .itemPublicTokenExchange(request)
-                .execute();
-
-        if (!response.isSuccessful()) {
-            throw new TokenCreationException("Unable to create link token for user: " + user.getEmail());
-        }
-
-        Item item = new Item();
-        item.setUser(user);
-        item.setAccessToken(response.body().getAccessToken());
-        item.setItemId(response.body().getItemId());
-        item.setInstitutionId(publicToken.getInstitutionId());
-        item.setInstitutionName(publicToken.getInstitutionName());
-
-        itemRepository.save(item);
     }
 
     @Override

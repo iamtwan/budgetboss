@@ -1,9 +1,9 @@
 package com.backend.budgetboss.item.exception;
 
+import com.backend.budgetboss.token.exception.TokenCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,16 +23,6 @@ public class ItemExceptionHandler {
         problemDetail.setTitle("IO Exception");
 
         return problemDetail;
-    }
-
-    @ExceptionHandler(TokenCreationException.class)
-    public ResponseEntity<ProblemDetail> handleTokenCreationException(TokenCreationException e) {
-        logger.error(e.getMessage());
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Token Creation Exception");
-
-        return new ResponseEntity<>(problemDetail, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccountRequestException.class)

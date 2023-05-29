@@ -1,8 +1,7 @@
 package com.backend.budgetboss.item;
 
-import com.backend.budgetboss.item.dto.CreateAccountDTO;
 import com.backend.budgetboss.item.dto.ItemResponseDTO;
-import com.backend.budgetboss.item.dto.PublicTokenDTO;
+import com.backend.budgetboss.token.dto.PublicTokenDTO;
 import com.plaid.client.model.LinkTokenCreateResponse;
 
 import java.io.IOException;

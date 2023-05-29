@@ -1,8 +1,8 @@
-package com.backend.budgetboss.item.dto;
+package com.backend.budgetboss.token;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class PublicTokenDTO {
+public class Token {
     @NotBlank(message = "Public token is required")
     private String publicToken;
 
@@ -34,14 +34,5 @@ public class PublicTokenDTO {
 
     public void setInstitutionName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "PublicTokenDTO{" +
-                "publicToken='" + publicToken + '\'' +
-                ", id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

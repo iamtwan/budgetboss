@@ -1,4 +1,4 @@
-package com.backend.budgetboss.item.exception;
+package com.backend.budgetboss.token.exception;
 
 public class TokenCreationException extends RuntimeException {
 
