@@ -20,19 +20,19 @@ public class Token {
         this.publicToken = publicToken;
     }
 
-    public String getInstitutionId() {
+    public String getId() {
         return id;
     }
 
-    public void setInstitutionId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getInstitutionName() {
+    public String getName() {
         return name;
     }
 
-    public void setInstitutionName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

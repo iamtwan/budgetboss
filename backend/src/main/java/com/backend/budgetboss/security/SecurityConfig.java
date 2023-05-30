@@ -53,7 +53,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toH2Console())
                         .permitAll()
-                        .requestMatchers("/api/users/login",
+                        .requestMatchers("/api/webhooks/**",
+                                "/api/users/login",
                                 "/api/users/register",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",

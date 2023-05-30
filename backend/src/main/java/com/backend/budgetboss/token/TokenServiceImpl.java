@@ -7,11 +7,13 @@ import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.util.UserUtil;
 import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
+import org.springframework.stereotype.Service;
 import retrofit2.Response;
 
 import java.io.IOException;
 import java.util.List;
 
+@Service
 public class TokenServiceImpl implements TokenService {
     private final UserUtil userUtil;
     private final ItemRepository itemRepository;
@@ -35,7 +37,8 @@ public class TokenServiceImpl implements TokenService {
                 .clientName("Budget Boss")
                 .products(List.of(Products.TRANSACTIONS))
                 .countryCodes(List.of(CountryCode.US))
-                .language("en");
+                .language("en")
+                .webhook("http://0b4f-2603-8080-7c00-22fd-1c6d-726b-1b68-b9df.ngrok.io/api/webhooks");
 
         Response<LinkTokenCreateResponse> response = plaidApi
                 .linkTokenCreate(request)
@@ -52,8 +55,8 @@ public class TokenServiceImpl implements TokenService {
     public void exchangePublicToken(Token token) throws IOException {
         User user = userUtil.getUser();
 
-        if (itemRepository.existsByUserAndInstitutionId(user, token.getInstitutionId())) {
-            throw new TokenCreationException("User already has an item for institution: " + token.getInstitutionId());
+        if (itemRepository.existsByUserAndInstitutionId(user, token.getId())) {
+            throw new TokenCreationException("User already has an item for institution: " + token.getId());
         }
 
         ItemPublicTokenExchangeRequest request = new ItemPublicTokenExchangeRequest()
@@ -71,8 +74,8 @@ public class TokenServiceImpl implements TokenService {
         item.setUser(user);
         item.setAccessToken(response.body().getAccessToken());
         item.setItemId(response.body().getItemId());
-        item.setInstitutionId(token.getInstitutionId());
-        item.setInstitutionName(token.getInstitutionName());
+        item.setInstitutionId(token.getId());
+        item.setInstitutionName(token.getName());
 
         itemRepository.save(item);
     }

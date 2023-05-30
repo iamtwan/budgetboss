@@ -8,7 +8,7 @@ const App = () => {
 
     const generateToken = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/items/token", {
+            const response = await axios.get("http://localhost:8080/api/tokens", {
                 withCredentials: true,
             });
 
@@ -33,13 +33,15 @@ const App = () => {
 
 const Link = props => {
     const onSuccess = React.useCallback(async (public_token, metadata) => {
-        const response = await axios.post("http://localhost:8080/api/items/token", {
-            publicToken: public_token,
-            institutionId: metadata.institution.institution_id,
-            institutionName: metadata.institution.institution_name
-        }, { withCredentials: true });
-
-        console.log(response);
+        try {
+            const response = await axios.post("http://localhost:8080/api/tokens", {
+                publicToken: public_token,
+                id: metadata.institution.institution_id,
+                name: metadata.institution.name
+            }, { withCredentials: true });
+        } catch (err) {
+            console.log(err);
+        }
     });
 
     const config = {
@@ -57,6 +59,30 @@ const Link = props => {
 }
 
 const DashboardPage = () => {
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        const getItems = async () => {
+            try {
+                const response = await axios.get("http://localhost:8080/api/items", { withCredentials: true });
+                console.log(response.data);
+                setItems(response.data);
+            } catch(err) {
+                console.log(err);
+            }
+        }
+        getItems();
+    }, []);
+
+    const fireItemEvent = async id => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/webhooks/item/${id}`, { withCredentials: true });
+            console.log(response.data);
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     return (
         <main className="vh-100">
             <h1 className="text-uppercase">Budget Boss</h1>
@@ -66,6 +92,11 @@ const DashboardPage = () => {
                         <div className="container border m-2 d-flex flex-column">
                             <h3 className="d-inline-block">Accounts</h3>
                             <App />
+                            {items.map(item => {
+                                return <div key={item.id} onClick={() => fireItemEvent(item.id)}>
+                                    <div>{item.name}</div>
+                                </div>
+                            })}
                             <div className="row h-100">
                                 <div className="col border m-2">
                                     <h4 className="text-uppercase">Cash Accounts</h4>

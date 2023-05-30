@@ -2,6 +2,8 @@ package com.backend.budgetboss.item;
 
 import com.backend.budgetboss.item.dto.ItemResponseDTO;
 import com.backend.budgetboss.item.exception.AccountRequestException;
+import com.backend.budgetboss.item.exception.ItemDoesNotBelongToUserException;
+import com.backend.budgetboss.item.util.ItemUtil;
 import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.util.UserUtil;
@@ -19,11 +21,13 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserUtil userUtil;
+    private final ItemUtil itemUtil;
     private final PlaidApi plaidApi;
 
-    public ItemServiceImpl(ItemRepository itemRepository, UserUtil userUtil, PlaidApi plaidApi) {
+    public ItemServiceImpl(ItemRepository itemRepository, UserUtil userUtil, ItemUtil itemUtil, PlaidApi plaidApi) {
         this.itemRepository = itemRepository;
         this.userUtil = userUtil;
+        this.itemUtil = itemUtil;
         this.plaidApi = plaidApi;
     }
 
@@ -59,12 +63,10 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public void deleteItem(Long itemId) throws IOException {
         User user = userUtil.getUser();
-
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new TokenCreationException("Item not found with ID: " + itemId));
+        Item item = itemUtil.getItem(itemId);
 
         if (!item.getUser().equals(user)) {
-            throw new TokenCreationException("Item does not belong to user: " + user.getEmail());
+            throw new ItemDoesNotBelongToUserException("Item does not belong to user: " + user.getEmail());
         }
 
         itemRepository.delete(item);

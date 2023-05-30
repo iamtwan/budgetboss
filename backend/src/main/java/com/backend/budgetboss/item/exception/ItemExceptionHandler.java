@@ -34,4 +34,14 @@ public class ItemExceptionHandler {
 
         return new ResponseEntity<>(problemDetail, e.getStatus());
     }
+
+    @ExceptionHandler(ItemDoesNotBelongToUserException.class)
+    public ResponseEntity<ProblemDetail> handleItemDoesNotBelongToUserException(ItemDoesNotBelongToUserException e) {
+        logger.error(e.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
+        problemDetail.setTitle("Item Exception Handler");
+
+        return new ResponseEntity<>(problemDetail, HttpStatus.FORBIDDEN);
+    }
 }
