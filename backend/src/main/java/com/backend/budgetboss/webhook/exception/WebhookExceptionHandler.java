@@ -31,4 +31,13 @@ public class WebhookExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(ResetLoginException.class)
+    public ProblemDetail handleInvalidWebhookRequestException(ResetLoginException e) {
+        logger.error(e.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        problemDetail.setTitle("Invalid WebHook Request");
+
+        return problemDetail;
+    }
 }

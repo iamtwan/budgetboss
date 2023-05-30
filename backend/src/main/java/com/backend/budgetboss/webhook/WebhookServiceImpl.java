@@ -6,8 +6,11 @@ import com.backend.budgetboss.item.util.ItemUtil;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.util.UserUtil;
 import com.backend.budgetboss.webhook.exception.FireWebhookException;
+import com.backend.budgetboss.webhook.exception.ResetLoginException;
 import com.plaid.client.model.SandboxItemFireWebhookRequest;
 import com.plaid.client.model.SandboxItemFireWebhookResponse;
+import com.plaid.client.model.SandboxItemResetLoginRequest;
+import com.plaid.client.model.SandboxItemResetLoginResponse;
 import com.plaid.client.request.PlaidApi;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
@@ -38,7 +41,7 @@ public class WebhookServiceImpl implements WebhookService {
 
         SandboxItemFireWebhookRequest request = new SandboxItemFireWebhookRequest()
                 .accessToken(item.getAccessToken())
-                .webhookCode(SandboxItemFireWebhookRequest.WebhookCodeEnum.DEFAULT_UPDATE);
+                .webhookCode(SandboxItemFireWebhookRequest.WebhookCodeEnum.ERROR);
 
         Response<SandboxItemFireWebhookResponse> response = plaidApi
                 .sandboxItemFireWebhook(request)
@@ -50,12 +53,33 @@ public class WebhookServiceImpl implements WebhookService {
     }
 
     @Override
-    public void handleTransactionsWebhook(Map<String, String> event) {
+    public void resetLoginWebhook(Long id) throws IOException {
+        User user = userUtil.getUser();
+        Item item = itemUtil.getItem(id);
 
+        if (!item.getUser().equals(user)) {
+            throw new ItemDoesNotBelongToUserException("Item does not belong to user: " + user.getEmail());
+        }
+
+        SandboxItemResetLoginRequest request = new SandboxItemResetLoginRequest()
+                .accessToken(item.getAccessToken());
+
+        Response<SandboxItemResetLoginResponse> response = plaidApi
+                .sandboxItemResetLogin(request)
+                .execute();
+
+        if (!response.isSuccessful()) {
+            throw new ResetLoginException("Unable to reset login for item: " + item.getId());
+        }
     }
 
     @Override
-    public void handleItemWebhook(Map<String, String> event) {
+    public void handleItemWebhook(Map<String, Object> event) {
+        System.out.println(event);
+    }
 
+    @Override
+    public void handleTransactionsWebhook(Map<String, Object> event) {
+        System.out.println(event);
     }
 }

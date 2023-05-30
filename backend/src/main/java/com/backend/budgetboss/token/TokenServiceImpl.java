@@ -38,7 +38,7 @@ public class TokenServiceImpl implements TokenService {
                 .products(List.of(Products.TRANSACTIONS))
                 .countryCodes(List.of(CountryCode.US))
                 .language("en")
-                .webhook("http://0b4f-2603-8080-7c00-22fd-1c6d-726b-1b68-b9df.ngrok.io/api/webhooks");
+                .webhook("http://4fa7-2603-8080-7c00-22fd-1c6d-726b-1b68-b9df.ngrok.io/api/webhooks");
 
         Response<LinkTokenCreateResponse> response = plaidApi
                 .linkTokenCreate(request)

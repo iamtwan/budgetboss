@@ -76,7 +76,7 @@ const DashboardPage = () => {
 
     const fireItemEvent = async id => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/webhooks/item/${id}`, { withCredentials: true });
+            const response = await axios.get(`http://localhost:8080/api/webhooks/item/${id}/reset`, { withCredentials: true });
             console.log(response.data);
         } catch(err) {
             console.log(err);
