@@ -1,13 +1,16 @@
 package com.backend.budgetboss.token;
 
+import com.backend.budgetboss.account.AccountService;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
 import com.backend.budgetboss.token.exception.TokenCreationException;
+import com.backend.budgetboss.transaction.TransactionService;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.util.UserUtil;
 import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -17,11 +20,19 @@ import java.util.List;
 public class TokenServiceImpl implements TokenService {
     private final UserUtil userUtil;
     private final ItemRepository itemRepository;
+    private final TransactionService transactionService;
+    private final AccountService accountService;
     private final PlaidApi plaidApi;
 
-    public TokenServiceImpl(UserUtil userUtil, ItemRepository itemRepository, PlaidApi plaidApi) {
+    public TokenServiceImpl(UserUtil userUtil,
+                            ItemRepository itemRepository,
+                            TransactionService transactionService,
+                            AccountService accountService,
+                            PlaidApi plaidApi) {
         this.userUtil = userUtil;
         this.itemRepository = itemRepository;
+        this.transactionService = transactionService;
+        this.accountService = accountService;
         this.plaidApi = plaidApi;
     }
 
@@ -38,7 +49,7 @@ public class TokenServiceImpl implements TokenService {
                 .products(List.of(Products.TRANSACTIONS))
                 .countryCodes(List.of(CountryCode.US))
                 .language("en")
-                .webhook("http://4fa7-2603-8080-7c00-22fd-1c6d-726b-1b68-b9df.ngrok.io/api/webhooks");
+                .webhook("http://677a-2603-8080-7c00-22fd-4055-e7e9-3057-24f8.ngrok.io/api/webhooks");
 
         Response<LinkTokenCreateResponse> response = plaidApi
                 .linkTokenCreate(request)
@@ -52,6 +63,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
+    @Transactional
     public void exchangePublicToken(Token token) throws IOException {
         User user = userUtil.getUser();
 
@@ -77,6 +89,8 @@ public class TokenServiceImpl implements TokenService {
         item.setInstitutionId(token.getId());
         item.setInstitutionName(token.getName());
 
-        itemRepository.save(item);
+        Item newItem = itemRepository.save(item);
+        accountService.createAccounts(newItem.getId());
+        transactionService.syncTransactions(newItem.getId());
     }
 }

@@ -35,9 +35,7 @@ public class WebhookServiceImpl implements WebhookService {
         User user = userUtil.getUser();
         Item item = itemUtil.getItem(id);
 
-        if (!item.getUser().equals(user)) {
-            throw new ItemDoesNotBelongToUserException("Item does not belong to user: " + user.getEmail());
-        }
+        itemUtil.assertItemOwnership(user, item);
 
         SandboxItemFireWebhookRequest request = new SandboxItemFireWebhookRequest()
                 .accessToken(item.getAccessToken())

@@ -1,4 +1,4 @@
-package com.backend.budgetboss.user.dtos;
+package com.backend.budgetboss.user.dto;
 
 import jakarta.validation.constraints.*;
 

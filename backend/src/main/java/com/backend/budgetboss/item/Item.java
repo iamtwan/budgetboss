@@ -1,8 +1,11 @@
 package com.backend.budgetboss.item;
 
+import com.backend.budgetboss.account.Account;
 import com.backend.budgetboss.user.User;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,6 +22,11 @@ public class Item {
     private String itemId;
     private String institutionId;
     private String institutionName;
+    private String cursor;
+    private Status status = Status.GOOD;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Account> accounts = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -68,6 +76,30 @@ public class Item {
         this.institutionName = institutionName;
     }
 
+    public String getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(String cursor) {
+        this.cursor = cursor;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,6 +122,9 @@ public class Item {
                 ", itemId='" + itemId + '\'' +
                 ", institutionId='" + institutionId + '\'' +
                 ", institutionName='" + institutionName + '\'' +
+                ", cursor='" + cursor + '\'' +
+                ", status=" + status +
+                ", accounts=" + accounts.size() +
                 '}';
     }
 }

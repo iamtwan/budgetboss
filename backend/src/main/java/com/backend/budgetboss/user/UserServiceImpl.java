@@ -2,8 +2,8 @@ package com.backend.budgetboss.user;
 
 import com.backend.budgetboss.security.UserDetailsImpl;
 import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
-import com.backend.budgetboss.user.dtos.CreateUserDTO;
-import com.backend.budgetboss.user.dtos.UserResponseDTO;
+import com.backend.budgetboss.user.dto.CreateUserDTO;
+import com.backend.budgetboss.user.dto.UserResponseDTO;
 import com.backend.budgetboss.user.util.UserUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

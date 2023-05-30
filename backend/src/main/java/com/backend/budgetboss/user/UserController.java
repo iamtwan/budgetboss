@@ -1,7 +1,7 @@
 package com.backend.budgetboss.user;
 
-import com.backend.budgetboss.user.dtos.CreateUserDTO;
-import com.backend.budgetboss.user.dtos.UserResponseDTO;
+import com.backend.budgetboss.user.dto.CreateUserDTO;
+import com.backend.budgetboss.user.dto.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

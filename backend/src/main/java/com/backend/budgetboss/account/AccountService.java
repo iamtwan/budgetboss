@@ -1,4 +1,7 @@
 package com.backend.budgetboss.account;
 
-public class AccountService {
+import java.io.IOException;
+
+public interface AccountService {
+    void createAccounts(Long id) throws IOException;
 }
