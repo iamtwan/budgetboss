@@ -91,6 +91,6 @@ public class TokenServiceImpl implements TokenService {
 
         Item newItem = itemRepository.save(item);
         accountService.createAccounts(newItem.getId());
-        transactionService.syncTransactions(newItem.getId());
+        transactionService.syncTransactions(newItem.getItemId());
     }
 }

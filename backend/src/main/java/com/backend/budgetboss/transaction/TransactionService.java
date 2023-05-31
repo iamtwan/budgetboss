@@ -1,7 +1,8 @@
 package com.backend.budgetboss.transaction;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface TransactionService {
-    void syncTransactions(Long id) throws IOException;
+    void syncTransactions(String itemId) throws IOException;
 }

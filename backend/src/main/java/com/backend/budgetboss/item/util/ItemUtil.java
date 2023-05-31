@@ -20,6 +20,11 @@ public class ItemUtil {
                 .orElseThrow(() -> new ItemNotFoundException("Item not found with ID: " + id));
     }
 
+    public Item getItemByItemId(String itemId) {
+        return itemRepository.findByItemId(itemId)
+                .orElseThrow(() -> new ItemNotFoundException("Item not found with ID: " + itemId));
+    }
+
     public void assertItemOwnership(User user, Item item) {
         if (!item.getUser().equals(user)) {
             throw new TokenCreationException("Item does not belong to user: " + item.getUser().getEmail());

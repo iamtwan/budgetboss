@@ -24,7 +24,7 @@ public class WebhookController {
 
     @PostMapping(consumes = "application/json")
     @Operation(summary = "Plaid Webhook", description = "Webhook listener for Plaid")
-    public void handlePlaidWebhook(@RequestBody Map<String, Object> event) {
+    public void handlePlaidWebhook(@RequestBody Map<String, Object> event) throws IOException {
         logger.info("/api/webhooks POST request received: {}", event);
 
         if (!event.containsKey("webhook_type")) {

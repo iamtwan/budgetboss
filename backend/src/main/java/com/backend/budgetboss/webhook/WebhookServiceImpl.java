@@ -3,6 +3,7 @@ package com.backend.budgetboss.webhook;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.exception.ItemDoesNotBelongToUserException;
 import com.backend.budgetboss.item.util.ItemUtil;
+import com.backend.budgetboss.transaction.TransactionService;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.util.UserUtil;
 import com.backend.budgetboss.webhook.exception.FireWebhookException;
@@ -22,13 +23,19 @@ import java.util.Map;
 public class WebhookServiceImpl implements WebhookService {
     private final UserUtil userUtil;
     private final ItemUtil itemUtil;
+    private final TransactionService transactionService;
     private final PlaidApi plaidApi;
 
-    public WebhookServiceImpl(UserUtil userUtil, ItemUtil itemUtil, PlaidApi plaidApi) {
+    public WebhookServiceImpl(UserUtil userUtil,
+                              ItemUtil itemUtil,
+                              TransactionService transactionService,
+                              PlaidApi plaidApi) {
         this.userUtil = userUtil;
         this.itemUtil = itemUtil;
+        this.transactionService = transactionService;
         this.plaidApi = plaidApi;
     }
+
 
     @Override
     public void fireItemWebhook(Long id) throws IOException {
@@ -77,7 +84,23 @@ public class WebhookServiceImpl implements WebhookService {
     }
 
     @Override
-    public void handleTransactionsWebhook(Map<String, Object> event) {
-        System.out.println(event);
+    public void handleTransactionsWebhook(Map<String, Object> event) throws IOException {
+        String code = (String) event.get("webhook_code");
+        String id = (String) event.get("item_id");
+
+        switch (code) {
+            case "SYNC_UPDATES_AVAILABLE":
+                transactionService.syncTransactions(id);
+                break;
+
+            case "INITIAL_UPDATE":
+            case "HISTORICAL_UPDATE":
+            case "DEFAULT_UPDATE":
+            case "TRANSACTIONS_REMOVED":
+                // ignore - not needed when using sync
+                break;
+            default:
+                System.out.println("Unknown webhook code: " + code);
+        }
     }
 }
