@@ -11,7 +11,7 @@ import AddAccountForm from '../Accounts/AddAccountForm';
 
 
 const Link = ({ linkToken }) => {
-    const onSuccess = React.useCallback(async (public_token, metadata) => {
+    const onSuccess = async (public_token, metadata) => {
         try {
             const response = await axios.post("http://localhost:8080/api/tokens", {
                 publicToken: public_token,
@@ -21,7 +21,7 @@ const Link = ({ linkToken }) => {
         } catch (err) {
             console.log(err);
         }
-    });
+    };
 
     const config = {
         token: linkToken,
@@ -88,10 +88,17 @@ const DashboardPage = () => {
         setShowModal(!showModal);
     };
 
-    const handleAddAccountFormSubmit = (formData) => {
-        // Handle form submission logic here
+    const handleAddAccountFormSubmit = async (formData) => {
         console.log(formData);
-        // Close the form modal
+        try {
+            const response = await axios.post("http://localhost:8080/api/manual-accounts", formData, {
+                withCredentials: true,
+            });
+            console.log(response.data);
+            generateToken();
+        } catch (err) {
+            console.log(err);
+        }
         setShowModal(false);
     };
 

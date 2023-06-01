@@ -1,62 +1,3 @@
-// import React, { useState } from 'react';
-// import { Modal, Button, Form } from 'react-bootstrap';
-
-// const AddAccountForm = ({ show, onClose, onSubmit }) => {
-//     const [accountName, setAccountName] = useState('');
-//     const [accountType, setAccountType] = useState('');
-
-//     const handleAccountNameChange = (event) => {
-//         setAccountName(event.target.value);
-//     };
-
-//     const handleAccountTypeChange = (event) => {
-//         setAccountType(event.target.value);
-//     };
-
-//     const handleSubmit = (event) => {
-//         event.preventDefault();
-//         onSubmit({ accountName, accountType });
-//         setAccountName('');
-//         setAccountType('');
-//     };
-
-//     return (
-//         <Modal show={show} onHide={onClose}>
-//             <Modal.Header closeButton>
-//                 <Modal.Title>Add Account</Modal.Title>
-//             </Modal.Header>
-//             <Modal.Body>
-//                 <Form onSubmit={handleSubmit}>
-//                     <Form.Group controlId="accountName">
-//                         <Form.Label>Account Name</Form.Label>
-//                         <Form.Control
-//                             type="text"
-//                             value={accountName}
-//                             onChange={handleAccountNameChange}
-//                         />
-//                     </Form.Group>
-//                     <Form.Group controlId="accountType">
-//                         <Form.Label>Account Type</Form.Label>
-//                         <Form.Control
-//                             as="select"
-//                             value={accountType}
-//                             onChange={handleAccountTypeChange}
-//                         >
-//                             <option value="">Select Account Type</option>
-//                             {/* Add options for different account types */}
-//                         </Form.Control>
-//                     </Form.Group>
-//                     <Button variant="primary" type="submit">
-//                         Add
-//                     </Button>
-//                 </Form>
-//             </Modal.Body>
-//         </Modal>
-//     );
-// };
-
-// export default AddAccountForm;
-
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
@@ -65,6 +6,8 @@ const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
     const [newInstitution, setNewInstitution] = useState('');
     const [accountName, setAccountName] = useState('');
     const [balance, setBalance] = useState('');
+    const [selectedAccountType, setSelectedAccountType] = useState('');
+    const [error, setError] = useState('');
 
     const handleInstitutionChange = (e) => {
         const value = e.target.value;
@@ -79,14 +22,28 @@ const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
         setBalance(e.target.value);
     };
 
+    const handleAccountTypeChange = (e) => {
+        setSelectedAccountType(e.target.value);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const institutionExists = institutions.some(
+            (institution) => institution.name.toLowerCase() === newInstitution.toLowerCase()
+        );
+
+        if (institutionExists) {
+            setError(`The institution '${newInstitution}' already exists.`);
+            return;
+        }
         const formData = {
-            institution: selectedInstitution === 'create' ? newInstitution : selectedInstitution,
-            accountName,
-            balance,
+            institutionName: selectedInstitution === 'create' ? newInstitution : selectedInstitution,
+            accountType: selectedAccountType,
+            name: accountName,
+            balance: parseFloat(balance),
         };
         onSubmit(formData);
+        onClose();
     };
 
     return (
@@ -96,6 +53,7 @@ const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
+                    {error && <p className="text-danger">{error}</p>}
                     <Form.Group controlId="institution">
                         <Form.Label>Institution</Form.Label>
                         <Form.Select value={selectedInstitution} onChange={handleInstitutionChange} required>
@@ -116,6 +74,15 @@ const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
                                 required
                             />
                         )}
+                    </Form.Group>
+                    <Form.Group controlId="accountType">
+                        <Form.Label>Account Type</Form.Label>
+                        <Form.Select value={selectedAccountType} onChange={handleAccountTypeChange} required>
+                            <option value="">Select an account type</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit">Credit</option>
+                            <option value="Investments">Investments</option>
+                        </Form.Select>
                     </Form.Group>
                     <Form.Group controlId="accountName">
                         <Form.Label>Account</Form.Label>

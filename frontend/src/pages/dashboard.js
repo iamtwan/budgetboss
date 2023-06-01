@@ -14,7 +14,7 @@ const Dashboard = () => {
                 const response = await axios.get("http://localhost:8080/api/items", {
                     withCredentials: true,
                 });
-                setInstitutionsData(response.data.map(account => account.institution.id));
+                setInstitutionsData(response.data.map(account => account.id));
             } catch (err) {
                 console.log(err);
             }

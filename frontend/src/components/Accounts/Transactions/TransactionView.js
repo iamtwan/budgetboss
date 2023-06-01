@@ -1,36 +1,29 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const TransactionView = ({ account }) => {
     const [transactions, setTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(true);
-        setTimeout(() => {
-            const fakeTransactions = generateFakeTransactions();
-            setTransactions(fakeTransactions);
-            setIsLoading(false);
-        }, 1000);
+        const fetchTransactions = async () => {
+            setIsLoading(true);
+            try {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+
+                const response = await axios.get(`http://localhost:8080/api/transactions/${account.id}`, {
+                    withCredentials: true,
+                });
+                setTransactions(response.data);
+                setIsLoading(false);
+            } catch (error) {
+                console.error(error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchTransactions();
     }, [account]);
-
-    const generateFakeTransactions = () => {
-        const fakeTransactions = [
-            { id: 1, Merchant: 'Apple', Date: '05-09-23', Amount: 1843.09, Category: 'Other' },
-            { id: 2, Merchant: 'Safeway', Date: '05-10-23', Amount: 82.45, Category: 'Grocery' },
-            { id: 3, Merchant: 'Steam', Date: '05-12-23', Amount: 21.26, Category: 'Gaming' },
-            { id: 4, Merchant: 'Chick-fil-A', Date: '05-15-23', Amount: 15.43, Category: 'Food' },
-            { id: 5, Merchant: 'Subway', Date: '05-17-23', Amount: 12.82, Category: 'Food' },
-            { id: 6, Merchant: 'PG&E', Date: '05-20-23', Amount: 97.98, Category: 'Services' },
-            { id: 7, Merchant: 'Microsoft', Date: '05-21-23', Amount: 1843.09, Category: 'Other' },
-            { id: 8, Merchant: 'Wholefoods', Date: '05-25-23', Amount: 1082.45, Category: 'Grocery' },
-            { id: 9, Merchant: 'Steam', Date: '05-25-23', Amount: 21.26, Category: 'Gaming' },
-            { id: 10, Merchant: 'Narumi Sushi', Date: '05-26-23', Amount: 35.43, Category: 'Resturant' },
-            { id: 11, Merchant: 'Robertos', Date: '05-27-23', Amount: 18.82, Category: 'Food' },
-            { id: 12, Merchant: 'Netflix', Date: '05-28-23', Amount: 97.98, Category: 'Services' },
-        ];
-
-        return fakeTransactions;
-    };
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -49,10 +42,20 @@ const TransactionView = ({ account }) => {
             <tbody>
                 {transactions.map((transaction) => (
                     <tr key={transaction.id}>
-                        <td>{transaction.Merchant}</td>
-                        <td>{transaction.Date}</td>
-                        <td>{transaction.Amount}</td>
-                        <td>{transaction.Category}</td>
+                        <td>{transaction.merchantName || transaction.name}</td>
+                        <td>{transaction.date}</td>
+                        <td>
+                            {transaction.amount < 0 ? (
+                                <span>
+                                    -${Math.abs(transaction.amount).toFixed(2)}
+                                </span>
+                            ) : (
+                                <span>
+                                    ${transaction.amount.toFixed(2)}
+                                </span>
+                            )}
+                        </td>
+                        <td>{transaction.category.join(', ')}</td>
                     </tr>
                 ))}
             </tbody>
