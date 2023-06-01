@@ -110,7 +110,7 @@ public class Balance {
                 ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
                 ", balanceLimit='" + balanceLimit + '\'' +
                 ", unofficialCurrencyCode='" + unofficialCurrencyCode + '\'' +
-                ", account=" + account +
+                ", account=" + account.getName() +
                 '}';
     }
 }

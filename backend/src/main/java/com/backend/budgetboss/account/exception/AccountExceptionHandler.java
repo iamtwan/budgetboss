@@ -27,7 +27,17 @@ public class AccountExceptionHandler {
         logger.error(e.getMessage());
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Account Request Error");
+        problemDetail.setTitle("Account Request Exception");
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(AccountOwnershipException.class)
+    public ProblemDetail handleAccountOwnershipException(AccountOwnershipException e) {
+        logger.error(e.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
+        problemDetail.setTitle("Account Ownership Exception");
 
         return problemDetail;
     }

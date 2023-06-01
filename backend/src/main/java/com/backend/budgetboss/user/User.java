@@ -1,6 +1,7 @@
 package com.backend.budgetboss.user;
 
 import com.backend.budgetboss.item.Item;
+import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -23,6 +24,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ManualInstitution> manualInstitutions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -56,6 +60,14 @@ public class User {
         this.items = items;
     }
 
+    public List<ManualInstitution> getManualInstitutions() {
+        return manualInstitutions;
+    }
+
+    public void setManualInstitutions(List<ManualInstitution> manualInstitutions) {
+        this.manualInstitutions = manualInstitutions;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,7 +87,8 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", items=" + items.size() +
+                ", items=" + items +
+                ", manualInstitutions=" + manualInstitutions.size() +
                 '}';
     }
 }

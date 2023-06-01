@@ -152,7 +152,7 @@ public class Account {
                 ", officialName='" + officialName + '\'' +
                 ", type=" + type +
                 ", subtype=" + subtype +
-                ", balances=" + balances +
+                ", balances id=" + balances.getId() +
                 ", item=" + item.getInstitutionName() +
                 ", transactions=" + transactions.size() +
                 '}';

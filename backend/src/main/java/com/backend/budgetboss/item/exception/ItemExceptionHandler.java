@@ -52,4 +52,14 @@ public class ItemExceptionHandler {
 
         return problemDetail;
     }
+
+    @ExceptionHandler(ItemOwnershipException.class)
+    public ProblemDetail handleItemOwnershipException(ItemOwnershipException e) {
+        logger.error(e.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
+        problemDetail.setTitle("Item Ownership Exception");
+
+        return problemDetail;
+    }
 }

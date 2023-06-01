@@ -1,13 +1,15 @@
 package com.backend.budgetboss.item.dto;
 
-import com.plaid.client.model.AccountBase;
+import com.backend.budgetboss.account.Account;
+import com.backend.budgetboss.account.dto.AccountResponseDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemResponseDTO {
     private Long id;
     private String name;
-    private List<AccountBase> accounts;
+    private List<AccountResponseDTO> accounts;
 
     public Long getId() {
         return id;
@@ -25,12 +27,18 @@ public class ItemResponseDTO {
         this.name = name;
     }
 
-    public List<AccountBase> getAccounts() {
+    public List<AccountResponseDTO> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<AccountBase> accounts) {
-        this.accounts = accounts;
+    public void setAccounts(List<Account> accounts) {
+        List<AccountResponseDTO> newAccounts = new ArrayList<>();
+
+        for (Account account : accounts) {
+            newAccounts.add(new AccountResponseDTO(account));
+        }
+
+        this.accounts = newAccounts;
     }
 
     @Override

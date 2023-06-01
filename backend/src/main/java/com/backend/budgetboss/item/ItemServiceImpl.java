@@ -1,7 +1,6 @@
 package com.backend.budgetboss.item;
 
 import com.backend.budgetboss.item.dto.ItemResponseDTO;
-import com.backend.budgetboss.item.exception.AccountRequestException;
 import com.backend.budgetboss.item.exception.ItemDoesNotBelongToUserException;
 import com.backend.budgetboss.item.util.ItemUtil;
 import com.backend.budgetboss.token.exception.TokenCreationException;
@@ -32,27 +31,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemResponseDTO> getAllItems() throws IOException {
+    public List<ItemResponseDTO> getAllItems() {
         User user = userUtil.getUser();
         List<Item> items = itemRepository.findAllByUser(user);
         List<ItemResponseDTO> itemResponseDTOs = new ArrayList<>();
 
         for (Item item : items) {
-            AccountsGetRequest request = new AccountsGetRequest()
-                    .accessToken(item.getAccessToken());
-
-            Response<AccountsGetResponse> response = plaidApi
-                    .accountsGet(request)
-                    .execute();
-
-            if (!response.isSuccessful() || response.body() == null) {
-                throw new AccountRequestException("Unable to retrieve accounts for item: " + item.getId(), response.code());
-            }
-
             ItemResponseDTO itemResponseDTO = new ItemResponseDTO();
             itemResponseDTO.setName(item.getInstitutionName());
             itemResponseDTO.setId(item.getId());
-            itemResponseDTO.setAccounts(response.body().getAccounts());
+            itemResponseDTO.setAccounts(item.getAccounts());
             itemResponseDTOs.add(itemResponseDTO);
         }
 

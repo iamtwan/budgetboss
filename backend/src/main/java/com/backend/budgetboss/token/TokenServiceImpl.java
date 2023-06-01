@@ -7,10 +7,14 @@ import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.transaction.TransactionService;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.util.UserUtil;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -40,6 +44,22 @@ public class TokenServiceImpl implements TokenService {
     public LinkTokenCreateResponse createLinkToken() throws IOException {
         User user = userUtil.getUser();
 
+        RestTemplate restTemplate = new RestTemplate();
+        String ngrokApiUrl = "http://localhost:4040/api/tunnels";
+        ResponseEntity<String> ngrokResponse = restTemplate.getForEntity(ngrokApiUrl, String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root = objectMapper.readTree(ngrokResponse.getBody());
+        JsonNode tunnelsNode = root.path("tunnels");
+
+        String publicUrl = "";
+
+        for (JsonNode tunnelNode : tunnelsNode) {
+            JsonNode publicUrlNode = tunnelNode.path("public_url");
+            publicUrl = publicUrlNode.asText();
+            break;
+        }
+
         LinkTokenCreateRequestUser requestUser = new LinkTokenCreateRequestUser()
                 .clientUserId(String.valueOf(user.getId()));
 
@@ -49,7 +69,7 @@ public class TokenServiceImpl implements TokenService {
                 .products(List.of(Products.TRANSACTIONS))
                 .countryCodes(List.of(CountryCode.US))
                 .language("en")
-                .webhook("http://677a-2603-8080-7c00-22fd-4055-e7e9-3057-24f8.ngrok.io/api/webhooks");
+                .webhook(publicUrl + "/api/webhooks");
 
         Response<LinkTokenCreateResponse> response = plaidApi
                 .linkTokenCreate(request)

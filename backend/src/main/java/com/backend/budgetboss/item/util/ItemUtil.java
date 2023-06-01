@@ -3,6 +3,7 @@ package com.backend.budgetboss.item.util;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
 import com.backend.budgetboss.item.exception.ItemNotFoundException;
+import com.backend.budgetboss.item.exception.ItemOwnershipException;
 import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.user.User;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ public class ItemUtil {
 
     public void assertItemOwnership(User user, Item item) {
         if (!item.getUser().equals(user)) {
-            throw new TokenCreationException("Item does not belong to user: " + item.getUser().getEmail());
+            throw new ItemOwnershipException("Item does not belong to user: " + item.getUser().getEmail());
         }
     }
 }

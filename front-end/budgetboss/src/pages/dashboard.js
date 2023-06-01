@@ -83,6 +83,15 @@ const DashboardPage = () => {
         }
     }
 
+    const getTransactions = async id => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/transactions/${id}`, { withCredentials: true });
+            console.log(response.data);
+        } catch(err) {
+            console.log(err);
+        } 
+    }
+
     return (
         <main className="vh-100">
             <h1 className="text-uppercase">Budget Boss</h1>
@@ -93,8 +102,11 @@ const DashboardPage = () => {
                             <h3 className="d-inline-block">Accounts</h3>
                             <App />
                             {items.map(item => {
-                                return <div key={item.id} onClick={() => fireItemEvent(item.id)}>
+                                return <div key={item.id}>
                                     <div>{item.name}</div>
+                                    {item.accounts.map(account => {
+                                        return <div onClick={() => getTransactions(account.id)}>{account.name}</div>;
+                                    })}
                                 </div>
                             })}
                             <div className="row h-100">
