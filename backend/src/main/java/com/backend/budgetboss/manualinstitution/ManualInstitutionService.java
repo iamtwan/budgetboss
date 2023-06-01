@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ManualInstitutionService {
     List<ManualInstitutionResponseDTO> getManualInstitutions();
+    void deleteManualInstitution(Long id);
 }

@@ -19,4 +19,14 @@ public class ManualInstitutionHandler {
 
         return problemDetail;
     }
+
+    @ExceptionHandler(ManualInstitutionOwnershipException.class)
+    public ProblemDetail handleManualInstitutionOwnershipException(ManualInstitutionOwnershipException e) {
+        logger.error(e.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
+        problemDetail.setTitle("Manual institution does not belong to user");
+
+        return problemDetail;
+    }
 }

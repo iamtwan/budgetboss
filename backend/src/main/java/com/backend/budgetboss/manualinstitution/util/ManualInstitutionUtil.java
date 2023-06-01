@@ -3,6 +3,7 @@ package com.backend.budgetboss.manualinstitution.util;
 import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import com.backend.budgetboss.manualinstitution.ManualInstitutionRepository;
 import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionNotFoundException;
+import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionOwnershipException;
 import com.backend.budgetboss.user.User;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +24,11 @@ public class ManualInstitutionUtil {
 
     public Optional<ManualInstitution> getManualInstitutionByUserAndName(User user, String name) {
         return manualInstitutionRepository.findByUserAndName(user, name);
+    }
+
+    public void assertManualInstitutionOwnership(User user, ManualInstitution institution) {
+        if (!institution.getUser().equals(user)) {
+            throw new ManualInstitutionOwnershipException("Manual Institution does not belong to user: " + user.getEmail());
+        }
     }
 }
