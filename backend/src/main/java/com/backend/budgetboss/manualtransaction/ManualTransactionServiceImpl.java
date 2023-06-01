@@ -9,7 +9,9 @@ import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.helper.UserHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -41,6 +43,7 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
     }
 
     @Override
+    @Transactional
     public ManualTransactionResponseDTO createManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO) {
         User user = userHelper.getUser();
         ManualAccount account = accountHelper.getAccount(id);
@@ -49,18 +52,28 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
         ManualTransaction manualTransaction = modelMapper.map(manualTransactionDTO, ManualTransaction.class);
         manualTransaction.setManualAccount(account);
+        account.setBalance(account.getBalance().subtract(manualTransaction.getAmount()));
 
         return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);
     }
 
     @Override
+    @Transactional
     public ManualTransactionResponseDTO updateManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO) {
         User user = userHelper.getUser();
         ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(id);
 
         manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
-        modelMapper.map(manualTransactionDTO, manualTransaction);
+        ManualAccount account = manualTransaction.getManualAccount();
+        BigDecimal diff = manualTransaction.getAmount().subtract(manualTransactionDTO.getAmount());
 
+        if (diff.compareTo(BigDecimal.ZERO) <= 0) {
+            account.setBalance(account.getBalance().add(diff));
+        } else {
+            account.setBalance(account.getBalance().subtract(diff));
+        }
+
+        modelMapper.map(manualTransactionDTO, manualTransaction);
         return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);
     }
 

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,9 @@ public class ManualTransaction {
     @NotNull(message = "Date is required")
     private LocalDate date;
 
+    @Column(precision = 19, scale = 2)
     @NotNull(message = "Amount is required")
-    private Double amount;
+    private BigDecimal amount;
 
     private List<String> category = new ArrayList<>();
 
@@ -56,11 +58,11 @@ public class ManualTransaction {
         this.date = date;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

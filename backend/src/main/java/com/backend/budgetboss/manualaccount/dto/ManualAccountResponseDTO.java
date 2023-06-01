@@ -1,13 +1,14 @@
 package com.backend.budgetboss.manualaccount.dto;
 
-import com.backend.budgetboss.manualaccount.ManualAccount;
 import com.backend.budgetboss.manualaccount.ManualAccountType;
+import jakarta.persistence.Column;
+
+import java.math.BigDecimal;
 
 public class ManualAccountResponseDTO {
     private Long id;
-    private String institutionName;
     private String name;
-    private Double balance;
+    private BigDecimal balance;
     private ManualAccountType type;
 
     public Long getId() {
@@ -18,14 +19,6 @@ public class ManualAccountResponseDTO {
         this.id = id;
     }
 
-    public String getInstitutionName() {
-        return institutionName;
-    }
-
-    public void setInstitutionName(String institutionName) {
-        this.institutionName = institutionName;
-    }
-
     public String getName() {
         return name;
     }
@@ -34,11 +27,11 @@ public class ManualAccountResponseDTO {
         this.name = name;
     }
 
-    public Double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
@@ -54,7 +47,6 @@ public class ManualAccountResponseDTO {
     public String toString() {
         return "ManualAccountResponse{" +
                 "id=" + id +
-                ", institutionName='" + institutionName + '\'' +
                 ", name='" + name + '\'' +
                 ", balance=" + balance +
                 ", type=" + type +

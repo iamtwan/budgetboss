@@ -3,6 +3,7 @@ package com.backend.budgetboss.manualtransaction.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class CreateManualTransactionDTO {
     private LocalDate date;
 
     @NotNull(message = "Amount is required")
-    private Double amount;
+    private BigDecimal amount;
 
     private List<String> category = new ArrayList<>();
 
@@ -35,11 +36,11 @@ public class CreateManualTransactionDTO {
         this.date = date;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

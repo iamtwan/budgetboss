@@ -1,6 +1,7 @@
 package com.backend.budgetboss.manualinstitution;
 
 import com.backend.budgetboss.manualinstitution.dto.ManualInstitutionResponseDTO;
+import com.backend.budgetboss.manualinstitution.dto.UpdateManualInstitutionDTO;
 import com.backend.budgetboss.manualinstitution.helper.ManualInstitutionHelper;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.helper.UserHelper;
@@ -32,6 +33,16 @@ public class ManualInstitutionServiceImpl implements ManualInstitutionService {
                 .stream()
                 .map(manualInstitution -> modelMapper.map(manualInstitution, ManualInstitutionResponseDTO.class))
                 .toList();
+    }
+
+    @Override
+    public ManualInstitutionResponseDTO updateManualInstitution(Long id, UpdateManualInstitutionDTO updateManualInstitutionDTO) {
+        User user = userHelper.getUser();
+        ManualInstitution manualInstitution = manualInstitutionHelper.getManualInstitution(id);
+
+        manualInstitutionHelper.assertManualInstitutionOwnership(user, manualInstitution);
+        manualInstitution.setName(updateManualInstitutionDTO.getName());
+        return modelMapper.map(manualInstitutionRepository.save(manualInstitution), ManualInstitutionResponseDTO.class);
     }
 
     @Override

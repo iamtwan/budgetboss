@@ -5,7 +5,9 @@ import com.backend.budgetboss.manualtransaction.ManualTransaction;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +22,9 @@ public class ManualAccount {
     @NotBlank(message = "Account name is required")
     private String name;
 
+    @Column(precision = 19, scale = 2)
     @NotNull(message = "Balance is required")
-    private Double balance;
+    private BigDecimal balance;
 
     @NotNull(message = "Account type is required")
     private ManualAccountType type;
@@ -49,11 +52,11 @@ public class ManualAccount {
         this.name = name;
     }
 
-    public Double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

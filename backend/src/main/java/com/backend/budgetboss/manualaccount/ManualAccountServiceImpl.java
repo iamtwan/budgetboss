@@ -2,6 +2,7 @@ package com.backend.budgetboss.manualaccount;
 
 import com.backend.budgetboss.manualaccount.dto.CreateManualAccountDTO;
 import com.backend.budgetboss.manualaccount.dto.ManualAccountResponseDTO;
+import com.backend.budgetboss.manualaccount.dto.UpdateManualAccountDTO;
 import com.backend.budgetboss.manualaccount.helper.ManualAccountHelper;
 import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import com.backend.budgetboss.manualinstitution.ManualInstitutionRepository;
@@ -53,14 +54,11 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
     @Override
     @Transactional
-    public ManualAccountResponseDTO updateManualAccount(Long id, CreateManualAccountDTO manualAccountDTO) {
+    public ManualAccountResponseDTO updateManualAccount(Long id, UpdateManualAccountDTO manualAccountDTO) {
         User user = userHelper.getUser();
         ManualAccount manualAccount = manualAccountHelper.getAccount(id);
 
         manualAccountHelper.assertAccountOwnership(user, manualAccount);
-
-        ManualInstitution manualInstitution = manualInstitutionHelper.getManualInstitution(manualAccount.getManualInstitution().getId());
-        manualInstitution.setName(manualAccountDTO.getInstitutionName());
 
         modelMapper.map(manualAccountDTO, manualAccount);
         return modelMapper.map(manualAccountRepository.save(manualAccount), ManualAccountResponseDTO.class);

@@ -2,6 +2,7 @@ package com.backend.budgetboss.manualaccount;
 
 import com.backend.budgetboss.manualaccount.dto.CreateManualAccountDTO;
 import com.backend.budgetboss.manualaccount.dto.ManualAccountResponseDTO;
+import com.backend.budgetboss.manualaccount.dto.UpdateManualAccountDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,7 +25,7 @@ public class ManualAccountController {
     }
 
     @PostMapping
-    @Operation(summary = "Create manual account", description = "Create a manual account with the given name, institution name, and balance")
+    @Operation(summary = "Create manual account", description = "Create a manual account with the given name, institution name, type, and balance")
     public ResponseEntity<ManualAccountResponseDTO> createManualAccount(@Valid @RequestBody CreateManualAccountDTO manualAccountDTO) {
         logger.info("/api/manual-accounts POST request received");
         ManualAccountResponseDTO manualAccount = manualAccountService.createManualAccount(manualAccountDTO);
@@ -33,8 +34,8 @@ public class ManualAccountController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update manual account", description = "Update a manual account with the given name, institution name, and balance")
-    public ResponseEntity<ManualAccountResponseDTO> updateManualAccount(@PathVariable Long id, @Valid @RequestBody CreateManualAccountDTO manualAccountDTO) {
+    @Operation(summary = "Update manual account", description = "Update a manual account with the given name, type, and balance")
+    public ResponseEntity<ManualAccountResponseDTO> updateManualAccount(@PathVariable Long id, @Valid @RequestBody UpdateManualAccountDTO manualAccountDTO) {
         logger.info("/api/manual-accounts/{} PUT request received", id);
         ManualAccountResponseDTO manualAccount = manualAccountService.updateManualAccount(id, manualAccountDTO);
         logger.info("/api/manual-accounts/{} updated manual account: {}", id, manualAccount);

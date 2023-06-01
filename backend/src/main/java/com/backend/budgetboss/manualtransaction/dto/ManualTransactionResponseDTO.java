@@ -1,5 +1,6 @@
 package com.backend.budgetboss.manualtransaction.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ public class ManualTransactionResponseDTO {
     private Long id;
     private String name;
     private LocalDate date;
-    private Double amount;
+    private BigDecimal amount;
     private List<String> category = new ArrayList<>();
 
     public Long getId() {
@@ -35,11 +36,11 @@ public class ManualTransactionResponseDTO {
         this.date = date;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

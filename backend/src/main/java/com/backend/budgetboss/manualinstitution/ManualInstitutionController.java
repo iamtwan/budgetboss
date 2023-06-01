@@ -1,8 +1,10 @@
 package com.backend.budgetboss.manualinstitution;
 
 import com.backend.budgetboss.manualinstitution.dto.ManualInstitutionResponseDTO;
+import com.backend.budgetboss.manualinstitution.dto.UpdateManualInstitutionDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,15 @@ public class ManualInstitutionController {
         List<ManualInstitutionResponseDTO> manualInstitutions = manualInstitutionService.getManualInstitutions();
         logger.info("/api/manual-institutions returning manual institutions: {}", manualInstitutions.size());
         return ResponseEntity.ok(manualInstitutions);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update manual institution", description = "Update a manual institution with the given name")
+    public ResponseEntity<ManualInstitutionResponseDTO> updateManualInstitution(@PathVariable Long id, @Valid @RequestBody UpdateManualInstitutionDTO updateManualInstitutionDTO) {
+        logger.info("/api/manual-institutions/{} PUT request received", id);
+        ManualInstitutionResponseDTO manualInstitution = manualInstitutionService.updateManualInstitution(id, updateManualInstitutionDTO);
+        logger.info("/api/manual-institutions/{} updated manual institution: {}", id, manualInstitution);
+        return ResponseEntity.ok(manualInstitution);
     }
 
     @DeleteMapping("/{id}")
