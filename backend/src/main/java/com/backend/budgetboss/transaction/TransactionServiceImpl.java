@@ -1,12 +1,12 @@
 package com.backend.budgetboss.transaction;
 
 import com.backend.budgetboss.account.Account;
-import com.backend.budgetboss.account.util.AccountUtil;
+import com.backend.budgetboss.account.helper.AccountHelper;
 import com.backend.budgetboss.item.Item;
-import com.backend.budgetboss.item.util.ItemUtil;
+import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.transaction.dto.TransactionResponseDTO;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.util.UserUtil;
+import com.backend.budgetboss.user.helper.UserHelper;
 import com.plaid.client.model.RemovedTransaction;
 import com.plaid.client.model.Transaction;
 import com.plaid.client.model.TransactionsSyncRequest;
@@ -25,21 +25,21 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
-    private final UserUtil userUtil;
-    private final ItemUtil itemUtil;
-    private final AccountUtil accountUtil;
+    private final UserHelper userHelper;
+    private final ItemHelper itemHelper;
+    private final AccountHelper accountHelper;
     private final PlaidApi plaidApi;
     private final ModelMapper modelMapper;
 
     public TransactionServiceImpl(TransactionRepository transactionRepository,
-                                  UserUtil userUtil,
-                                  ItemUtil itemUtil,
-                                  AccountUtil accountUtil,
+                                  UserHelper userHelper,
+                                  ItemHelper itemHelper,
+                                  AccountHelper accountHelper,
                                   PlaidApi plaidApi, ModelMapper modelMapper) {
         this.transactionRepository = transactionRepository;
-        this.userUtil = userUtil;
-        this.itemUtil = itemUtil;
-        this.accountUtil = accountUtil;
+        this.userHelper = userHelper;
+        this.itemHelper = itemHelper;
+        this.accountHelper = accountHelper;
         this.plaidApi = plaidApi;
         this.modelMapper = modelMapper;
     }
@@ -47,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public void syncTransactions(String itemId) throws IOException {
-        Item item = itemUtil.getItemByItemId(itemId);
+        Item item = itemHelper.getItemByItemId(itemId);
 
         String cursor = item.getCursor();
 
@@ -87,7 +87,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         for (Transaction transaction : addedAndModified) {
-            Account account = accountUtil.getAccountByAccountId(transaction.getAccountId());
+            Account account = accountHelper.getAccountByAccountId(transaction.getAccountId());
             transactionEntities.add(new TransactionEntity(transaction, account));
         }
 
@@ -97,10 +97,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionResponseDTO> getTransactionsByAccountId(Long id) {
-        User user = userUtil.getUser();
-        Account account = accountUtil.getAccount(id);
+        User user = userHelper.getUser();
+        Account account = accountHelper.getAccount(id);
 
-        accountUtil.assertAccountOwnership(user, account);
+        accountHelper.assertAccountOwnership(user, account);
 
         List<TransactionEntity> transactions = transactionRepository.findAllByAccount(account);
         List<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();

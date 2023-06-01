@@ -9,4 +9,6 @@ import java.util.List;
 public interface ManualTransactionService {
     List<ManualTransactionResponseDTO> getManualTransactions(Long id);
     ManualTransactionResponseDTO createManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO);
+    ManualTransactionResponseDTO updateManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO);
+    void deleteManualTransaction(Long transactionId);
 }

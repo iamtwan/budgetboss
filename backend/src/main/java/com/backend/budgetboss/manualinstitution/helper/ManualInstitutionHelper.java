@@ -1,4 +1,4 @@
-package com.backend.budgetboss.manualinstitution.util;
+package com.backend.budgetboss.manualinstitution.helper;
 
 import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import com.backend.budgetboss.manualinstitution.ManualInstitutionRepository;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class ManualInstitutionUtil {
+public class ManualInstitutionHelper {
     private final ManualInstitutionRepository manualInstitutionRepository;
 
-    public ManualInstitutionUtil(ManualInstitutionRepository manualInstitutionRepository) {
+    public ManualInstitutionHelper(ManualInstitutionRepository manualInstitutionRepository) {
         this.manualInstitutionRepository = manualInstitutionRepository;
     }
 

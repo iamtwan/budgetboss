@@ -1,4 +1,4 @@
-package com.backend.budgetboss.user.util;
+package com.backend.budgetboss.user.helper;
 
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.UserRepository;
@@ -8,10 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserUtil {
+public class UserHelper {
     private final UserRepository userRepository;
 
-    public UserUtil(UserRepository userRepository) {
+    public UserHelper(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

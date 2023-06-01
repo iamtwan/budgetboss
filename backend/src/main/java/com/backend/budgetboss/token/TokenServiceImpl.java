@@ -6,7 +6,7 @@ import com.backend.budgetboss.item.ItemRepository;
 import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.transaction.TransactionService;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.util.UserUtil;
+import com.backend.budgetboss.user.helper.UserHelper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plaid.client.model.*;
@@ -22,18 +22,18 @@ import java.util.List;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-    private final UserUtil userUtil;
+    private final UserHelper userHelper;
     private final ItemRepository itemRepository;
     private final TransactionService transactionService;
     private final AccountService accountService;
     private final PlaidApi plaidApi;
 
-    public TokenServiceImpl(UserUtil userUtil,
+    public TokenServiceImpl(UserHelper userHelper,
                             ItemRepository itemRepository,
                             TransactionService transactionService,
                             AccountService accountService,
                             PlaidApi plaidApi) {
-        this.userUtil = userUtil;
+        this.userHelper = userHelper;
         this.itemRepository = itemRepository;
         this.transactionService = transactionService;
         this.accountService = accountService;
@@ -42,7 +42,7 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public LinkTokenCreateResponse createLinkToken() throws IOException {
-        User user = userUtil.getUser();
+        User user = userHelper.getUser();
 
         RestTemplate restTemplate = new RestTemplate();
         String ngrokApiUrl = "http://localhost:4040/api/tunnels";
@@ -85,7 +85,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     @Transactional
     public void exchangePublicToken(Token token) throws IOException {
-        User user = userUtil.getUser();
+        User user = userHelper.getUser();
 
         if (itemRepository.existsByUserAndInstitutionId(user, token.getId())) {
             throw new TokenCreationException("User already has an item for institution: " + token.getId());

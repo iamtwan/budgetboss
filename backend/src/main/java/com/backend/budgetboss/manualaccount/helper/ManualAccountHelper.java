@@ -1,4 +1,4 @@
-package com.backend.budgetboss.manualaccount.util;
+package com.backend.budgetboss.manualaccount.helper;
 
 import com.backend.budgetboss.manualaccount.ManualAccount;
 import com.backend.budgetboss.manualaccount.ManualAccountRepository;
@@ -8,10 +8,10 @@ import com.backend.budgetboss.user.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ManualAccountUtil {
+public class ManualAccountHelper {
     private final ManualAccountRepository manualAccountRepository;
 
-    public ManualAccountUtil(ManualAccountRepository manualAccountRepository) {
+    public ManualAccountHelper(ManualAccountRepository manualAccountRepository) {
         this.manualAccountRepository = manualAccountRepository;
     }
 

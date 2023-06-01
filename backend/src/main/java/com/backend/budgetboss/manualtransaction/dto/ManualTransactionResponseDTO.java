@@ -6,7 +6,6 @@ import java.util.List;
 
 public class ManualTransactionResponseDTO {
     private Long id;
-    private String accountName;
     private String name;
     private LocalDate date;
     private Double amount;
@@ -18,14 +17,6 @@ public class ManualTransactionResponseDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 
     public String getName() {
@@ -64,7 +55,6 @@ public class ManualTransactionResponseDTO {
     public String toString() {
         return "ManualTransactionResponseDTO{" +
                 "id=" + id +
-                ", accountName='" + accountName + '\'' +
                 ", name='" + name + '\'' +
                 ", date=" + date +
                 ", amount=" + amount +

@@ -2,15 +2,12 @@ package com.backend.budgetboss.manualaccount;
 
 import com.backend.budgetboss.manualaccount.dto.CreateManualAccountDTO;
 import com.backend.budgetboss.manualaccount.dto.ManualAccountResponseDTO;
-import com.backend.budgetboss.manualaccount.exception.ManualAccountNotFoundException;
-import com.backend.budgetboss.manualaccount.exception.ManualAccountOwnershipException;
-import com.backend.budgetboss.manualaccount.util.ManualAccountUtil;
+import com.backend.budgetboss.manualaccount.helper.ManualAccountHelper;
 import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import com.backend.budgetboss.manualinstitution.ManualInstitutionRepository;
-import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionNotFoundException;
-import com.backend.budgetboss.manualinstitution.util.ManualInstitutionUtil;
+import com.backend.budgetboss.manualinstitution.helper.ManualInstitutionHelper;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.util.UserUtil;
+import com.backend.budgetboss.user.helper.UserHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,30 +16,30 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManualAccountServiceImpl implements ManualAccountService {
     private final ManualAccountRepository manualAccountRepository;
     private final ManualInstitutionRepository manualInstitutionRepository;
-    private final UserUtil userUtil;
-    private final ManualAccountUtil manualAccountUtil;
-    private final ManualInstitutionUtil manualInstitutionUtil;
+    private final UserHelper userHelper;
+    private final ManualAccountHelper manualAccountHelper;
+    private final ManualInstitutionHelper manualInstitutionHelper;
     private final ModelMapper modelMapper;
 
     public ManualAccountServiceImpl(ManualAccountRepository manualAccountRepository,
                                     ManualInstitutionRepository manualInstitutionRepository,
-                                    UserUtil userUtil,
-                                    ManualAccountUtil manualAccountUtil,
-                                    ManualInstitutionUtil manualInstitutionUtil,
+                                    UserHelper userHelper,
+                                    ManualAccountHelper manualAccountHelper,
+                                    ManualInstitutionHelper manualInstitutionHelper,
                                     ModelMapper modelMapper) {
         this.manualAccountRepository = manualAccountRepository;
         this.manualInstitutionRepository = manualInstitutionRepository;
-        this.userUtil = userUtil;
-        this.manualAccountUtil = manualAccountUtil;
-        this.manualInstitutionUtil = manualInstitutionUtil;
+        this.userHelper = userHelper;
+        this.manualAccountHelper = manualAccountHelper;
+        this.manualInstitutionHelper = manualInstitutionHelper;
         this.modelMapper = modelMapper;
     }
 
     @Override
     @Transactional
     public ManualAccountResponseDTO createManualAccount(CreateManualAccountDTO manualAccountDTO) {
-        User user = userUtil.getUser();
-        ManualInstitution manualInstitution = manualInstitutionUtil
+        User user = userHelper.getUser();
+        ManualInstitution manualInstitution = manualInstitutionHelper
                 .getManualInstitutionByUserAndName(user, manualAccountDTO.getInstitutionName())
                 .orElse(new ManualInstitution(manualAccountDTO.getInstitutionName(), user));
 
@@ -57,12 +54,12 @@ public class ManualAccountServiceImpl implements ManualAccountService {
     @Override
     @Transactional
     public ManualAccountResponseDTO updateManualAccount(Long id, CreateManualAccountDTO manualAccountDTO) {
-        User user = userUtil.getUser();
-        ManualAccount manualAccount = manualAccountUtil.getAccount(id);
+        User user = userHelper.getUser();
+        ManualAccount manualAccount = manualAccountHelper.getAccount(id);
 
-        manualAccountUtil.assertAccountOwnership(user, manualAccount);
+        manualAccountHelper.assertAccountOwnership(user, manualAccount);
 
-        ManualInstitution manualInstitution = manualInstitutionUtil.getManualInstitution(manualAccount.getManualInstitution().getId());
+        ManualInstitution manualInstitution = manualInstitutionHelper.getManualInstitution(manualAccount.getManualInstitution().getId());
         manualInstitution.setName(manualAccountDTO.getInstitutionName());
 
         modelMapper.map(manualAccountDTO, manualAccount);
@@ -71,10 +68,10 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
     @Override
     public void deleteManualAccount(Long id) {
-        User user = userUtil.getUser();
-        ManualAccount manualAccount = manualAccountUtil.getAccount(id);
+        User user = userHelper.getUser();
+        ManualAccount manualAccount = manualAccountHelper.getAccount(id);
 
-        manualAccountUtil.assertAccountOwnership(user, manualAccount);
+        manualAccountHelper.assertAccountOwnership(user, manualAccount);
 
         manualAccountRepository.delete(manualAccount);
     }

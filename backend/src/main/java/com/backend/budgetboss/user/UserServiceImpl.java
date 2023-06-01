@@ -4,7 +4,7 @@ import com.backend.budgetboss.security.UserDetailsImpl;
 import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
-import com.backend.budgetboss.user.util.UserUtil;
+import com.backend.budgetboss.user.helper.UserHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final UserUtil userUtil;
+    private final UserHelper userHelper;
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
@@ -33,17 +33,17 @@ public class UserServiceImpl implements UserService {
                            ModelMapper modelMapper,
                            BCryptPasswordEncoder passwordEncoder,
                            AuthenticationManager authenticationManager,
-                           UserUtil userUtil) {
+                           UserHelper userHelper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.userUtil = userUtil;
+        this.userHelper = userHelper;
     }
 
     @Override
     public UserResponseDTO getUser() {
-        return modelMapper.map(userUtil.getUser(), UserResponseDTO.class);
+        return modelMapper.map(userHelper.getUser(), UserResponseDTO.class);
     }
 
     @Override

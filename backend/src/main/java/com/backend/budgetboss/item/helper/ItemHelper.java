@@ -1,18 +1,17 @@
-package com.backend.budgetboss.item.util;
+package com.backend.budgetboss.item.helper;
 
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
 import com.backend.budgetboss.item.exception.ItemNotFoundException;
 import com.backend.budgetboss.item.exception.ItemOwnershipException;
-import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.user.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ItemUtil {
+public class ItemHelper {
     private final ItemRepository itemRepository;
 
-    public ItemUtil(ItemRepository itemRepository) {
+    public ItemHelper(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 

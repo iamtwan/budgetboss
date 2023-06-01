@@ -1,11 +1,9 @@
 package com.backend.budgetboss.manualinstitution;
 
 import com.backend.budgetboss.manualinstitution.dto.ManualInstitutionResponseDTO;
-import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionNotFoundException;
-import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionOwnershipException;
-import com.backend.budgetboss.manualinstitution.util.ManualInstitutionUtil;
+import com.backend.budgetboss.manualinstitution.helper.ManualInstitutionHelper;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.util.UserUtil;
+import com.backend.budgetboss.user.helper.UserHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +12,23 @@ import java.util.List;
 @Service
 public class ManualInstitutionServiceImpl implements ManualInstitutionService {
     private final ManualInstitutionRepository manualInstitutionRepository;
-    private final ManualInstitutionUtil manualInstitutionUtil;
-    private final UserUtil userUtil;
+    private final ManualInstitutionHelper manualInstitutionHelper;
+    private final UserHelper userHelper;
     private final ModelMapper modelMapper;
 
     public ManualInstitutionServiceImpl(ManualInstitutionRepository manualInstitutionRepository,
-                                        ManualInstitutionUtil manualInstitutionUtil,
-                                        UserUtil userUtil,
+                                        ManualInstitutionHelper manualInstitutionHelper,
+                                        UserHelper userHelper,
                                         ModelMapper modelMapper) {
         this.manualInstitutionRepository = manualInstitutionRepository;
-        this.manualInstitutionUtil = manualInstitutionUtil;
-        this.userUtil = userUtil;
+        this.manualInstitutionHelper = manualInstitutionHelper;
+        this.userHelper = userHelper;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<ManualInstitutionResponseDTO> getManualInstitutions() {
-        return manualInstitutionRepository.findByUser(userUtil.getUser())
+        return manualInstitutionRepository.findByUser(userHelper.getUser())
                 .stream()
                 .map(manualInstitution -> modelMapper.map(manualInstitution, ManualInstitutionResponseDTO.class))
                 .toList();
@@ -38,10 +36,10 @@ public class ManualInstitutionServiceImpl implements ManualInstitutionService {
 
     @Override
     public void deleteManualInstitution(Long id) {
-        User user = userUtil.getUser();
-        ManualInstitution manualInstitution = manualInstitutionUtil.getManualInstitution(id);
+        User user = userHelper.getUser();
+        ManualInstitution manualInstitution = manualInstitutionHelper.getManualInstitution(id);
 
-        manualInstitutionUtil.assertManualInstitutionOwnership(user, manualInstitution);
+        manualInstitutionHelper.assertManualInstitutionOwnership(user, manualInstitution);
         manualInstitutionRepository.delete(manualInstitution);
     }
 }

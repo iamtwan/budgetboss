@@ -2,8 +2,7 @@ package com.backend.budgetboss.account;
 
 import com.backend.budgetboss.account.exception.AccountRequestException;
 import com.backend.budgetboss.item.Item;
-import com.backend.budgetboss.item.util.ItemUtil;
-import com.backend.budgetboss.user.util.UserUtil;
+import com.backend.budgetboss.item.helper.ItemHelper;
 import com.plaid.client.model.AccountsGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
 import com.plaid.client.request.PlaidApi;
@@ -17,21 +16,21 @@ import java.util.List;
 @Service
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
-    private final ItemUtil itemUtil;
+    private final ItemHelper itemHelper;
     private final PlaidApi plaidApi;
 
     public AccountServiceImpl(AccountRepository accountRepository,
-                              ItemUtil itemUtil,
+                              ItemHelper itemHelper,
                               PlaidApi plaidApi) {
         this.accountRepository = accountRepository;
-        this.itemUtil = itemUtil;
+        this.itemHelper = itemHelper;
         this.plaidApi = plaidApi;
     }
 
     @Override
     @Transactional
     public void createAccounts(Long id) throws IOException {
-        Item item = itemUtil.getItem(id);
+        Item item = itemHelper.getItem(id);
 
         AccountsGetRequest request = new AccountsGetRequest()
                 .accessToken(item.getAccessToken());

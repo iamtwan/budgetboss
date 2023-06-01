@@ -1,11 +1,12 @@
 package com.backend.budgetboss.manualtransaction;
 
 import com.backend.budgetboss.manualaccount.ManualAccount;
-import com.backend.budgetboss.manualaccount.util.ManualAccountUtil;
+import com.backend.budgetboss.manualaccount.helper.ManualAccountHelper;
 import com.backend.budgetboss.manualtransaction.dto.CreateManualTransactionDTO;
 import com.backend.budgetboss.manualtransaction.dto.ManualTransactionResponseDTO;
+import com.backend.budgetboss.manualtransaction.helper.ManualTransactionHelper;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.util.UserUtil;
+import com.backend.budgetboss.user.helper.UserHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +15,20 @@ import java.util.List;
 @Service
 public class ManualTransactionServiceImpl implements ManualTransactionService {
     private final ManualTransactionRepository manualTransactionRepository;
-    private final UserUtil userUtil;
-    private final ManualAccountUtil accountUtil;
+    private final ManualTransactionHelper manualTransactionHelper;
+    private final UserHelper userHelper;
+    private final ManualAccountHelper accountHelper;
     private final ModelMapper modelMapper;
 
     public ManualTransactionServiceImpl(ManualTransactionRepository manualTransactionRepository,
-                                        UserUtil userUtil,
-                                        ManualAccountUtil accountUtil,
+                                        ManualTransactionHelper manualTransactionHelper,
+                                        UserHelper userHelper,
+                                        ManualAccountHelper accountHelper,
                                         ModelMapper modelMapper) {
         this.manualTransactionRepository = manualTransactionRepository;
-        this.userUtil = userUtil;
-        this.accountUtil = accountUtil;
+        this.manualTransactionHelper = manualTransactionHelper;
+        this.userHelper = userHelper;
+        this.accountHelper = accountHelper;
         this.modelMapper = modelMapper;
     }
 
@@ -38,14 +42,34 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
     @Override
     public ManualTransactionResponseDTO createManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO) {
-        User user = userUtil.getUser();
-        ManualAccount account = accountUtil.getAccount(id);
+        User user = userHelper.getUser();
+        ManualAccount account = accountHelper.getAccount(id);
 
-        accountUtil.assertAccountOwnership(user, account);
+        accountHelper.assertAccountOwnership(user, account);
 
         ManualTransaction manualTransaction = modelMapper.map(manualTransactionDTO, ManualTransaction.class);
         manualTransaction.setManualAccount(account);
 
         return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);
+    }
+
+    @Override
+    public ManualTransactionResponseDTO updateManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO) {
+        User user = userHelper.getUser();
+        ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(id);
+
+        manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
+        modelMapper.map(manualTransactionDTO, manualTransaction);
+
+        return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);
+    }
+
+    @Override
+    public void deleteManualTransaction(Long transactionId) {
+        User user = userHelper.getUser();
+        ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(transactionId);
+
+        manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
+        manualTransactionRepository.delete(manualTransaction);
     }
 }

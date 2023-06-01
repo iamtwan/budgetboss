@@ -32,12 +32,30 @@ public class ManualTransactionController {
         return ResponseEntity.ok(manualTransactions);
     }
 
-    @PostMapping("/{id}")
-    @Operation(summary = "Create a manual transaction for the given account", description = "Create a manual transaction for the given account")
-    public ResponseEntity<ManualTransactionResponseDTO> createManualTransaction(@PathVariable Long id, @Valid @RequestBody CreateManualTransactionDTO manualTransactionDTO) {
-        logger.info("/api/manual-transactions/{} POST request received: {}", id, manualTransactionDTO);
-        ManualTransactionResponseDTO manualTransaction = manualTransactionService.createManualTransaction(id, manualTransactionDTO);
-        logger.info("/api/manual-transactions/{} created manual transaction: {}", manualTransaction, id);
+    @PostMapping("/{accountId}")
+    @Operation(summary = "Create a manual transaction", description = "Create a manual transaction for the given account")
+    public ResponseEntity<ManualTransactionResponseDTO> createManualTransaction(@PathVariable Long accountId, @Valid @RequestBody CreateManualTransactionDTO manualTransactionDTO) {
+        logger.info("/api/manual-transactions/{} POST request received: {}", accountId, manualTransactionDTO);
+        ManualTransactionResponseDTO manualTransaction = manualTransactionService.createManualTransaction(accountId, manualTransactionDTO);
+        logger.info("/api/manual-transactions/{} created manual transaction: {}", manualTransaction, accountId);
         return ResponseEntity.ok(manualTransaction);
+    }
+
+    @PutMapping("/{transactionId}")
+    @Operation(summary = "Update a manual transaction", description = "Update a manual transaction with the given id")
+    public ResponseEntity<ManualTransactionResponseDTO> updateManualTransaction(@PathVariable Long transactionId, @Valid @RequestBody CreateManualTransactionDTO manualTransactionDTO) {
+        logger.info("/api/manual-transactions/{} PUT request received: {}", transactionId, manualTransactionDTO);
+        ManualTransactionResponseDTO manualTransaction = manualTransactionService.updateManualTransaction(transactionId, manualTransactionDTO);
+        logger.info("/api/manual-transactions/{} updated manual transaction: {}", manualTransaction, transactionId);
+        return ResponseEntity.ok(manualTransaction);
+    }
+
+    @DeleteMapping("/{transactionId}")
+    @Operation(summary = "Delete a manual transaction", description = "Delete a manual transaction with the given id")
+    public ResponseEntity<Void> deleteManualTransaction(@PathVariable Long transactionId) {
+        logger.info("/api/manual-transactions/{} DELETE request received", transactionId);
+        manualTransactionService.deleteManualTransaction(transactionId);
+        logger.info("/api/manual-transactions/{} deleted manual transaction", transactionId);
+        return ResponseEntity.noContent().build();
     }
 }
