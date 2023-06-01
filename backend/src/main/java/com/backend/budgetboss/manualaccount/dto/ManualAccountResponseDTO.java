@@ -1,12 +1,14 @@
 package com.backend.budgetboss.manualaccount.dto;
 
 import com.backend.budgetboss.manualaccount.ManualAccount;
+import com.backend.budgetboss.manualaccount.ManualAccountType;
 
 public class ManualAccountResponseDTO {
     private Long id;
     private String institutionName;
     private String name;
     private Double balance;
+    private ManualAccountType type;
 
     public Long getId() {
         return id;
@@ -40,6 +42,14 @@ public class ManualAccountResponseDTO {
         this.balance = balance;
     }
 
+    public ManualAccountType getType() {
+        return type;
+    }
+
+    public void setType(ManualAccountType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "ManualAccountResponse{" +
@@ -47,6 +57,7 @@ public class ManualAccountResponseDTO {
                 ", institutionName='" + institutionName + '\'' +
                 ", name='" + name + '\'' +
                 ", balance=" + balance +
+                ", type=" + type +
                 '}';
     }
 }

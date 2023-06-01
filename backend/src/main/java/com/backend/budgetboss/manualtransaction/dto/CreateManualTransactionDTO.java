@@ -12,10 +12,10 @@ public class CreateManualTransactionDTO {
     private String name;
 
     @NotNull(message = "Date is required")
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
 
     @NotNull(message = "Amount is required")
-    private Double amount = 0.0;
+    private Double amount;
 
     private List<String> category = new ArrayList<>();
 

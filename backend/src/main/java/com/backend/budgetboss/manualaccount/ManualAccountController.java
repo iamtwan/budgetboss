@@ -31,4 +31,22 @@ public class ManualAccountController {
         logger.info("/api/manual-accounts created manual account: {}", manualAccount);
         return ResponseEntity.ok(manualAccount);
     }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update manual account", description = "Update a manual account with the given name, institution name, and balance")
+    public ResponseEntity<ManualAccountResponseDTO> updateManualAccount(@PathVariable Long id, @Valid @RequestBody CreateManualAccountDTO manualAccountDTO) {
+        logger.info("/api/manual-accounts/{} PUT request received", id);
+        ManualAccountResponseDTO manualAccount = manualAccountService.updateManualAccount(id, manualAccountDTO);
+        logger.info("/api/manual-accounts/{} updated manual account: {}", id, manualAccount);
+        return ResponseEntity.ok(manualAccount);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete manual account", description = "Delete a manual account with the given id")
+    public ResponseEntity<Void> deleteManualAccount(@PathVariable Long id) {
+        logger.info("/api/manual-accounts/{} DELETE request received", id);
+        manualAccountService.deleteManualAccount(id);
+        logger.info("/api/manual-accounts/{} deleted manual account", id);
+        return ResponseEntity.noContent().build();
+    }
 }

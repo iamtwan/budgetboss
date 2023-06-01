@@ -1,5 +1,6 @@
 package com.backend.budgetboss.manualaccount.dto;
 
+import com.backend.budgetboss.manualaccount.ManualAccountType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,7 +12,10 @@ public class CreateManualAccountDTO {
     private String name;
 
     @NotNull(message = "Balance is required")
-    private Double balance = 0.0;
+    private Double balance;
+
+    @NotNull(message = "Account type is required")
+    private ManualAccountType type;
 
     public String getInstitutionName() {
         return institutionName;
@@ -37,12 +41,21 @@ public class CreateManualAccountDTO {
         this.balance = balance;
     }
 
+    public ManualAccountType getType() {
+        return type;
+    }
+
+    public void setType(ManualAccountType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "CreateManualAccountDTO{" +
                 "institutionName='" + institutionName + '\'' +
                 ", name='" + name + '\'' +
                 ", balance=" + balance +
+                ", type=" + type +
                 '}';
     }
 }

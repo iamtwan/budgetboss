@@ -2,7 +2,6 @@ package com.backend.budgetboss.manualaccount;
 
 import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import com.backend.budgetboss.manualtransaction.ManualTransaction;
-import com.backend.budgetboss.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +21,10 @@ public class ManualAccount {
     private String name;
 
     @NotNull(message = "Balance is required")
-    private Double balance = 0.0;
+    private Double balance;
+
+    @NotNull(message = "Account type is required")
+    private ManualAccountType type;
 
     @OneToMany(mappedBy = "manualAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ManualTransaction> manualTransactions = new ArrayList<>();
@@ -71,6 +73,14 @@ public class ManualAccount {
         this.manualInstitution = manualInstitution;
     }
 
+    public ManualAccountType getType() {
+        return type;
+    }
+
+    public void setType(ManualAccountType type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,6 +100,7 @@ public class ManualAccount {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", balance=" + balance +
+                ", type=" + type +
                 ", manualTransactions=" + manualTransactions.size() +
                 ", manualInstitution=" + manualInstitution.getName() +
                 '}';
