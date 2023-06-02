@@ -12,6 +12,8 @@ const LoginForm = ({ onToggleForm }) => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        console.log(e.target.email);
+        console.log(e.target.password);
 
         const formData = {
             email: e.target.email.value,
