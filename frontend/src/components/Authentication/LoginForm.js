@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-
 const LoginForm = ({ onToggleForm }) => {
     const router = useRouter();
 

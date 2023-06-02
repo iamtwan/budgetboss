@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import LoginSignUpPage from '../components/LoginSignUpPage';
-import DashboardPage from './dashboard';
+import LoginSignUpPage from '../components/Authentication/LoginSignUpPage';
 
 
-const HomePage = () => {
-  return (
-    <div>
-      <h1 className="text-uppercase">Budget Boss</h1>
-      <LoginSignUpPage />
-    </div>
-  );
+
+const LandingPage = () => {
+    return (
+        <div>
+            <h1 className="text-uppercase">Budget Boss</h1>
+            <LoginSignUpPage />
+        </div>
+    );
 };
 
-export default HomePage;
+export default LandingPage;

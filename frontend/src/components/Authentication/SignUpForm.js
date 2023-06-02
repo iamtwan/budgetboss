@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-
 const SignUpForm = ({ onToggleForm }) => {
     const router = useRouter();
 
@@ -49,14 +48,14 @@ const SignUpForm = ({ onToggleForm }) => {
                 <form className="d-flex flex-column" onSubmit={handleSignUp}>
                     <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Email Address</label>
-                        <input required type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                        <input value="test@gmail.com" required type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
                         <div id="emailHelp" className="form-text">We'll never share your email with anyone else!</div>
                     </div>
                     <div className="col-auto">
                         <label htmlFor="inputPassword6" className="col-form-label">Password</label>
                         <div className="row g-3 align-items-center mb-1">
                             <div className="col-auto">
-                                <input required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$" title="Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number." minLength="8" maxLength="20" type="password" name="password" id="inputPassword6" className="form-control" aria-labelledby="passwordHelpInline" placeholder="Password" />
+                                <input value="Test123!!" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$" title="Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number." minLength="8" maxLength="20" type="password" name="password" id="inputPassword6" className="form-control" aria-labelledby="passwordHelpInline" placeholder="Password" />
                             </div>
                             <div className="col-auto">
                                 <span id="passwordHelpInline" className="form-text">
@@ -66,7 +65,7 @@ const SignUpForm = ({ onToggleForm }) => {
                         </div>
                         <div className="row g-3 align-items-center">
                             <div className="col-auto">
-                                <input required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$" title="Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number." minLength="8" maxLength="20" type="password" name="passwordConfirmation" id="inputPassword6" className="form-control" aria-labelledby="passwordHelpInline" placeholder="Password Confirmation" />
+                                <input value="Test123!!" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$" title="Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number." minLength="8" maxLength="20" type="password" name="passwordConfirmation" id="inputPassword6" className="form-control" aria-labelledby="passwordHelpInline" placeholder="Password Confirmation" />
                             </div>
                             <div className="col-auto">
                                 <span id="passwordHelpInline" className="form-text">
