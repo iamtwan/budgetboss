@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { usePlaidLink } from 'react-plaid-link';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import withAuth from '../Authentication/ProtectedRoute';
@@ -7,44 +6,11 @@ import InvestmentAccountsPage from '../Accounts/InvestmentAccountsPage';
 import CashAccountsPage from '../Accounts/CashAccountsPage';
 import CreditAccountsPage from '../Accounts/CreditAccountsPage';
 import AddAccountForm from '../Accounts/AddAccountForm';
-
-
-
-const Link = ({ linkToken }) => {
-    const onSuccess = async (public_token, metadata) => {
-        try {
-            const response = await axios.post("http://localhost:8080/api/tokens", {
-                publicToken: public_token,
-                id: metadata.institution.institution_id,
-                name: metadata.institution.name
-            }, { withCredentials: true });
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const config = {
-        token: linkToken,
-        onSuccess,
-    };
-
-    const { open, ready } = usePlaidLink(config);
-
-    return (
-        <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={() => open()}
-            disabled={!ready}
-        >
-            Link Account
-        </button>
-    );
-};
+import LinkAccount from '../Accounts/LinkAccount';
 
 const filterLinkedAccounts = (accounts, type) => accounts.map(({ accounts: instAccounts, ...institution }) => ({
-    ...institution,
-    accounts: instAccounts.filter(account => account.type === type),
+        ...institution,
+        accounts: instAccounts.filter(account => account.type === type),
 }));
 
 const filterManualAccounts = (accounts, type) => accounts.map(({ manualAccounts: instAccounts, ...institution }) => ({
@@ -72,23 +38,22 @@ const DashboardPage = () => {
                 withCredentials: true,
             });
 
-            // console.log(response)
             setLinkToken(response.data.linkToken);
-
-            const accountsResponse = await axios.get("http://localhost:8080/api/items", {
-                withCredentials: true,
-            });
-
-            // console.log(accountsResponse);
-            // console.log(accountsResponse.data);
-            setDepositories(filterLinkedAccounts(accountsResponse.data, "DEPOSITORY"));
-            setCreditAccounts(filterLinkedAccounts(accountsResponse.data, "CREDIT"));
-            setInvestmentAccounts(filterLinkedAccounts(accountsResponse.data, "INVESTMENT"));
-            setLinkedInstitutions(accountsResponse.data);
         } catch (err) {
             console.log(err);
         }
     };
+
+    const fetchItems = async () => {
+        const response = await axios.get("http://localhost:8080/api/items", {
+            withCredentials: true,
+        });
+
+        setDepositories(filterLinkedAccounts(response.data, "DEPOSITORY"));
+        setCreditAccounts(filterLinkedAccounts(response.data, "CREDIT"));
+        setInvestmentAccounts(filterLinkedAccounts(response.data, "INVESTMENT"));
+        setLinkedInstitutions(response.data);
+    }
 
     const fetchManualAccounts = async () => {
         try {
@@ -109,7 +74,11 @@ const DashboardPage = () => {
 
     useEffect(() => {
         generateToken();
-        fetchManualAccounts();
+            fetchManualAccounts();
+    }, []);
+
+    useEffect(() => {
+        fetchItems();
     }, []);
 
     const handleToggleAddAccountForm = () => {
@@ -138,7 +107,7 @@ const DashboardPage = () => {
                     <div className="container border m-2 d-flex flex-column">
                         <div className="d-inline-flex align-items-center">
                             <h3 className="me-2">Accounts</h3>
-                            {linkToken && <Link linkToken={linkToken} />}
+                            {linkToken && <LinkAccount linkToken={linkToken} generateToken={generateToken} fetchItems={fetchItems} />}
                             <button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm()}>
                                 Add Account
                             </button>

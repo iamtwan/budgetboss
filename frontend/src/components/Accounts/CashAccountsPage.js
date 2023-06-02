@@ -5,7 +5,7 @@ import axios from 'axios';
 const CashAccountsPage = ({ depositories, manualCash }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
-    const handleAccountClick = async (account, type) => {
+    const handleAccountTransactionsClick = async (account, type) => {
         console.log(type);
         try {
             let url = "";
@@ -73,7 +73,7 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
                                             href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                handleAccountClick(account, "linked");
+                                                handleAccountTransactionsClick(account, "linked");
                                             }}
                                         >
                                             Transactions
@@ -109,7 +109,7 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
                                             href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                handleAccountClick(manualAccount, "manual");
+                                                handleAccountTransactionsClick(manualAccount, "manual");
                                             }}
                                         >
                                             Transactions

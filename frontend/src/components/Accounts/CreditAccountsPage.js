@@ -4,20 +4,25 @@ import axios from 'axios';
 
 const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
-    const [transactions, setTransactions] = useState([]);
 
-    const handleAccountClick = async (account) => {
+    const handleAccountTransactionsClick = async (account, type) => {
+        console.log(type);
         try {
-            console.log("Account ID:", account.id);
-            const response = await axios.get(`http://localhost:8080/api/transactions/${account.id}`, {
+            let url = "";
+            if (type === "linked") {
+                url = `http://localhost:8080/api/transactions/${account.id}`;
+            } else if (type === "manual") {
+                url = `http://localhost:8080/api/manual-transactions/${account.id}`;
+            } else {
+                throw new Error("Unknown account type");
+            }
+            const response = await axios.get(url, {
                 withCredentials: true,
             });
 
             console.log(response);
 
-            const fetchedTransactions = response.data;
-            setTransactions(fetchedTransactions);
-            setSelectedAccount(account);
+            setSelectedAccount({ ...account, type: type });
         } catch (err) {
             console.log(err);
         }
@@ -44,14 +49,24 @@ const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
                                     <div className="d-flex justify-content-between w-100">
                                         <p className="fw-bolder m-0 p-0">{account.name}</p>
                                         <p className={`m-0 p-0 ${account.balances.current < 0 ? 'text-success' : 'text-danger'} fw-bold`}>
-                                            {account.balances.current < 0 ? `-$${formatCurrency(Math.abs(account.balances.current))}` : `$${formatCurrency(account.balances.current)}`}
+                                            {account.balances && account.balances.current !== undefined
+                                                ? account.balances.current < 0
+                                                    ? '-'
+                                                    : ''
+                                                : ''}
+                                            $
+                                            {formatCurrency(
+                                                Math.abs(
+                                                    account.balances ? account.balances.current : 0
+                                                )
+                                            )}
                                         </p>
                                     </div>
                                     <p className="ms-3">
                                         <a
                                             className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
                                             href="#"
-                                            onClick={() => handleAccountClick(account)}
+                                            onClick={() => handleAccountTransactionsClick(account, "linked")}
                                         >
                                             Transactions
                                         </a>
@@ -84,7 +99,7 @@ const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
                                         <a
                                             className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
                                             href="#"
-                                            onClick={() => handleAccountClick(manualAccount)}
+                                            onClick={() => handleAccountTransactionsClick(manualAccount, "manual")}
                                         >
                                             Transactions
                                         </a>
@@ -97,7 +112,10 @@ const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
             ))}
 
             {selectedAccount && (
-                <TransactionModal account={selectedAccount} transactions={transactions} onClose={handleCloseModal} />
+                <TransactionModal
+                    account={selectedAccount}
+                    onClose={handleCloseModal}
+                />
             )}
         </div>
     );

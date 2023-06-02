@@ -24,6 +24,7 @@ const TransactionView = ({ account }) => {
                 const response = await axios.get(url, {
                     withCredentials: true,
                 });
+                console.log(response.data)
                 setTransactions(response.data);
                 setIsLoading(false);
             } catch (error) {
