@@ -4,20 +4,25 @@ import axios from 'axios';
 
 const CashAccountsPage = ({ depositories, manualCash }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
-    const [transactions, setTransactions] = useState([]);
 
-    const handleAccountClick = async (account) => {
+    const handleAccountClick = async (account, type) => {
+        console.log(type);
         try {
-            console.log("Account ID:", account.id);
-            const response = await axios.get(`http://localhost:8080/api/transactions/${account.id}`, {
+            let url = "";
+            if (type === "linked") {
+                url = `http://localhost:8080/api/transactions/${account.id}`;
+            } else if (type === "manual") {
+                url = `http://localhost:8080/api/manual-transactions/${account.id}`;
+            } else {
+                throw new Error("Unknown account type");
+            }
+            const response = await axios.get(url, {
                 withCredentials: true,
             });
 
             console.log(response);
 
-            const fetchedTransactions = response.data;
-            setTransactions(fetchedTransactions);
-            setSelectedAccount(account);
+            setSelectedAccount({ ...account, type: type });
         } catch (err) {
             console.log(err);
         }
@@ -66,7 +71,10 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
                                         <a
                                             className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
                                             href="#"
-                                            onClick={() => handleAccountClick(account)}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleAccountClick(account, "linked");
+                                            }}
                                         >
                                             Transactions
                                         </a>
@@ -99,7 +107,10 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
                                         <a
                                             className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
                                             href="#"
-                                            onClick={() => handleAccountClick(manualAccount)}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleAccountClick(manualAccount, "manual");
+                                            }}
                                         >
                                             Transactions
                                         </a>
@@ -114,7 +125,6 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
             {selectedAccount && (
                 <TransactionModal
                     account={selectedAccount}
-                    transactions={transactions}
                     onClose={handleCloseModal}
                 />
             )}
