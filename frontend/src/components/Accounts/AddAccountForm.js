@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
+const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose, onSubmit }) => {
     const [selectedInstitution, setSelectedInstitution] = useState('');
     const [newInstitution, setNewInstitution] = useState('');
     const [accountName, setAccountName] = useState('');
@@ -28,7 +28,7 @@ const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const institutionExists = institutions.some(
+        const institutionExists = linkedInstitutions.some(
             (institution) => institution.name.toLowerCase() === newInstitution.toLowerCase()
         );
 
@@ -38,7 +38,7 @@ const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
         }
         const formData = {
             institutionName: selectedInstitution === 'create' ? newInstitution : selectedInstitution,
-            accountType: selectedAccountType,
+            type: selectedAccountType.toUpperCase(),
             name: accountName,
             balance: parseFloat(balance),
         };
@@ -58,9 +58,14 @@ const AddAccountForm = ({ show, institutions, onClose, onSubmit }) => {
                         <Form.Label>Institution</Form.Label>
                         <Form.Select value={selectedInstitution} onChange={handleInstitutionChange} required>
                             <option value="">Select an institution</option>
-                            {institutions.map((institution) => (
+                            {linkedInstitutions.map((institution) => (
                                 <option key={institution.id} value={institution.name}>
                                     {institution.name}
+                                </option>
+                            ))}
+                            {manualInstitutions.map((manualInstitution) => (
+                                <option key={manualInstitution.id} value={manualInstitution.name}>
+                                    {manualInstitution.name}
                                 </option>
                             ))}
                             <option value="create">Create new institution</option>

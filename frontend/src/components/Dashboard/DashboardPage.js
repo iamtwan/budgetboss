@@ -42,7 +42,12 @@ const Link = ({ linkToken }) => {
     );
 };
 
-const filterAccounts = (accounts, type) => accounts.map(({ accounts: instAccounts, ...institution }) => ({
+const filterLinkedAccounts = (accounts, type) => accounts.map(({ accounts: instAccounts, ...institution }) => ({
+    ...institution,
+    accounts: instAccounts.filter(account => account.type === type),
+}));
+
+const filterManualAccounts = (accounts, type) => accounts.map(({ manualAccounts: instAccounts, ...institution }) => ({
     ...institution,
     accounts: instAccounts.filter(account => account.type === type),
 }));
@@ -52,8 +57,13 @@ const DashboardPage = () => {
     const [depositories, setDepositories] = useState([]);
     const [creditAccounts, setCreditAccounts] = useState([]);
     const [investmentAccounts, setInvestmentAccounts] = useState([]);
-    const [institutions, setInstitutions] = useState([]);
+    const [linkedInstitutions, setLinkedInstitutions] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [manualAccounts, setManualAccounts] = useState([]);
+    const [manualInstitutions, setManualInstitutions] = useState([]);
+    const [manualCash, setManualCash] = useState([]);
+    const [manualCredit, setManualCredit] = useState([]);
+    const [manualInvestment, setManualInvestment] = useState([]);
 
 
     const generateToken = async () => {
@@ -71,10 +81,27 @@ const DashboardPage = () => {
 
             // console.log(accountsResponse);
             // console.log(accountsResponse.data);
-            setDepositories(filterAccounts(accountsResponse.data, "DEPOSITORY"));
-            setCreditAccounts(filterAccounts(accountsResponse.data, "CREDIT"));
-            setInvestmentAccounts(filterAccounts(accountsResponse.data, "INVESTMENT"));
-            setInstitutions(accountsResponse.data);
+            setDepositories(filterLinkedAccounts(accountsResponse.data, "DEPOSITORY"));
+            setCreditAccounts(filterLinkedAccounts(accountsResponse.data, "CREDIT"));
+            setInvestmentAccounts(filterLinkedAccounts(accountsResponse.data, "INVESTMENT"));
+            setLinkedInstitutions(accountsResponse.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const fetchManualAccounts = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/api/manual-institutions", {
+                withCredentials: true,
+            });
+
+            // refactor manualAccounts & manualInstitutions
+            setManualAccounts(response.data);
+            setManualInstitutions(response.data);
+            setManualCash(filterManualAccounts(response.data, "CASH"));
+            setManualCredit(filterManualAccounts(response.data, "CREDIT"))
+            setManualInvestment(filterManualAccounts(response.data, "INVESTMENT"))
         } catch (err) {
             console.log(err);
         }
@@ -82,6 +109,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         generateToken();
+        fetchManualAccounts();
     }, []);
 
     const handleToggleAddAccountForm = () => {
@@ -96,6 +124,7 @@ const DashboardPage = () => {
             });
             console.log(response.data);
             generateToken();
+            fetchManualAccounts();
         } catch (err) {
             console.log(err);
         }
@@ -115,9 +144,9 @@ const DashboardPage = () => {
                             </button>
                         </div>
                         <div className="row h-100">
-                            <CashAccountsPage depositories={depositories} />
-                            <CreditAccountsPage creditAccounts={creditAccounts} />
-                            <InvestmentAccountsPage investmentAccounts={investmentAccounts} />
+                            <CashAccountsPage depositories={depositories} manualCash={manualCash} />
+                            <CreditAccountsPage creditAccounts={creditAccounts} manualCredit={manualCredit} />
+                            <InvestmentAccountsPage investmentAccounts={investmentAccounts} manualInvestment={manualInvestment} />
                         </div>
                     </div>
                 </div>
@@ -134,7 +163,8 @@ const DashboardPage = () => {
                 show={showModal}
                 onClose={handleToggleAddAccountForm}
                 onSubmit={handleAddAccountFormSubmit}
-                institutions={institutions}
+                linkedInstitutions={linkedInstitutions}
+                manualInstitutions={manualInstitutions}
             />
         </div>
     );
