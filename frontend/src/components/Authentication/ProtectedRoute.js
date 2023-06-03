@@ -11,12 +11,12 @@ const withAuth = (WrappedComponent) => {
         useEffect(() => {
             const checkAuthentication = async () => {
                 try {
-                    const response = await axios.get("http://localhost:8080/api/users", {
+                    await axios.get("http://localhost:8080/api/users", {
                         withCredentials: true
                     });
                     setIsAuthenticated(true);
                 } catch (error) {
-                    console.log(error);
+                    console.error('Authentication error:', error);
                 } finally {
                     setIsLoading(false);
                 }
@@ -34,8 +34,11 @@ const withAuth = (WrappedComponent) => {
         }
 
         if (!isAuthenticated) {
-            router.push('/');
-            return null;
+            setTimeout(() => {
+                router.push('/');
+            }, 1000);
+
+            return <p>Unauthorized. Please log in to access this page.</p>;
         }
 
         return <WrappedComponent />;
