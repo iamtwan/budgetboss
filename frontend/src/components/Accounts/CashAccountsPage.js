@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import TransactionModal from './Transactions/TransactionModal';
-import axios from 'axios';
 
 const CashAccountsPage = ({ depositories, manualCash, setManualCash }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);

@@ -1,28 +1,12 @@
 import React, { useState } from 'react';
 import TransactionModal from './Transactions/TransactionModal';
-import axios from 'axios';
 
-const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
+const CreditAccountsPage = ({ creditAccounts, manualCredit, setManualCredit }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
-    const handleAccountTransactionsClick = async (account, type) => {
-        console.log(type);
+    const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
-            let url = "";
-            if (type === "linked") {
-                url = `http://localhost:8080/api/transactions/${account.id}`;
-            } else if (type === "manual") {
-                url = `http://localhost:8080/api/manual-transactions/${account.id}`;
-            } else {
-                throw new Error("Unknown account type");
-            }
-            const response = await axios.get(url, {
-                withCredentials: true,
-            });
-
-            console.log(response);
-
-            setSelectedAccount({ ...account, type: type });
+            setSelectedAccount({ institutionId, ...account, type });
         } catch (err) {
             console.log(err);
         }
@@ -66,7 +50,7 @@ const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
                                         <a
                                             className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
                                             href="#"
-                                            onClick={() => handleAccountTransactionsClick(account, "linked")}
+                                            onClick={() => handleAccountTransactionsClick(institution.id, account, "linked")}
                                         >
                                             Transactions
                                         </a>
@@ -99,7 +83,7 @@ const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
                                         <a
                                             className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
                                             href="#"
-                                            onClick={() => handleAccountTransactionsClick(manualAccount, "manual")}
+                                            onClick={() => handleAccountTransactionsClick(manualInstitution.id, manualAccount, "manual")}
                                         >
                                             Transactions
                                         </a>
@@ -115,6 +99,8 @@ const CreditAccountsPage = ({ creditAccounts, manualCredit }) => {
                 <TransactionModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
+                    manualCredit={manualCredit}
+                    setManualCredit={setManualCredit}
                 />
             )}
         </div>

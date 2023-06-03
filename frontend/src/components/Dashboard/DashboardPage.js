@@ -20,11 +20,13 @@ const filterManualAccounts = (accounts, type) => accounts.map(({ manualAccounts:
 
 const DashboardPage = () => {
     const [linkToken, setLinkToken] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+
     const [depositories, setDepositories] = useState([]);
     const [creditAccounts, setCreditAccounts] = useState([]);
     const [investmentAccounts, setInvestmentAccounts] = useState([]);
     const [linkedInstitutions, setLinkedInstitutions] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+
     const [manualInstitutions, setManualInstitutions] = useState([]);
     const [manualAccounts, setManualAccounts] = useState([]);
     const [manualCash, setManualCash] = useState([]);
@@ -73,7 +75,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         generateToken();
-            fetchManualAccounts();
+        fetchManualAccounts();
     }, []);
 
     useEffect(() => {
@@ -114,7 +116,7 @@ const DashboardPage = () => {
                         </div>
                         <div className="row h-100">
                             <CashAccountsPage depositories={depositories} manualCash={manualCash} setManualCash={setManualCash}/>
-                            <CreditAccountsPage creditAccounts={creditAccounts} manualCredit={manualCredit} />
+                            <CreditAccountsPage creditAccounts={creditAccounts} manualCredit={manualCredit} setManualCredit={setManualCredit} />
                             <InvestmentAccountsPage investmentAccounts={investmentAccounts} manualInvestment={manualInvestment} />
                         </div>
                     </div>
@@ -138,6 +140,5 @@ const DashboardPage = () => {
         </div>
     );
 };
-
 
 export default withAuth(DashboardPage);

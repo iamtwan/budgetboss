@@ -4,7 +4,7 @@ import TransactionView from './TransactionView';
 import AddTransactionForm from './AddTransactionForm';
 import axios from 'axios';
 
-const TransactionModal = ({ account, onClose, manualCash, setManualCash }) => {
+const TransactionModal = ({ account, onClose, manualCash, setManualCash, manualCredit, setManualCredit }) => {
     const [showModal, setShowModal] = useState(true);
     const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
     const [transactions, setTransactions] = useState([]);
@@ -62,21 +62,39 @@ const TransactionModal = ({ account, onClose, manualCash, setManualCash }) => {
                 withCredentials: true,
             });
 
-            const newManualCash = manualCash.map(institution => {
-                if (institution.id === account.institutionId) {
-                    return {
-                        ...institution,
-                        accounts: institution.accounts.map(acc => {
-                        if (acc.id === account.id) {
-                            return {...account, balance: account.balance - response.data.amount};
-                        }
-                        return acc;
-                    })};
-                }
-                return institution;
-              });
-
-            setManualCash(newManualCash);
+            if (manualCash) {
+                const newManualCash = manualCash.map(institution => {
+                    if (institution.id === account.institutionId) {
+                        return {
+                            ...institution,
+                            accounts: institution.accounts.map(acc => {
+                                if (acc.id === account.id) {
+                                    return { ...account, balance: account.balance - response.data.amount };
+                                }
+                                return acc;
+                            })
+                        };
+                    }
+                    return institution;
+                });
+                setManualCash(newManualCash);
+            } else {
+                const newManualCredit = manualCredit.map(institution => {
+                    if (institution.id === account.institutionId) {
+                        return {
+                            ...institution,
+                            accounts: institution.accounts.map(acc => {
+                                if (acc.id === account.id) {
+                                    return { ...account, balance: account.balance - response.data.amount };
+                                }
+                                return acc;
+                            })
+                        };
+                    }
+                    return institution;
+                });
+                setManualCredit(newManualCredit);
+            }
             setTransactions([...transactions, response.data]);
         } catch (error) {
             console.error('Error adding transaction:', error);
