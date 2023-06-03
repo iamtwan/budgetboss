@@ -3,10 +3,11 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 const AddTransactionForm = ({ show, account, onClose, onSubmit }) => {
     const [transactionName, setTransactionName] = useState('');
-    const [transactionDate, setTransactionDate] = useState('');
+    const [transactionDate, setTransactionDate] = useState(new Date().toISOString().substring(0, 10));
     const [amount, setAmount] = useState('');
     const [transactionCategory, setTransactionCategory] = useState('');
     const [error, setError] = useState('');
+
 
     const handleTransactionNameChange = (e) => {
         setTransactionName(e.target.value);

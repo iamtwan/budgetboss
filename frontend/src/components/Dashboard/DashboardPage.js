@@ -25,12 +25,11 @@ const DashboardPage = () => {
     const [investmentAccounts, setInvestmentAccounts] = useState([]);
     const [linkedInstitutions, setLinkedInstitutions] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [manualAccounts, setManualAccounts] = useState([]);
     const [manualInstitutions, setManualInstitutions] = useState([]);
+    const [manualAccounts, setManualAccounts] = useState([]);
     const [manualCash, setManualCash] = useState([]);
     const [manualCredit, setManualCredit] = useState([]);
     const [manualInvestment, setManualInvestment] = useState([]);
-
 
     const generateToken = async () => {
         try {
@@ -97,6 +96,7 @@ const DashboardPage = () => {
         } catch (err) {
             console.log(err);
         }
+
         setShowModal(false);
     };
 
@@ -113,7 +113,7 @@ const DashboardPage = () => {
                             </button>
                         </div>
                         <div className="row h-100">
-                            <CashAccountsPage depositories={depositories} manualCash={manualCash} />
+                            <CashAccountsPage depositories={depositories} manualCash={manualCash} setManualCash={setManualCash}/>
                             <CreditAccountsPage creditAccounts={creditAccounts} manualCredit={manualCredit} />
                             <InvestmentAccountsPage investmentAccounts={investmentAccounts} manualInvestment={manualInvestment} />
                         </div>

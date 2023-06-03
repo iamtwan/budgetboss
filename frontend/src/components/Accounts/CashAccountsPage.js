@@ -2,27 +2,12 @@ import React, { useState } from 'react';
 import TransactionModal from './Transactions/TransactionModal';
 import axios from 'axios';
 
-const CashAccountsPage = ({ depositories, manualCash }) => {
+const CashAccountsPage = ({ depositories, manualCash, setManualCash }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
-    const handleAccountTransactionsClick = async (account, type) => {
-        console.log(type);
+    const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
-            let url = "";
-            if (type === "linked") {
-                url = `http://localhost:8080/api/transactions/${account.id}`;
-            } else if (type === "manual") {
-                url = `http://localhost:8080/api/manual-transactions/${account.id}`;
-            } else {
-                throw new Error("Unknown account type");
-            }
-            const response = await axios.get(url, {
-                withCredentials: true,
-            });
-
-            console.log(response);
-
-            setSelectedAccount({ ...account, type: type });
+            setSelectedAccount({ institutionId, ...account, type });
         } catch (err) {
             console.log(err);
         }
@@ -73,7 +58,7 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
                                             href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                handleAccountTransactionsClick(account, "linked");
+                                                handleAccountTransactionsClick(institution.id, account, "linked");
                                             }}
                                         >
                                             Transactions
@@ -109,7 +94,7 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
                                             href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                handleAccountTransactionsClick(manualAccount, "manual");
+                                                handleAccountTransactionsClick(manualInstitution.id, manualAccount, "manual");
                                             }}
                                         >
                                             Transactions
@@ -126,6 +111,8 @@ const CashAccountsPage = ({ depositories, manualCash }) => {
                 <TransactionModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
+                    manualCash={manualCash}
+                    setManualCash={setManualCash}
                 />
             )}
         </div>

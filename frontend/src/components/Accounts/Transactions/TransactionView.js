@@ -1,41 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TransactionView = ({ account }) => {
-    const [transactions, setTransactions] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchTransactions = async () => {
-            setIsLoading(true);
-            try {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-
-                let url = "";
-                const type = account.type
-                if (type === "linked") {
-                    url = `http://localhost:8080/api/transactions/${account.id}`;
-                } else if (type === "manual") {
-                    url = `http://localhost:8080/api/manual-transactions/${account.id}`;
-                } else {
-                    throw new Error("Unknown account type");
-                }
-
-                const response = await axios.get(url, {
-                    withCredentials: true,
-                });
-                console.log(response.data)
-                setTransactions(response.data);
-                setIsLoading(false);
-            } catch (error) {
-                console.error(error);
-                setIsLoading(false);
-            }
-        };
-
-        fetchTransactions();
-    }, [account]);
-
+const TransactionView = ({ account, transactions, isLoading }) => {
     if (isLoading) {
         return <div>Loading...</div>;
     }
