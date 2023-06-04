@@ -1,19 +1,39 @@
 import React from 'react';
 import { usePlaidLink } from 'react-plaid-link';
-import axios from 'axios';
+import { createLinkToken } from '../../utils/apiService';
+import { fetchAccounts } from '../../utils/accountUtils';
 
-const API_BASE_URL = 'http://localhost:8080/api';
-
-export const LinkAccount = ({ linkToken, fetchAccounts }) => {
+export const LinkAccount = ({
+    linkToken,
+    setIsLoading,
+    setLinkedCashAccounts,
+    setLinkedCreditAccounts,
+    setInvestmentAccounts,
+    setLinkedInstitutions,
+    setManualData,
+    setError,
+    manualData
+}) => {
     const onSuccess = async (public_token, metadata) => {
         try {
-            await axios.post(`${API_BASE_URL}/api/tokens`, {
+            const tokenData = {
                 publicToken: public_token,
                 id: metadata.institution.institution_id,
                 name: metadata.institution.name
-            }, { withCredentials: true });
+            };
 
-            fetchAccounts();
+            await createLinkToken(tokenData);
+
+            fetchAccounts(
+                setIsLoading,
+                setLinkedCashAccounts,
+                setLinkedCreditAccounts,
+                setInvestmentAccounts,
+                setLinkedInstitutions,
+                setManualData,
+                setError,
+                manualData
+            );
         } catch (err) {
             console.log(err);
         }

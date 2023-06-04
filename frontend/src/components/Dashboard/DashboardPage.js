@@ -57,7 +57,19 @@ const DashboardPage = () => {
                     <div className="container border m-2 d-flex flex-column">
                         <div className="d-inline-flex align-items-center">
                             <h3 className="me-2">Accounts</h3>
-                            {linkToken && <LinkAccount linkToken={linkToken} generateToken={generateToken} fetchAccounts={fetchAccounts} />}
+                            {linkToken && <LinkAccount
+                                linkToken={linkToken}
+                                generateToken={generateToken}
+                                fetchAccounts={fetchAccounts}
+                                setIsLoading={setIsLoading}
+                                setLinkedCashAccounts={setLinkedCashAccounts}
+                                setLinkedCreditAccounts={setLinkedCreditAccounts}
+                                setInvestmentAccounts={setInvestmentAccounts}
+                                setLinkedInstitutions={setLinkedInstitutions}
+                                setManualData={setManualData}
+                                setError={setError}
+                                manualData={manualData}
+                            />}
                             <button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
                                 Add Account
                             </button>

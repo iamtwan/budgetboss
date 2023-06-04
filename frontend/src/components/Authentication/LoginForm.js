@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
+import { fetchUserLogin } from '../../utils/apiService';
 
 const LoginForm = ({ onToggleForm }) => {
     const router = useRouter();
@@ -18,9 +18,7 @@ const LoginForm = ({ onToggleForm }) => {
         };
 
         try {
-            await axios.post('http://localhost:8080/api/users/login', formData, {
-                withCredentials: true
-            });
+            await fetchUserLogin(formData);
 
             router.push('/dashboard');
         } catch (error) {

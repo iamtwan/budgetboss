@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TransactionModal from './Transactions/TransactionModal';
 
-const CreditAccountsPage = ({ linkedCredit, manualData, setManualData}) => {
+const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
@@ -99,8 +99,8 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData}) => {
                 <TransactionModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
-                    manualCredit={manualCredit}
-                    setManualCredit={setManualCredit}
+                    manualData={manualData}
+                    setManualData={setManualData}
                 />
             )}
         </div>

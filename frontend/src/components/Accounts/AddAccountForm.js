@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import { createManualAccount } from '../../utils/apiService';
 
-const API_BASE_URL = 'http://localhost:8080/api';
-
-const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose, onSubmit, onSubmitSuccess }) => {
+const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose, onSubmitSuccess }) => {
     const [selectedInstitution, setSelectedInstitution] = useState('');
     const [newInstitution, setNewInstitution] = useState('');
     const [accountName, setAccountName] = useState('');
@@ -31,10 +29,8 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
 
     const handleAddAccountFormSubmit = async (formData) => {
         try {
-            console.log(formData)
-            await axios.post(`${API_BASE_URL}/manual-accounts`, formData, {
-                withCredentials: true,
-            });
+            await createManualAccount(formData)
+
             onSubmitSuccess();
         } catch (err) {
             setError(err.message);

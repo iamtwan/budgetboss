@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
+import { createSignUp } from '../../utils/apiService';
 
 const SignUpForm = ({ onToggleForm }) => {
     const router = useRouter();
@@ -19,9 +19,7 @@ const SignUpForm = ({ onToggleForm }) => {
         };
 
         try {
-            await axios.post(`http://localhost:8080/api/users/register`, formData, {
-                withCredentials: true
-            });
+            await createSignUp(formData);
 
             router.push('/dashboard');
         } catch (error) {

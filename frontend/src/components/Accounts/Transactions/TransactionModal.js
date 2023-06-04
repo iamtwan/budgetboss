@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import TransactionView from './TransactionView';
 import AddTransactionForm from './AddTransactionForm';
-import axios from 'axios';
+import { fetchLinkedTransactions, fetchManualTransactions, createManualTransaction } from '../../../utils/apiService';
 
 const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
     const [showModal, setShowModal] = useState(true);
@@ -17,20 +17,16 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
             try {
                 await new Promise((resolve) => setTimeout(resolve, 1000));
 
-                let url = "";
+                let response = null;
                 const type = account.type
 
                 if (type === "linked") {
-                    url = `http://localhost:8080/api/transactions/${account.id}`;
+                    response = await fetchLinkedTransactions(account.id);
                 } else if (type === "manual") {
-                    url = `http://localhost:8080/api/manual-transactions/${account.id}`;
+                    response = await fetchManualTransactions(account.id);
                 } else {
                     throw new Error("Unknown account type");
                 }
-
-                const response = await axios.get(url, {
-                    withCredentials: true,
-                });
 
                 setTransactions(response.data);
             } catch (error) {
@@ -58,9 +54,7 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
 
     const handleAddTransaction = async (formData) => {
         try {
-            const response = await axios.post(`http://localhost:8080/api/manual-transactions/${account.id}`, formData, {
-                withCredentials: true,
-            });
+            const response = await createManualTransaction(account.id, formData);
 
             if (manualData.cash) {
                 const newManualCash = manualData.cash.map(institution => {

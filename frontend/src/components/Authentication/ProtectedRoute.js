@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { fetchUser } from '../../utils/apiService';
 
 const withAuth = (WrappedComponent) => {
     return () => {
@@ -11,9 +11,8 @@ const withAuth = (WrappedComponent) => {
         useEffect(() => {
             const checkAuthentication = async () => {
                 try {
-                    await axios.get("http://localhost:8080/api/users", {
-                        withCredentials: true
-                    });
+                    await fetchUser();
+
                     setIsAuthenticated(true);
                 } catch (error) {
                     console.error('Authentication error:', error);

@@ -1,16 +1,5 @@
-import axios from "axios";
-
-const API_BASE_URL = 'http://localhost:8080/api';
-
-export const filterLinkedAccounts = (accounts, type) => accounts.map(({ accounts: instAccounts, ...institution }) => ({
-    ...institution,
-    accounts: instAccounts.filter(account => account.type === type),
-}));
-
-export const filterManualAccounts = (accounts, type) => accounts.map(({ manualAccounts: instAccounts, ...institution }) => ({
-    ...institution,
-    accounts: instAccounts.filter(account => account.type === type),
-}));
+import { filterLinkedAccounts, filterManualAccounts } from "./helpers"
+import { fetchLinkedAccounts, fetchManualAccounts, fetchLinkToken } from "./apiService";
 
 export const fetchAccounts = async (
     setIsLoading,
@@ -25,8 +14,8 @@ export const fetchAccounts = async (
     setIsLoading(true);
     try {
         const [linkedAccountResponse, manualAccountsResponse] = await Promise.all([
-            axios.get(`${API_BASE_URL}/items`, { withCredentials: true }),
-            axios.get(`${API_BASE_URL}/manual-institutions`, { withCredentials: true }),
+            fetchLinkedAccounts(),
+            fetchManualAccounts(),
         ]);
 
         const filteredLinkedAccounts = linkedAccountResponse.data;
@@ -57,9 +46,7 @@ export const handleToggleAddAccountForm = (showModal, setShowModal) => {
 
 export const generateToken = async (setLinkToken) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/tokens`, {
-            withCredentials: true,
-        });
+        const response = await fetchLinkToken();
 
         setLinkToken(response.data.linkToken);
     } catch (err) {
