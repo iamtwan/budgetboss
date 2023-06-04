@@ -2,7 +2,7 @@ import React from 'react';
 import { usePlaidLink } from 'react-plaid-link';
 import axios from 'axios';
 
-const LinkAccount = ({ linkToken, fetchItems }) => {
+const LinkAccount = ({ linkToken, fetchAccounts }) => {
     const onSuccess = async (public_token, metadata) => {
         try {
             await axios.post("http://localhost:8080/api/tokens", {
@@ -11,7 +11,7 @@ const LinkAccount = ({ linkToken, fetchItems }) => {
                 name: metadata.institution.name
             }, { withCredentials: true });
 
-            fetchItems();
+            fetchAccounts();
         } catch (err) {
             console.log(err);
         }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InvestmentAccountsPage = ({ investmentAccounts, manualInvestment }) => {
+const InvestmentAccountsPage = ({ linkedInvestment, manualInvestment }) => {
     const formatCurrency = (value) => {
         return value.toFixed(2);
     };
@@ -8,7 +8,7 @@ const InvestmentAccountsPage = ({ investmentAccounts, manualInvestment }) => {
     return (
         <div className="col border m-2">
             <h4 className="text-uppercase text-info">Investment Accounts</h4>
-            {investmentAccounts.map((institution) => (
+            {linkedInvestment.map((institution) => (
                 institution.accounts.length > 0 && (
                     <ul className="list-group list-group-flush list-unstyled text-primary" key={institution.id}>
                         <h5 className="fw-bolder text-uppercase m-0 p-0">{institution.name}</h5>

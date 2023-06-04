@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TransactionModal from './Transactions/TransactionModal';
 
-const CreditAccountsPage = ({ creditAccounts, manualCredit, setManualCredit }) => {
+const CreditAccountsPage = ({ linkedCredit, manualCredit, setManualCredit }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
@@ -23,7 +23,7 @@ const CreditAccountsPage = ({ creditAccounts, manualCredit, setManualCredit }) =
     return (
         <div className="col border m-2">
             <h4 className="text-uppercase text-info">Credit Accounts</h4>
-            {creditAccounts.map((institution) => (
+            {linkedCredit.map((institution) => (
                 institution.accounts.length > 0 && (
                     <ul className="list-group list-group-flush" key={institution.id}>
                         <h5 className="fw-bolder text-uppercase text-primary">{institution.name}</h5>

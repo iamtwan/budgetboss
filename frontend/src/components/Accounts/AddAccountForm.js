@@ -42,6 +42,7 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
             name: accountName,
             balance: parseFloat(balance),
         };
+
         onSubmit(formData);
         onClose();
     };
