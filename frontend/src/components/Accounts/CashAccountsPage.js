@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TransactionModal from './Transactions/TransactionModal';
 
-const CashAccountsPage = ({ linkedCash, manualCash, setManualCash }) => {
+const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
@@ -70,7 +70,7 @@ const CashAccountsPage = ({ linkedCash, manualCash, setManualCash }) => {
                 )
             ))}
 
-            {manualCash.map((manualInstitution) => (
+            {manualData.cash.map((manualInstitution) => (
                 manualInstitution.accounts.length > 0 && (
                     <ul className="list-group list-group-flush" key={manualInstitution.id}>
                         <h5 className="fw-bolder text-uppercase text-primary">{manualInstitution.name}</h5>
@@ -110,8 +110,8 @@ const CashAccountsPage = ({ linkedCash, manualCash, setManualCash }) => {
                 <TransactionModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
-                    manualCash={manualCash}
-                    setManualCash={setManualCash}
+                    manualData={manualData}
+                    setManualData={setManualData}
                 />
             )}
         </div>

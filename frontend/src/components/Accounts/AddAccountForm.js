@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import axios from 'axios';
 
-const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose, onSubmit }) => {
+const API_BASE_URL = 'http://localhost:8080/api';
+
+const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose, onSubmit, onSubmitSuccess }) => {
     const [selectedInstitution, setSelectedInstitution] = useState('');
     const [newInstitution, setNewInstitution] = useState('');
     const [accountName, setAccountName] = useState('');
@@ -26,6 +29,18 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
         setSelectedAccountType(e.target.value);
     };
 
+    const handleAddAccountFormSubmit = async (formData) => {
+        try {
+            console.log(formData)
+            await axios.post(`${API_BASE_URL}/manual-accounts`, formData, {
+                withCredentials: true,
+            });
+            onSubmitSuccess();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const institutionExists = linkedInstitutions.some(
@@ -43,7 +58,7 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
             balance: parseFloat(balance),
         };
 
-        onSubmit(formData);
+        handleAddAccountFormSubmit(formData);
         onClose();
     };
 

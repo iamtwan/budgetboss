@@ -4,7 +4,7 @@ import TransactionView from './TransactionView';
 import AddTransactionForm from './AddTransactionForm';
 import axios from 'axios';
 
-const TransactionModal = ({ account, onClose, manualCash, setManualCash, manualCredit, setManualCredit }) => {
+const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
     const [showModal, setShowModal] = useState(true);
     const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
     const [transactions, setTransactions] = useState([]);
@@ -62,8 +62,8 @@ const TransactionModal = ({ account, onClose, manualCash, setManualCash, manualC
                 withCredentials: true,
             });
 
-            if (manualCash) {
-                const newManualCash = manualCash.map(institution => {
+            if (manualData.cash) {
+                const newManualCash = manualData.cash.map(institution => {
                     if (institution.id === account.institutionId) {
                         return {
                             ...institution,
@@ -77,9 +77,13 @@ const TransactionModal = ({ account, onClose, manualCash, setManualCash, manualC
                     }
                     return institution;
                 });
-                setManualCash(newManualCash);
+
+                setManualData(prevData => ({
+                    ...prevData,
+                    cash: newManualCash
+                }));
             } else {
-                const newManualCredit = manualCredit.map(institution => {
+                const newManualCredit = manualData.credit.map(institution => {
                     if (institution.id === account.institutionId) {
                         return {
                             ...institution,
@@ -93,8 +97,13 @@ const TransactionModal = ({ account, onClose, manualCash, setManualCash, manualC
                     }
                     return institution;
                 });
-                setManualCredit(newManualCredit);
+
+                setManualData(prevData => ({
+                    ...prevData,
+                    credit: newManualCredit
+                }));
             }
+
             setTransactions([...transactions, response.data]);
         } catch (error) {
             console.error('Error adding transaction:', error);
@@ -113,7 +122,7 @@ const TransactionModal = ({ account, onClose, manualCash, setManualCash, manualC
                 {showAddTransactionForm && (
                     <AddTransactionForm account={account} onClose={handleHideAddTransactionForm} onSubmit={handleAddTransaction} show={showAddTransactionForm} />
                 )}
-                <TransactionView account={account} type={account.type} transactions={transactions} isLoading={isLoading} />
+                <TransactionView transactions={transactions} isLoading={isLoading} />
             </Modal.Body>
         </Modal>
     );

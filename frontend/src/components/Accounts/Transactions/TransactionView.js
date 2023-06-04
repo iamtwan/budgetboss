@@ -1,7 +1,4 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const TransactionView = ({ account, transactions, isLoading }) => {
+const TransactionView = ({ transactions, isLoading }) => {
     if (isLoading) {
         return <div>Loading...</div>;
     }

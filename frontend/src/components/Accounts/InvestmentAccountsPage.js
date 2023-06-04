@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InvestmentAccountsPage = ({ linkedInvestment, manualInvestment }) => {
+const InvestmentAccountsPage = ({ linkedInvestment, manualData }) => {
     const formatCurrency = (value) => {
         return value.toFixed(2);
     };
@@ -26,7 +26,7 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualInvestment }) => {
                 )
             ))}
 
-            {manualInvestment.map((manualInstitution) => (
+            {manualData.investment.map((manualInstitution) => (
                 manualInstitution.accounts.length > 0 && (
                     <ul className="list-group list-group-flush" key={manualInstitution.id}>
                         <h5 className="fw-bolder text-uppercase text-primary">{manualInstitution.name}</h5>
