@@ -39,7 +39,7 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const institutionExists = linkedInstitutions.some(
+        const institutionExists = manualInstitutions.some(
             (institution) => institution.name.toLowerCase() === newInstitution.toLowerCase()
         );
 
@@ -70,11 +70,6 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
                         <Form.Label>Institution</Form.Label>
                         <Form.Select value={selectedInstitution} onChange={handleInstitutionChange} required>
                             <option value="">Select an institution</option>
-                            {linkedInstitutions.map((institution) => (
-                                <option key={institution.id} value={institution.name}>
-                                    {institution.name}
-                                </option>
-                            ))}
                             {manualInstitutions.map((manualInstitution) => (
                                 <option key={manualInstitution.id} value={manualInstitution.name}>
                                     {manualInstitution.name}
@@ -98,7 +93,7 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
                             <option value="">Select an account type</option>
                             <option value="Cash">Cash</option>
                             <option value="Credit">Credit</option>
-                            <option value="Investments">Investments</option>
+                            <option value="Investment">Investment</option>
                         </Form.Select>
                     </Form.Group>
                     <Form.Group controlId="accountName">
