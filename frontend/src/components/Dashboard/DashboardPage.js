@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import withAuth from '../Authentication/ProtectedRoute';
@@ -7,40 +7,31 @@ import CashAccountsPage from '../Accounts/CashAccountsPage';
 import CreditAccountsPage from '../Accounts/CreditAccountsPage';
 import AddAccountForm from '../Accounts/AddAccountForm';
 import { LinkAccount } from '../Accounts/LinkAccount';
+import useAccounts from '../../hooks/useAccounts';
 
 import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';
 
 const DashboardPage = () => {
-    const [linkToken, setLinkToken] = useState(null);
+    const {
+        linkToken,
+        isLoading,
+        error,
+        linkedCash,
+        linkedCredit,
+        linkedInvestment,
+        linkedInstitutions,
+        manualData,
+        setIsLoading,
+        setLinkedCashAccounts,
+        setLinkedCreditAccounts,
+        setInvestmentAccounts,
+        setLinkedInstitutions,
+        setManualData,
+        setError,
+    } = useAccounts();
+
     const [showModal, setShowModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
 
-    const [linkedCash, setLinkedCashAccounts] = useState([]);
-    const [linkedCredit, setLinkedCreditAccounts] = useState([]);
-    const [linkedInvestment, setInvestmentAccounts] = useState([]);
-    const [linkedInstitutions, setLinkedInstitutions] = useState([]);
-    const [manualData, setManualData] = useState({
-        institutions: [],
-        accounts: [],
-        cash: [],
-        credit: [],
-        investment: [],
-    });
-
-    useEffect(() => {
-        generateToken(setLinkToken);
-        fetchAccounts(
-            setIsLoading,
-            setLinkedCashAccounts,
-            setLinkedCreditAccounts,
-            setInvestmentAccounts,
-            setLinkedInstitutions,
-            setManualData,
-            setError,
-            manualData
-        );
-    }, []);
 
     if (isLoading) {
         return <div>Loading...</div>;

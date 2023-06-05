@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { createSignUp } from '../../utils/apiService';
 
 const SignUpForm = ({ onToggleForm }) => {
     const router = useRouter();
+    const [error, setError] = useState('');
 
     const handleToggleClick = () => {
         onToggleForm();
@@ -23,6 +24,7 @@ const SignUpForm = ({ onToggleForm }) => {
 
             router.push('/dashboard');
         } catch (error) {
+            setError(`The email '${formData.email}' already exists.`);
             console.error("An error has occurred during registration.", error);
         }
     };
@@ -34,6 +36,7 @@ const SignUpForm = ({ onToggleForm }) => {
             </div>
             <div className="d-flex justify-content-center mt-3">
                 <form className="d-flex flex-column" onSubmit={handleSignUp}>
+                    {error && <p className="text-danger">{error}</p>}
                     <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Email Address</label>
                         <input
