@@ -33,7 +33,7 @@ public class TokenController {
 
     @PostMapping
     @Operation(summary = "Exchange public token", description = "Exchange a public token for an access token")
-    public ResponseEntity<Void> exchangePublicToken(@Valid @RequestBody Token token) throws IOException {
+        public ResponseEntity<Void> exchangePublicToken(@Valid @RequestBody Token token) throws IOException {
         logger.info("/api/tokens POST request received");
         tokenService.exchangePublicToken(token);
         logger.info("/api/tokens exchanged public token for access token");
