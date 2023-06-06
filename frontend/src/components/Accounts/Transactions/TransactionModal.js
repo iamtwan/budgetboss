@@ -125,13 +125,11 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
 
     const handleDeleteSelected = async () => {
         try {
-            // delete each selected transaction
             selectedTransactions.forEach(async (transactionId) => {
                 await deleteManualTransaction(transactionId);
             });
-            // update the transactions state by filtering out the deleted transactions
+
             setTransactions(transactions.filter(t => !selectedTransactions.includes(t.id)));
-            // clear the selection
             setSelectedTransactions([]);
         } catch (error) {
             console.error('Error deleting transaction:', error)
