@@ -58,6 +58,7 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
 
     const handleHideAddTransactionForm = () => {
         setShowAddTransactionForm(false);
+        setSelectedTransactionId(null);
     };
 
     const handleAddTransaction = async (formData) => {

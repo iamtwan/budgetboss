@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const AddTransactionForm = ({ show, account, onClose, onSubmit }) => {
-    const [transactionName, setTransactionName] = useState('');
-    const [transactionDate, setTransactionDate] = useState(new Date().toISOString().substring(0, 10));
-    const [amount, setAmount] = useState('');
-    const [transactionCategory, setTransactionCategory] = useState('');
+const AddTransactionForm = ({ show, account, onClose, onSubmit, transaction }) => {
+    const [transactionName, setTransactionName] = useState(transaction ? transaction.name : '');
+    const [transactionDate, setTransactionDate] = useState(transaction ? transaction.date : new Date().toISOString().substring(0, 10));
+    const [amount, setAmount] = useState(transaction ? transaction.amount.toString() : '');
+    const [transactionCategory, setTransactionCategory] = useState(transaction && transaction.category.length > 0 ? transaction.category[0] : '');
     const [error, setError] = useState('');
 
+    const isUpdate = transaction !== null;
 
     const handleTransactionNameChange = (e) => {
         setTransactionName(e.target.value);
@@ -41,10 +42,20 @@ const AddTransactionForm = ({ show, account, onClose, onSubmit }) => {
         onClose();
     };
 
+    useEffect(() => {
+        return () => {
+            setTransactionName('');
+            setTransactionDate(new Date().toISOString().substring(0, 10));
+            setAmount('');
+            setTransactionCategory('');
+            setError('');
+        };
+    }, []);
+
     return (
         <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Transaction</Modal.Title>
+                <Modal.Title>{isUpdate ? 'Update Transaction' : 'Add Transaction'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
@@ -88,7 +99,7 @@ const AddTransactionForm = ({ show, account, onClose, onSubmit }) => {
                     </Form.Group>
                     <div className="d-flex justify-content-center">
                         <Button className="btn btn-primary btn-md mt-2" type="submit">
-                            Add
+                            {isUpdate ? 'Update' : 'Add'}
                         </Button>
                     </div>
                 </Form>
