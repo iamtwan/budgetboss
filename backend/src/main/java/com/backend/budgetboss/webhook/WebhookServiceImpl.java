@@ -8,10 +8,8 @@ import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.helper.UserHelper;
 import com.backend.budgetboss.webhook.exception.FireWebhookException;
 import com.backend.budgetboss.webhook.exception.ResetLoginException;
-import com.plaid.client.model.SandboxItemFireWebhookRequest;
-import com.plaid.client.model.SandboxItemFireWebhookResponse;
-import com.plaid.client.model.SandboxItemResetLoginRequest;
-import com.plaid.client.model.SandboxItemResetLoginResponse;
+import com.backend.budgetboss.webhook.helper.WebhookItemHelper;
+import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
@@ -23,19 +21,21 @@ import java.util.Map;
 public class WebhookServiceImpl implements WebhookService {
     private final UserHelper userHelper;
     private final ItemHelper itemHelper;
+    private final WebhookItemHelper webhookItemHelper;
     private final TransactionService transactionService;
     private final PlaidApi plaidApi;
 
     public WebhookServiceImpl(UserHelper userHelper,
                               ItemHelper itemHelper,
+                                WebhookItemHelper webhookItemHelper,
                               TransactionService transactionService,
                               PlaidApi plaidApi) {
         this.userHelper = userHelper;
         this.itemHelper = itemHelper;
+        this.webhookItemHelper = webhookItemHelper;
         this.transactionService = transactionService;
         this.plaidApi = plaidApi;
     }
-
 
     @Override
     public void fireItemWebhook(Long id) throws IOException {
@@ -80,7 +80,25 @@ public class WebhookServiceImpl implements WebhookService {
 
     @Override
     public void handleItemWebhook(Map<String, Object> event) {
-        System.out.println(event);
+        String code = (String) event.get("webhook_code");
+        String id = (String) event.get("item_id");
+
+        switch (code) {
+            case "ERROR":
+                webhookItemHelper.handleError((ItemErrorWebhook) event);
+                break;
+            case "PENDING EXPIRATION":
+                webhookItemHelper.handlePendingExpiration(id);
+                break;
+            case "USER_PERMISSION_REVOKED":
+                webhookItemHelper.handleUserPermissionRevoked(id);
+                break;
+            case "NEW_ACCOUNTS_AVAILABLE":
+            case "WEBHOOK_UPDATE_ACKNOWLEDGED":
+                break;
+            default:
+                System.out.println("Unknown webhook code: " + code);
+        }
     }
 
     @Override
@@ -92,7 +110,6 @@ public class WebhookServiceImpl implements WebhookService {
             case "SYNC_UPDATES_AVAILABLE":
                 transactionService.syncTransactions(id);
                 break;
-
             case "INITIAL_UPDATE":
             case "HISTORICAL_UPDATE":
             case "DEFAULT_UPDATE":

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.SyncFailedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -51,7 +52,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         String cursor = item.getCursor();
 
-        List<Transaction> addedAndModified = new ArrayList<>();
+        List<Transaction> added= new ArrayList<>();
+        List<Transaction> modified = new ArrayList<>();
         List<RemovedTransaction> removed = new ArrayList<>();
 
         boolean hasMore = true;
@@ -69,8 +71,8 @@ public class TransactionServiceImpl implements TransactionService {
                 throw new SyncFailedException("Unable to sync transactions for item: " + item.getId());
             }
 
-            addedAndModified.addAll(response.body().getAdded());
-            addedAndModified.addAll(response.body().getModified());
+            added.addAll(response.body().getAdded());
+            modified.addAll(response.body().getModified());
             removed.addAll(response.body().getRemoved());
 
             hasMore = response.body().getHasMore();
@@ -86,9 +88,19 @@ public class TransactionServiceImpl implements TransactionService {
             transactionIds.add(transaction.getTransactionId());
         }
 
-        for (Transaction transaction : addedAndModified) {
+        for (Transaction transaction : added) {
             Account account = accountHelper.getAccountByAccountId(transaction.getAccountId());
             transactionEntities.add(new TransactionEntity(transaction, account));
+        }
+
+        for (Transaction transaction : modified) {
+            Account account = accountHelper.getAccountByAccountId(transaction.getAccountId());
+
+            TransactionEntity existingTransaction = transactionRepository
+                    .findByTransactionId(transaction.getTransactionId())
+                    .orElse(new TransactionEntity(transaction, account));
+
+            transactionEntities.add(existingTransaction);
         }
 
         transactionRepository.deleteAllByTransactionIdIn(transactionIds);
