@@ -26,7 +26,7 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
                 await new Promise((resolve) => setTimeout(resolve, 1000));
 
                 let response = null;
-                const type = account.type
+                const type = account.type;
 
                 if (type === "linked") {
                     response = await fetchLinkedTransactions(account.id);

@@ -19,12 +19,19 @@ const TransactionView = ({ transactions, isLoading, onTransactionClick, selected
                     {transactions.map((transaction) => (
                         <tr key={transaction.id}>
                             <td>
-                                <input type="checkbox"
+                                <input
+                                    type="checkbox"
                                     checked={selectedTransactions.includes(transaction.id)}
                                     onChange={() => handleSelectTransaction(transaction.id)}
                                 />
                             </td>
-                            <td onClick={() => onTransactionClick(transaction.id)}>{transaction.merchantName || transaction.name}</td>
+                            <td
+                                style={{ cursor: "pointer" }}
+                                className="text-primary cursor-pointer"
+                                onClick={() => onTransactionClick(transaction.id)}
+                            >
+                                {transaction.merchantName || transaction.name}
+                            </td>
                             <td>{transaction.date}</td>
                             <td>
                                 {transaction.amount < 0 ? (
