@@ -23,7 +23,7 @@ public class WebhookItemHelper {
         if (errorCode.equals("ITEM_LOGIN_REQUIRED")) {
             handlePendingExpiration(error.getItemId());
         } else {
-            System.out.println("Unknown error code: " + errorCode);
+            System.out.println("Unhandled error code: " + errorCode);
         }
     }
 

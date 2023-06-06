@@ -71,6 +71,13 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
         manualAccountHelper.assertAccountOwnership(user, manualAccount);
 
-        manualAccountRepository.delete(manualAccount);
+        ManualInstitution manualInstitution = manualAccount.getManualInstitution();
+
+        if (manualInstitution.getManualAccounts().size() == 1) {
+            manualInstitutionRepository.delete(manualInstitution);
+        } else {
+            manualInstitution.getManualAccounts().remove(manualAccount);
+            manualInstitutionRepository.save(manualInstitution);
+        }
     }
 }

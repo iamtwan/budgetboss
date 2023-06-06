@@ -1,7 +1,6 @@
 package com.backend.budgetboss.manualaccount.dto;
 
 import com.backend.budgetboss.manualaccount.ManualAccountType;
-import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 

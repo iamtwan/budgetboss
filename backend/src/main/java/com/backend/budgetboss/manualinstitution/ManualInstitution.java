@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "manual_institutions")
-public class    ManualInstitution {
+public class ManualInstitution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
