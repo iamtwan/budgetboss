@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { updateManualAccount, deleteManualAccount } from '../../../services/apiService';
+import { updateManualAccount, deleteManualAccount } from '../../../../services/apiService';
 
 const EditAccountModal = ({ show, account, onClose, onAccountUpdate, onAccountDelete, onSubmitSuccess }) => {
     const [accountName, setAccountName] = useState('');

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { createManualAccount } from '../../../services/apiService';
+import { createManualAccount } from '../../../../services/apiService';
 
 const AddAccountForm = ({ show, manualInstitutions, onClose, onSubmitSuccess }) => {
     const [selectedInstitution, setSelectedInstitution] = useState('');

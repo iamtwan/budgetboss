@@ -5,9 +5,9 @@ import withAuth from '../Authentication/ProtectedRoute';
 import InvestmentAccountsPage from './Accounts/InvestmentAccountsPage';
 import CashAccountsPage from './Accounts/CashAccountsPage';
 import CreditAccountsPage from './Accounts/CreditAccountsPage';
-import AddAccountForm from './AccountForm/AddAccountForm';
-import EditAccountModal from './AccountForm/EditAccountForm';
-import { LinkAccount } from './LinkAccount';
+import AddAccountForm from './Accounts/AccountForm/AddAccountForm';
+import EditAccountModal from './Accounts/AccountForm/EditAccountForm';
+import { LinkAccount } from './Accounts/LinkAccount';
 import useAccounts from '../../hooks/useAccounts';
 
 import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';
