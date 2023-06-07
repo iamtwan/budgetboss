@@ -5,13 +5,17 @@ import withAuth from '../Authentication/ProtectedRoute';
 import InvestmentAccountsPage from './Accounts/InvestmentAccountsPage';
 import CashAccountsPage from './Accounts/CashAccountsPage';
 import CreditAccountsPage from './Accounts/CreditAccountsPage';
-import AddAccountForm from './AddAccountForm/AddAccountForm';
+import AddAccountForm from './AccountForm/AddAccountForm';
+import EditAccountModal from './AccountForm/EditAccountForm';
 import { LinkAccount } from './LinkAccount';
 import useAccounts from '../../hooks/useAccounts';
 
 import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';
 
 const DashboardPage = () => {
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedAccount, setSelectedAccount] = useState(null);
+
     const {
         linkToken,
         isLoading,
@@ -32,6 +36,33 @@ const DashboardPage = () => {
 
     const [showModal, setShowModal] = useState(false);
 
+    const handleOpenEditModal = (account) => {
+        setSelectedAccount(account);
+        setShowEditModal(true);
+    };
+
+    const handleAccountUpdate = (formData) => {
+        setManualData((prevState) => {
+            const updatedAccounts = prevState.accounts.map((account) =>
+                account.id === formData.id ? formData : account
+            );
+            return {
+                ...prevState,
+                accounts: updatedAccounts,
+            };
+        });
+    };
+
+
+    const handleAccountDelete = (accountId) => {
+        setManualData((prevState) => {
+            const updatedAccounts = prevState.accounts.filter((account) => account.id !== accountId);
+            return {
+                ...prevState,
+                accounts: updatedAccounts,
+            };
+        });
+    };
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -70,17 +101,21 @@ const DashboardPage = () => {
                                 linkedCash={linkedCash}
                                 manualData={manualData}
                                 setManualData={setManualData}
+                                onOpenEditModal={handleOpenEditModal}
                             />
                             <CreditAccountsPage
                                 linkedCredit={linkedCredit}
                                 manualData={manualData}
                                 setManualData={setManualData}
+                                onOpenEditModal={handleOpenEditModal}
                             />
                             <InvestmentAccountsPage
                                 linkedInvestment={linkedInvestment}
                                 manualData={manualData}
                                 setManualData={setManualData}
+                                onOpenEditModal={handleOpenEditModal}
                             />
+
                         </div>
                     </div>
                 </div>
@@ -98,6 +133,25 @@ const DashboardPage = () => {
                 onClose={() => handleToggleAddAccountForm(showModal, setShowModal)}
                 linkedInstitutions={linkedInstitutions}
                 manualInstitutions={manualData.institutions}
+                onSubmitSuccess={() =>
+                    fetchAccounts(
+                        setIsLoading,
+                        setLinkedCashAccounts,
+                        setLinkedCreditAccounts,
+                        setInvestmentAccounts,
+                        setLinkedInstitutions,
+                        setManualData,
+                        setError,
+                        manualData
+                    )
+                }
+            />
+            <EditAccountModal
+                show={showEditModal}
+                account={selectedAccount}
+                onClose={() => setShowEditModal(false)}
+                onAccountUpdate={handleAccountUpdate}
+                onAccountDelete={handleAccountDelete}
                 onSubmitSuccess={() =>
                     fetchAccounts(
                         setIsLoading,

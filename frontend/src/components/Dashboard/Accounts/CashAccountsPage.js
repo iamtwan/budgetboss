@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TransactionModal from '../Transactions/TransactionModal';
 
-const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
+const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
@@ -10,6 +10,12 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
         } catch (err) {
             console.log(err);
         }
+    };
+
+    const handleAccountClick = (account) => {
+        if (account.accountType === "linked") return;
+
+        onOpenEditModal(account);
     };
 
     const handleCloseModal = () => {
@@ -77,8 +83,12 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
                         <ul className="list-group list-group-flush" key={institution.name}>
                             <h5 className="fw-bolder text-uppercase text-primary">{institution.name}</h5>
                             {institution.accounts.map((account) => (
-                                <li className="d-flex flex-column" key={account.key}>
-                                    <div className="d-shrink-1">
+                                <li className="d-flex flex-column mb-2" key={account.key}>
+                                    <div
+                                        style={{ cursor: "pointer" }}
+                                        className="d-shrink-1"
+                                        onClick={() => handleAccountClick(account)}
+                                    >
                                         <div className="d-flex justify-content-between w-100">
                                             <p className="fw-bolder m-0 p-0">{account.name}</p>
                                             <p
@@ -92,18 +102,18 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
                                                 {formatCurrency(Math.abs(account.balance))}
                                             </p>
                                         </div>
-                                        <p className="ms-3">
-                                            <a
-                                                className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
-                                                href="#"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleAccountTransactionsClick(institution.id, account, account.accountType);
-                                                }}
-                                            >
-                                                Transactions
-                                            </a>
-                                        </p>
+                                    </div>
+                                    <div className="ms-3">
+                                        <a
+                                            className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleAccountTransactionsClick(institution.id, account, account.accountType);
+                                            }}
+                                        >
+                                            Transactions
+                                        </a>
                                     </div>
                                 </li>
                             ))}

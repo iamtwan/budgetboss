@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { createManualAccount } from '../../../services/apiService';
 
-const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose, onSubmitSuccess }) => {
+const AddAccountForm = ({ show, manualInstitutions, onClose, onSubmitSuccess }) => {
     const [selectedInstitution, setSelectedInstitution] = useState('');
     const [newInstitution, setNewInstitution] = useState('');
     const [accountName, setAccountName] = useState('');
