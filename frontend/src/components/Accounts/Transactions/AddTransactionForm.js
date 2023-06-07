@@ -4,7 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 const AddTransactionForm = ({ show, account, onClose, onSubmit, transaction }) => {
     const [transactionName, setTransactionName] = useState(transaction ? transaction.name : '');
     const [transactionDate, setTransactionDate] = useState(transaction ? transaction.date : new Date().toISOString().substring(0, 10));
-    const [amount, setAmount] = useState(transaction ? transaction.amount.toString() : '');
+    const [amount, setAmount] = useState(transaction ? Math.abs(transaction.amount).toString() : '');
     const [transactionCategory, setTransactionCategory] = useState(transaction && transaction.category.length > 0 ? transaction.category[0] : '');
     const [transactionType, setTransactionType] = useState(transaction ? transaction.type : '');
     const [error, setError] = useState('');
@@ -43,7 +43,7 @@ const AddTransactionForm = ({ show, account, onClose, onSubmit, transaction }) =
             type: transactionType,
             name: transactionName,
             date: transactionDate,
-            amount,
+            amount: (transactionType === 'Expense' && account.type === 'cash') ? -amount : amount,
             category: transactionCategory ? [transactionCategory] : [],
         };
 
