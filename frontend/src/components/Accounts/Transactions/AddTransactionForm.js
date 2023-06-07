@@ -6,6 +6,7 @@ const AddTransactionForm = ({ show, account, onClose, onSubmit, transaction }) =
     const [transactionDate, setTransactionDate] = useState(transaction ? transaction.date : new Date().toISOString().substring(0, 10));
     const [amount, setAmount] = useState(transaction ? transaction.amount.toString() : '');
     const [transactionCategory, setTransactionCategory] = useState(transaction && transaction.category.length > 0 ? transaction.category[0] : '');
+    const [transactionType, setTransactionType] = useState(transaction ? transaction.type : '');
     const [error, setError] = useState('');
 
     const isUpdate = transaction !== null;
@@ -26,19 +27,27 @@ const AddTransactionForm = ({ show, account, onClose, onSubmit, transaction }) =
         setTransactionCategory(e.target.value);
     };
 
+    const handleTransactionTypeChange = (e) => {
+        setTransactionType(e.target.value);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!transactionDate || !amount) {
-            setError('Both transaction date and amount are required.');
+
+        if (!transactionDate || !amount || !transactionName || !transactionType) {
+            setError('Missing required field!');
             return;
         }
+
         const formData = {
+            type: transactionType,
             name: transactionName,
             date: transactionDate,
-            amount: parseFloat(amount),
+            amount,
             category: transactionCategory ? [transactionCategory] : [],
         };
-        onSubmit(formData, account);
+
+        onSubmit(formData);
         onClose();
     };
 
@@ -60,17 +69,31 @@ const AddTransactionForm = ({ show, account, onClose, onSubmit, transaction }) =
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     {error && <p className="text-danger">{error}</p>}
+                    <Form.Group controlId="transactionType">
+                        <Form.Label>Type</Form.Label>
+                        <Form.Select
+                            value={transactionType}
+                            onChange={handleTransactionTypeChange}
+                            required
+                        >
+                            <option value="">Select Transaction Type</option>
+                            <option value="Deposit">Deposit</option>
+                            <option value="Expense">Expense</option>
+                        </Form.Select>
+                    </Form.Group>
                     <Form.Group controlId="transactionName">
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label className="mt-2">Transaction Name</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Enter transaction name"
                             value={transactionName}
                             onChange={handleTransactionNameChange}
+                            maxLength="20"
+                            required
                         />
                     </Form.Group>
                     <Form.Group controlId="transactionDate">
-                        <Form.Label>Date</Form.Label>
+                        <Form.Label className="mt-2">Date</Form.Label>
                         <Form.Control
                             type="date"
                             value={transactionDate}
@@ -79,22 +102,25 @@ const AddTransactionForm = ({ show, account, onClose, onSubmit, transaction }) =
                         />
                     </Form.Group>
                     <Form.Group controlId="amount">
-                        <Form.Label>Amount</Form.Label>
+                        <Form.Label className="mt-2">Amount</Form.Label>
                         <Form.Control
                             type="number"
                             placeholder="Enter transaction amount"
                             value={amount}
                             onChange={handleAmountChange}
+                            min="0"
+                            step="0.01"
                             required
                         />
                     </Form.Group>
                     <Form.Group controlId="transactionCategory">
-                        <Form.Label>Category</Form.Label>
+                        <Form.Label className="mt-2">Category (optional)</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Enter transaction category"
+                            placeholder="e.g. Food, Restaurant, Entertainment"
                             value={transactionCategory}
                             onChange={handleTransactionCategoryChange}
+                            maxLength="20"
                         />
                     </Form.Group>
                     <div className="d-flex justify-content-center">

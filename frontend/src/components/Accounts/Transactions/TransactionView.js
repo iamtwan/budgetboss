@@ -36,11 +36,11 @@ const TransactionView = ({ transactions, isLoading, onTransactionClick, selected
                             <td>
                                 {transaction.amount < 0 ? (
                                     <span>
-                                        -${Math.abs(transaction.amount).toFixed(2)}
+                                        ${Math.abs(transaction.amount).toFixed(2)}
                                     </span>
                                 ) : (
                                     <span>
-                                        ${transaction.amount.toFixed(2)}
+                                        -${transaction.amount.toFixed(2)}
                                     </span>
                                 )}
                             </td>

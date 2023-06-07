@@ -10,7 +10,7 @@ import {
     updateManualTransaction
 } from '../../../utils/apiService';
 
-const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
+const TransactionModal = ({ account, onClose, manualData, setManualData, type }) => {
     const [showModal, setShowModal] = useState(true);
     const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
     const [transactions, setTransactions] = useState([]);
@@ -26,11 +26,11 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
                 await new Promise((resolve) => setTimeout(resolve, 1000));
 
                 let response = null;
-                const type = account.type;
+                const accountType = account.type;
 
-                if (type === "linked") {
+                if (accountType === "linked") {
                     response = await fetchLinkedTransactions(account.id);
-                } else if (type === "manual") {
+                } else if (accountType === "manual") {
                     response = await fetchManualTransactions(account.id);
                 } else {
                     throw new Error("Unknown account type");
@@ -67,50 +67,30 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
             return;
         }
 
+        formData.amount = (formData.type === "Deposit") === (type === "cash") ? -formData.amount : formData.amount;
+
         try {
             const response = await createManualTransaction(account.id, formData);
 
-            if (manualData.cash) {
-                const newManualCash = manualData.cash.map(institution => {
-                    if (institution.id === account.institutionId) {
-                        return {
-                            ...institution,
-                            accounts: institution.accounts.map(acc => {
-                                if (acc.id === account.id) {
-                                    return { ...account, balance: account.balance - response.data.amount };
-                                }
-                                return acc;
-                            })
-                        };
-                    }
-                    return institution;
-                });
+            const newManualData = manualData[type].map(institution => {
+                if (institution.id === account.institutionId) {
+                    return {
+                        ...institution,
+                        accounts: institution.accounts.map(acc => {
+                            if (acc.id === account.id) {
+                                return { ...account, balance: account.balance - response.data.amount };
+                            }
+                            return acc;
+                        })
+                    };
+                }
+                return institution;
+            });
 
-                setManualData(prevData => ({
-                    ...prevData,
-                    cash: newManualCash
-                }));
-            } else {
-                const newManualCredit = manualData.credit.map(institution => {
-                    if (institution.id === account.institutionId) {
-                        return {
-                            ...institution,
-                            accounts: institution.accounts.map(acc => {
-                                if (acc.id === account.id) {
-                                    return { ...account, balance: account.balance - response.data.amount };
-                                }
-                                return acc;
-                            })
-                        };
-                    }
-                    return institution;
-                });
-
-                setManualData(prevData => ({
-                    ...prevData,
-                    credit: newManualCredit
-                }));
-            }
+            setManualData(prevData => ({
+                ...prevData,
+                [type]: newManualData
+            }));
 
             setTransactions([...transactions, response.data]);
         } catch (error) {
@@ -118,7 +98,10 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
         }
     };
 
+    const isLinkedAccount = account.type === "linked";
+
     const handleTransactionClick = (transactionId) => {
+        if (isLinkedAccount) return;
         setSelectedTransactionId(transactionId);
         setShowAddTransactionForm(true);
     };
@@ -158,17 +141,18 @@ const TransactionModal = ({ account, onClose, manualData, setManualData }) => {
         }
     };
 
-
     return (
         <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
             <Modal.Header closeButton>
                 <Modal.Title>{account.name} Transactions</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="mb-3">
-                    <Button onClick={handleShowAddTransactionForm}>Add Transaction</Button>
-                    <Button variant="danger" onClick={handleDeleteSelected}>Delete Selected</Button>
-                </div>
+                {!isLinkedAccount && (
+                    <div className="mb-3">
+                        <Button onClick={handleShowAddTransactionForm}>Add Transaction</Button>
+                        <Button variant="danger" onClick={handleDeleteSelected}>Delete Selected</Button>
+                    </div>
+                )}
                 {showAddTransactionForm && (
                     <AddTransactionForm
                         account={account}

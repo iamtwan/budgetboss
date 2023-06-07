@@ -36,6 +36,8 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData }) => {
                 accounts: []
             };
 
+            mergedAccounts[key].id = institution.id
+
             institution.accounts.forEach(account => {
                 mergedAccounts[key].accounts.push({
                     key: 'manual' + account.id,

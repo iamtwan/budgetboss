@@ -51,6 +51,8 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
                 accounts: []
             };
 
+            mergedAccounts[key].id = institution.id
+
             institution.accounts.forEach(account => {
                 mergedAccounts[key].accounts.push({
                     key: 'manual' + account.id,
@@ -68,7 +70,7 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
 
     return (
         <div className="col border m-2">
-            <h4 className="text-uppercase text-info">Cash Accounts</h4>
+            <h4 className="text-uppercase text-info">Credit Accounts</h4>
             {
                 mergeAccounts().map(institution => {
                     return institution.accounts.length > 0 && (
@@ -115,6 +117,7 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
                     onClose={handleCloseModal}
                     manualData={manualData}
                     setManualData={setManualData}
+                    type="credit"
                 />
             )}
         </div>

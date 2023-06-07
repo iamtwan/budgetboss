@@ -51,6 +51,8 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
                 accounts: []
             };
 
+            mergedAccounts[key].id = institution.id
+
             institution.accounts.forEach(account => {
                 mergedAccounts[key].accounts.push({
                     key: 'manual' + account.id,
@@ -115,6 +117,7 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
                     onClose={handleCloseModal}
                     manualData={manualData}
                     setManualData={setManualData}
+                    type="cash"
                 />
             )}
         </div>
