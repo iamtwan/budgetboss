@@ -1,8 +1,14 @@
 import React from 'react';
 
-const InvestmentAccountsPage = ({ linkedInvestment, manualData }) => {
+const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal }) => {
     const formatCurrency = (value) => {
         return value.toFixed(2);
+    };
+
+    const handleAccountClick = (account) => {
+        if (account.accountType === "linked") return;
+
+        onOpenEditModal(account);
     };
 
     const mergeAccounts = () => {
@@ -63,7 +69,11 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData }) => {
                             <h5 className="fw-bolder text-uppercase text-primary">{institution.name}</h5>
                             {institution.accounts.map((account) => (
                                 <li className="d-flex flex-column mb-2" key={account.key}>
-                                    <div className="d-shrink-1">
+                                    <div
+                                        style={{ cursor: "pointer" }}
+                                        className="d-shrink-1"
+                                        onClick={() => handleAccountClick(account)}
+                                    >
                                         <div className="d-flex justify-content-between w-100">
                                             <p className="fw-bolder m-0 p-0">{account.name}</p>
                                             <p
