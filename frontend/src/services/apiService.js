@@ -42,6 +42,14 @@ export const createManualAccount = (formData) => {
     return axios.post(`${API_BASE_URL}/manual-accounts`, formData, { withCredentials: true })
 }
 
+export const deleteManualAccount = (accountId) => {
+    return axios.delete(`${API_BASE_URL}/manual-accounts/${accountId}`, { withCredentials: true });
+}
+
+export const updateManualAccount = (accountId, formData) => {
+    return axios.put(`${API_BASE_URL}/manual-accounts/${accountId}`, formData, { withCredentials: true });
+}
+
 export const createManualTransaction = (accountId, formData) => {
     return axios.post(`${API_BASE_URL}/manual-transactions/${accountId}`, formData, { withCredentials: true });
 }
