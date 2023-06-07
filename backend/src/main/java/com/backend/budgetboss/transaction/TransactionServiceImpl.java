@@ -7,12 +7,10 @@ import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.transaction.dto.TransactionResponseDTO;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.helper.UserHelper;
-import com.plaid.client.model.RemovedTransaction;
-import com.plaid.client.model.Transaction;
-import com.plaid.client.model.TransactionsSyncRequest;
-import com.plaid.client.model.TransactionsSyncResponse;
+import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
 import org.modelmapper.ModelMapper;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
@@ -21,7 +19,6 @@ import java.io.IOException;
 import java.io.SyncFailedException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -47,6 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
+    @Retryable(retryFor = SyncFailedException.class)
     public void syncTransactions(String itemId) throws IOException {
         Item item = itemHelper.getItemByItemId(itemId);
 

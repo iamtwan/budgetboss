@@ -52,6 +52,7 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
         ManualTransaction manualTransaction = modelMapper.map(manualTransactionDTO, ManualTransaction.class);
         manualTransaction.setManualAccount(account);
+
         account.setBalance(account.getBalance().subtract(manualTransaction.getAmount()));
 
         return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);

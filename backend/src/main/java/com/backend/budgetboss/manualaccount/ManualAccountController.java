@@ -41,7 +41,7 @@ public class ManualAccountController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete manual account", description = "Delete a manual account with the given id")
+    @Operation(summary = "Delete manual account", description = "Delete a manual account with the given id. This will delete its associated institution if it is the only account associated with it")
     public ResponseEntity<Void> deleteManualAccount(@PathVariable Long id) {
         logger.info("/api/manual-accounts/{} DELETE request received", id);
         manualAccountService.deleteManualAccount(id);
