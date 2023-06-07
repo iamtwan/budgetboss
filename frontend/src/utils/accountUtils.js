@@ -1,5 +1,5 @@
 import { filterLinkedAccounts, filterManualAccounts } from "./helpers"
-import { fetchLinkedAccounts, fetchManualAccounts, fetchLinkToken } from "./apiService";
+import { fetchLinkedAccounts, fetchManualAccounts, fetchLinkToken } from "../services/apiService";
 
 export const fetchAccounts = async (
     setIsLoading,

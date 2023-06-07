@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "./signuplogin.css";
-import LoginForm from './LoginForm';
-import SignUpForm from './SignUpForm';
+import LoginForm from './LoginForm/LoginForm';
+import SignUpForm from './SignUpForm/SignUpForm';
 
 
 const LoginSignUpPage = () => {

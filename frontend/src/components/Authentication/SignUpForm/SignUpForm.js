@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { createSignUp } from '../../utils/apiService';
+import { createSignUp } from '../../../services/apiService';
 
 const SignUpForm = ({ onToggleForm }) => {
     const router = useRouter();

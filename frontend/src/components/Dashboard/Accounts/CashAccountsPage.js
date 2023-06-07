@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import TransactionModal from './Transactions/TransactionModal';
+import TransactionModal from '../Transactions/TransactionModal';
 
-const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
+const CashAccountsPage = ({ linkedCash, manualData, setManualData }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
@@ -23,7 +23,7 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
     const mergeAccounts = () => {
         const mergedAccounts = {};
 
-        linkedCredit.forEach(institution => {
+        linkedCash.forEach(institution => {
             const key = institution.name.toLowerCase();
 
             mergedAccounts[key] = mergedAccounts[key] || {
@@ -43,7 +43,7 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
             });
         });
 
-        manualData.credit.forEach(institution => {
+        manualData.cash.forEach(institution => {
             const key = institution.name.toLowerCase();
 
             mergedAccounts[key] = mergedAccounts[key] || {
@@ -70,7 +70,7 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
 
     return (
         <div className="col border m-2">
-            <h4 className="text-uppercase text-info">Credit Accounts</h4>
+            <h4 className="text-uppercase text-info">Cash Accounts</h4>
             {
                 mergeAccounts().map(institution => {
                     return institution.accounts.length > 0 && (
@@ -83,8 +83,8 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
                                             <p className="fw-bolder m-0 p-0">{account.name}</p>
                                             <p
                                                 className={`m-0 p-0 ${account.balance < 0
-                                                    ? 'text-success'
-                                                    : 'text-danger'
+                                                    ? 'text-danger'
+                                                    : 'text-success'
                                                     } fw-bold`}
                                             >
                                                 {account.balance < 0 ? '-' : ''}
@@ -117,11 +117,11 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData }) => {
                     onClose={handleCloseModal}
                     manualData={manualData}
                     setManualData={setManualData}
-                    type="credit"
+                    type="cash"
                 />
             )}
         </div>
     );
 };
 
-export default CreditAccountsPage;
+export default CashAccountsPage;

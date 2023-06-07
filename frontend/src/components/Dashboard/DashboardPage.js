@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import withAuth from '../Authentication/ProtectedRoute';
-import InvestmentAccountsPage from '../Accounts/InvestmentAccountsPage';
-import CashAccountsPage from '../Accounts/CashAccountsPage';
-import CreditAccountsPage from '../Accounts/CreditAccountsPage';
-import AddAccountForm from '../Accounts/AddAccountForm';
-import { LinkAccount } from '../Accounts/LinkAccount';
+import InvestmentAccountsPage from './Accounts/InvestmentAccountsPage';
+import CashAccountsPage from './Accounts/CashAccountsPage';
+import CreditAccountsPage from './Accounts/CreditAccountsPage';
+import AddAccountForm from './AddAccountForm/AddAccountForm';
+import { LinkAccount } from './LinkAccount';
 import useAccounts from '../../hooks/useAccounts';
 
 import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';

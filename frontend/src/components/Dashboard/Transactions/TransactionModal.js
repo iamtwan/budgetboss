@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import TransactionView from './TransactionView';
-import AddTransactionForm from './AddTransactionForm';
+import TransactionView from './TransactionView/TransactionView';
+import AddTransactionForm from './AddTransactionForm/AddTransactionForm';
 import {
     fetchLinkedTransactions,
     fetchManualTransactions,
     createManualTransaction,
     deleteManualTransaction,
     updateManualTransaction
-} from '../../../utils/apiService';
+} from '../../../services/apiService';
 
 const TransactionModal = ({ account, onClose, manualData, setManualData, type }) => {
     const [showModal, setShowModal] = useState(true);
@@ -78,7 +78,7 @@ const TransactionModal = ({ account, onClose, manualData, setManualData, type })
                         ...institution,
                         accounts: institution.accounts.map(acc => {
                             if (acc.id === account.id) {
-                                return { ...account, balance: account.balance - response.data.amount };
+                                return { ...account, balance: acc.balance - response.data.amount };
                             }
                             return acc;
                         })
