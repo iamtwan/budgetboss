@@ -66,7 +66,7 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal 
                 mergeAccounts().map(institution => {
                     return institution.accounts.length > 0 && (
                         <ul className="list-group list-group-flush" key={institution.name}>
-                            <h5 className="fw-bolder text-uppercase text-primary">{institution.name}</h5>
+                            <h5 className="fw-bolder text-uppercase">{institution.name}</h5>
                             {institution.accounts.map((account) => (
                                 <li className="d-flex flex-column mb-2" key={account.key}>
                                     <div
@@ -75,7 +75,7 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal 
                                         onClick={() => handleAccountClick(account)}
                                     >
                                         <div className="d-flex justify-content-between w-100">
-                                            <p className="fw-bolder m-0 p-0">{account.name}</p>
+                                            <p className="fw-bolder m-0 p-0 text-primary">{account.name}</p>
                                             <p
                                                 className={`m-0 p-0 ${account.balance < 0
                                                     ? 'text-danger'

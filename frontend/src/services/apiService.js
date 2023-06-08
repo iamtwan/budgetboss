@@ -2,6 +2,22 @@ import axios from "axios";
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
+export const createSignUp = (formData) => {
+    return axios.post(`${API_BASE_URL}/users/register`, formData, { withCredentials: true });
+}
+
+export const fetchUserLogin = (formData) => {
+    return axios.post(`${API_BASE_URL}/users/login`, formData, { withCredentials: true });
+}
+
+export const userLogout = () => {
+    return axios.post(`${API_BASE_URL}/users/logout`, {}, { withCredentials: true });
+}
+
+export const fetchUser = () => {
+    return axios.get(`${API_BASE_URL}/users`, { withCredentials: true });
+}
+
 export const fetchLinkedAccounts = () => {
     return axios.get(`${API_BASE_URL}/items`, { withCredentials: true });
 };
@@ -16,18 +32,6 @@ export const createLinkToken = (tokenData) => {
 
 export const fetchLinkToken = () => {
     return axios.get(`${API_BASE_URL}/tokens`, { withCredentials: true });
-}
-
-export const fetchUser = () => {
-    return axios.get(`${API_BASE_URL}/users`, { withCredentials: true });
-}
-
-export const fetchUserLogin = (formData) => {
-    return axios.post(`${API_BASE_URL}/users/login`, formData, { withCredentials: true });
-}
-
-export const createSignUp = (formData) => {
-    return axios.post(`${API_BASE_URL}/users/register`, formData, { withCredentials: true });
 }
 
 export const fetchLinkedTransactions = (accountId) => {

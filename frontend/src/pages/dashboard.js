@@ -1,12 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import withAuth from '../components/Authentication/ProtectedRoute';
 import DashboardPage from '../components/Dashboard/DashboardPage';
+import Logout from '../components/Authentication/Logout';
 
 
 const Dashboard = () => {
     return (
         <main className="vh-100">
-            <h1 className="text-uppercase">Budget Boss</h1>
+            <div className="d-flex justify-content-between align-items-center mx-4">
+                <h1 className="text-uppercase">Budget Boss</h1>
+                <div>
+                    <Logout />
+                </div>
+            </div>
             <DashboardPage />
         </main>
     );
