@@ -1,135 +1,76 @@
-import React, { useEffect, useState } from 'react';
-import { usePlaidLink } from 'react-plaid-link';
-import axios from 'axios';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+
 import withAuth from '../Authentication/ProtectedRoute';
-import InvestmentAccountsPage from '../Accounts/InvestmentAccountsPage';
-import CashAccountsPage from '../Accounts/CashAccountsPage';
-import CreditAccountsPage from '../Accounts/CreditAccountsPage';
-import AddAccountForm from '../Accounts/AddAccountForm';
+import InvestmentAccountsPage from './Accounts/InvestmentAccountsPage';
+import CashAccountsPage from './Accounts/CashAccountsPage';
+import CreditAccountsPage from './Accounts/CreditAccountsPage';
+import AddAccountForm from './Accounts/AccountForm/AddAccountForm';
+import EditAccountModal from './Accounts/AccountForm/EditAccountForm';
+import { LinkAccount } from './Accounts/LinkAccount';
+import useAccounts from '../../hooks/useAccounts';
 
-
-
-const Link = ({ linkToken }) => {
-    const onSuccess = async (public_token, metadata) => {
-        try {
-            const response = await axios.post("http://localhost:8080/api/tokens", {
-                publicToken: public_token,
-                id: metadata.institution.institution_id,
-                name: metadata.institution.name
-            }, { withCredentials: true });
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const config = {
-        token: linkToken,
-        onSuccess,
-    };
-
-    const { open, ready } = usePlaidLink(config);
-
-    return (
-        <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={() => open()}
-            disabled={!ready}
-        >
-            Link Account
-        </button>
-    );
-};
-
-const filterLinkedAccounts = (accounts, type) => accounts.map(({ accounts: instAccounts, ...institution }) => ({
-    ...institution,
-    accounts: instAccounts.filter(account => account.type === type),
-}));
-
-const filterManualAccounts = (accounts, type) => accounts.map(({ manualAccounts: instAccounts, ...institution }) => ({
-    ...institution,
-    accounts: instAccounts.filter(account => account.type === type),
-}));
+import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';
 
 const DashboardPage = () => {
-    const [linkToken, setLinkToken] = useState(null);
-    const [depositories, setDepositories] = useState([]);
-    const [creditAccounts, setCreditAccounts] = useState([]);
-    const [investmentAccounts, setInvestmentAccounts] = useState([]);
-    const [linkedInstitutions, setLinkedInstitutions] = useState([]);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedAccount, setSelectedAccount] = useState(null);
+
+    const {
+        linkToken,
+        isLoading,
+        error,
+        linkedCash,
+        linkedCredit,
+        linkedInvestment,
+        linkedInstitutions,
+        manualData,
+        setIsLoading,
+        setLinkedCashAccounts,
+        setLinkedCreditAccounts,
+        setInvestmentAccounts,
+        setLinkedInstitutions,
+        setManualData,
+        setError,
+    } = useAccounts();
+
     const [showModal, setShowModal] = useState(false);
-    const [manualAccounts, setManualAccounts] = useState([]);
-    const [manualInstitutions, setManualInstitutions] = useState([]);
-    const [manualCash, setManualCash] = useState([]);
-    const [manualCredit, setManualCredit] = useState([]);
-    const [manualInvestment, setManualInvestment] = useState([]);
 
-
-    const generateToken = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/api/tokens", {
-                withCredentials: true,
-            });
-
-            // console.log(response)
-            setLinkToken(response.data.linkToken);
-
-            const accountsResponse = await axios.get("http://localhost:8080/api/items", {
-                withCredentials: true,
-            });
-
-            // console.log(accountsResponse);
-            // console.log(accountsResponse.data);
-            setDepositories(filterLinkedAccounts(accountsResponse.data, "DEPOSITORY"));
-            setCreditAccounts(filterLinkedAccounts(accountsResponse.data, "CREDIT"));
-            setInvestmentAccounts(filterLinkedAccounts(accountsResponse.data, "INVESTMENT"));
-            setLinkedInstitutions(accountsResponse.data);
-        } catch (err) {
-            console.log(err);
-        }
+    const handleOpenEditModal = (account) => {
+        setSelectedAccount(account);
+        setShowEditModal(true);
     };
 
-    const fetchManualAccounts = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/api/manual-institutions", {
-                withCredentials: true,
-            });
-
-            // refactor manualAccounts & manualInstitutions
-            setManualAccounts(response.data);
-            setManualInstitutions(response.data);
-            setManualCash(filterManualAccounts(response.data, "CASH"));
-            setManualCredit(filterManualAccounts(response.data, "CREDIT"))
-            setManualInvestment(filterManualAccounts(response.data, "INVESTMENT"))
-        } catch (err) {
-            console.log(err);
-        }
+    const handleAccountUpdate = (formData) => {
+        setManualData((prevState) => {
+            const updatedAccounts = prevState.accounts.map((account) =>
+                account.id === formData.id ? formData : account
+            );
+            return {
+                ...prevState,
+                accounts: updatedAccounts,
+            };
+        });
     };
 
-    useEffect(() => {
-        generateToken();
-        fetchManualAccounts();
-    }, []);
 
-    const handleToggleAddAccountForm = () => {
-        setShowModal(!showModal);
+    const handleAccountDelete = (accountId) => {
+        setManualData((prevState) => {
+            const updatedAccounts = prevState.accounts.filter((account) => account.id !== accountId);
+            return {
+                ...prevState,
+                accounts: updatedAccounts,
+            };
+        });
     };
 
-    const handleAddAccountFormSubmit = async (formData) => {
-        console.log(formData);
-        try {
-            const response = await axios.post("http://localhost:8080/api/manual-accounts", formData, {
-                withCredentials: true,
-            });
-            console.log(response.data);
-            generateToken();
-            fetchManualAccounts();
-        } catch (err) {
-            console.log(err);
-        }
-        setShowModal(false);
-    };
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div className="d-flex justify-content-center h-100">
@@ -138,15 +79,43 @@ const DashboardPage = () => {
                     <div className="container border m-2 d-flex flex-column">
                         <div className="d-inline-flex align-items-center">
                             <h3 className="me-2">Accounts</h3>
-                            {linkToken && <Link linkToken={linkToken} />}
-                            <button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm()}>
+                            {linkToken && <LinkAccount
+                                linkToken={linkToken}
+                                generateToken={generateToken}
+                                fetchAccounts={fetchAccounts}
+                                setIsLoading={setIsLoading}
+                                setLinkedCashAccounts={setLinkedCashAccounts}
+                                setLinkedCreditAccounts={setLinkedCreditAccounts}
+                                setInvestmentAccounts={setInvestmentAccounts}
+                                setLinkedInstitutions={setLinkedInstitutions}
+                                setManualData={setManualData}
+                                setError={setError}
+                                manualData={manualData}
+                            />}
+                            <button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
                                 Add Account
                             </button>
                         </div>
                         <div className="row h-100">
-                            <CashAccountsPage depositories={depositories} manualCash={manualCash} />
-                            <CreditAccountsPage creditAccounts={creditAccounts} manualCredit={manualCredit} />
-                            <InvestmentAccountsPage investmentAccounts={investmentAccounts} manualInvestment={manualInvestment} />
+                            <CashAccountsPage
+                                linkedCash={linkedCash}
+                                manualData={manualData}
+                                setManualData={setManualData}
+                                onOpenEditModal={handleOpenEditModal}
+                            />
+                            <CreditAccountsPage
+                                linkedCredit={linkedCredit}
+                                manualData={manualData}
+                                setManualData={setManualData}
+                                onOpenEditModal={handleOpenEditModal}
+                            />
+                            <InvestmentAccountsPage
+                                linkedInvestment={linkedInvestment}
+                                manualData={manualData}
+                                setManualData={setManualData}
+                                onOpenEditModal={handleOpenEditModal}
+                            />
+
                         </div>
                     </div>
                 </div>
@@ -161,14 +130,43 @@ const DashboardPage = () => {
             </div>
             <AddAccountForm
                 show={showModal}
-                onClose={handleToggleAddAccountForm}
-                onSubmit={handleAddAccountFormSubmit}
+                onClose={() => handleToggleAddAccountForm(showModal, setShowModal)}
                 linkedInstitutions={linkedInstitutions}
-                manualInstitutions={manualInstitutions}
+                manualInstitutions={manualData.institutions}
+                onSubmitSuccess={() =>
+                    fetchAccounts(
+                        setIsLoading,
+                        setLinkedCashAccounts,
+                        setLinkedCreditAccounts,
+                        setInvestmentAccounts,
+                        setLinkedInstitutions,
+                        setManualData,
+                        setError,
+                        manualData
+                    )
+                }
+            />
+            <EditAccountModal
+                show={showEditModal}
+                account={selectedAccount}
+                onClose={() => setShowEditModal(false)}
+                onAccountUpdate={handleAccountUpdate}
+                onAccountDelete={handleAccountDelete}
+                onSubmitSuccess={() =>
+                    fetchAccounts(
+                        setIsLoading,
+                        setLinkedCashAccounts,
+                        setLinkedCreditAccounts,
+                        setInvestmentAccounts,
+                        setLinkedInstitutions,
+                        setManualData,
+                        setError,
+                        manualData
+                    )
+                }
             />
         </div>
     );
 };
-
 
 export default withAuth(DashboardPage);

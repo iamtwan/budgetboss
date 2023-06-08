@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { createManualAccount } from '../../../../services/apiService';
 
-const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose, onSubmit }) => {
+const AddAccountForm = ({ show, manualInstitutions, onClose, onSubmitSuccess }) => {
     const [selectedInstitution, setSelectedInstitution] = useState('');
     const [newInstitution, setNewInstitution] = useState('');
     const [accountName, setAccountName] = useState('');
@@ -26,9 +27,19 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
         setSelectedAccountType(e.target.value);
     };
 
+    const handleAddAccountFormSubmit = async (formData) => {
+        try {
+            await createManualAccount(formData)
+
+            onSubmitSuccess();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const institutionExists = linkedInstitutions.some(
+        const institutionExists = manualInstitutions.some(
             (institution) => institution.name.toLowerCase() === newInstitution.toLowerCase()
         );
 
@@ -42,7 +53,8 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
             name: accountName,
             balance: parseFloat(balance),
         };
-        onSubmit(formData);
+
+        handleAddAccountFormSubmit(formData);
         onClose();
     };
 
@@ -58,11 +70,6 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
                         <Form.Label>Institution</Form.Label>
                         <Form.Select value={selectedInstitution} onChange={handleInstitutionChange} required>
                             <option value="">Select an institution</option>
-                            {linkedInstitutions.map((institution) => (
-                                <option key={institution.id} value={institution.name}>
-                                    {institution.name}
-                                </option>
-                            ))}
                             {manualInstitutions.map((manualInstitution) => (
                                 <option key={manualInstitution.id} value={manualInstitution.name}>
                                     {manualInstitution.name}
@@ -86,7 +93,7 @@ const AddAccountForm = ({ show, manualInstitutions, linkedInstitutions, onClose,
                             <option value="">Select an account type</option>
                             <option value="Cash">Cash</option>
                             <option value="Credit">Credit</option>
-                            <option value="Investments">Investments</option>
+                            <option value="Investment">Investment</option>
                         </Form.Select>
                     </Form.Group>
                     <Form.Group controlId="accountName">
