@@ -92,12 +92,11 @@ public class TokenServiceImpl implements TokenService {
                 .products(products)
                 .countryCodes(List.of(CountryCode.US))
                 .language("en")
+                .redirectUri("http://localhost:3000/oauth")
                 .webhook(publicUrl + "/api/webhooks")
                 .accessToken(accessToken)
                 .linkCustomizationName("budgetboss")
                 .update(update);
-
-        System.out.println(request);
 
         Response<LinkTokenCreateResponse> response = plaidApi
                 .linkTokenCreate(request)
