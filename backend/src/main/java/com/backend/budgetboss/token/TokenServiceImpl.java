@@ -1,8 +1,8 @@
 package com.backend.budgetboss.token;
 
-import com.backend.budgetboss.account.AccountService;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
+import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.transaction.TransactionService;
 import com.backend.budgetboss.user.User;
@@ -18,31 +18,52 @@ import org.springframework.web.client.RestTemplate;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TokenServiceImpl implements TokenService {
     private final UserHelper userHelper;
+    private final ItemHelper itemHelper;
     private final ItemRepository itemRepository;
     private final TransactionService transactionService;
-    private final AccountService accountService;
     private final PlaidApi plaidApi;
 
     public TokenServiceImpl(UserHelper userHelper,
+                            ItemHelper itemHelper,
                             ItemRepository itemRepository,
                             TransactionService transactionService,
-                            AccountService accountService,
                             PlaidApi plaidApi) {
         this.userHelper = userHelper;
+        this.itemHelper = itemHelper;
         this.itemRepository = itemRepository;
         this.transactionService = transactionService;
-        this.accountService = accountService;
         this.plaidApi = plaidApi;
     }
 
     @Override
     public LinkTokenCreateResponse createLinkToken() throws IOException {
+        return createLink(null);
+    }
+
+    @Override
+    public LinkTokenCreateResponse createLinkToken(Long id) throws IOException {
+        return createLink(itemHelper.getItem(id));
+    }
+
+    public LinkTokenCreateResponse createLink(Item item) throws IOException {
         User user = userHelper.getUser();
+
+        String accessToken = null;
+        List<Products> products = List.of(Products.TRANSACTIONS);
+        LinkTokenCreateRequestUpdate update = new LinkTokenCreateRequestUpdate();
+
+        if (item != null) {
+            itemHelper.assertItemOwnership(user, item);
+            accessToken = item.getAccessToken();
+            products = new ArrayList<>();
+            update.setAccountSelectionEnabled(true);
+        }
 
         RestTemplate restTemplate = new RestTemplate();
         String ngrokApiUrl = "http://localhost:4040/api/tunnels";
@@ -64,12 +85,19 @@ public class TokenServiceImpl implements TokenService {
                 .clientUserId(String.valueOf(user.getId()));
 
         LinkTokenCreateRequest request = new LinkTokenCreateRequest()
+                .clientId("6438697aab53b0001409298d")
+                .secret("1486f87546527c19d79d25cf00f034")
                 .user(requestUser)
                 .clientName("Budget Boss")
-                .products(List.of(Products.TRANSACTIONS))
+                .products(products)
                 .countryCodes(List.of(CountryCode.US))
                 .language("en")
-                .webhook(publicUrl + "/api/webhooks");
+                .webhook(publicUrl + "/api/webhooks")
+                .accessToken(accessToken)
+                .linkCustomizationName("budgetboss")
+                .update(update);
+
+        System.out.println(request);
 
         Response<LinkTokenCreateResponse> response = plaidApi
                 .linkTokenCreate(request)
@@ -109,8 +137,7 @@ public class TokenServiceImpl implements TokenService {
         item.setInstitutionId(token.getId());
         item.setInstitutionName(token.getName());
 
-        Item newItem = itemRepository.save(item);
-        accountService.createAccounts(newItem.getId());
-        transactionService.syncTransactions(newItem.getItemId());
+        itemRepository.save(item);
+        transactionService.syncTransactions(item.getItemId());
     }
 }

@@ -1,6 +1,7 @@
 package com.backend.budgetboss.transaction;
 
 import com.backend.budgetboss.account.Account;
+import com.backend.budgetboss.account.AccountService;
 import com.backend.budgetboss.account.helper.AccountHelper;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.helper.ItemHelper;
@@ -26,6 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final UserHelper userHelper;
     private final ItemHelper itemHelper;
     private final AccountHelper accountHelper;
+    private final AccountService accountService;
     private final PlaidApi plaidApi;
     private final ModelMapper modelMapper;
 
@@ -33,11 +35,14 @@ public class TransactionServiceImpl implements TransactionService {
                                   UserHelper userHelper,
                                   ItemHelper itemHelper,
                                   AccountHelper accountHelper,
-                                  PlaidApi plaidApi, ModelMapper modelMapper) {
+                                  AccountService accountService,
+                                  PlaidApi plaidApi,
+                                  ModelMapper modelMapper) {
         this.transactionRepository = transactionRepository;
         this.userHelper = userHelper;
         this.itemHelper = itemHelper;
         this.accountHelper = accountHelper;
+        this.accountService = accountService;
         this.plaidApi = plaidApi;
         this.modelMapper = modelMapper;
     }
@@ -48,9 +53,11 @@ public class TransactionServiceImpl implements TransactionService {
     public void syncTransactions(String itemId) throws IOException {
         Item item = itemHelper.getItemByItemId(itemId);
 
+        accountService.createAccounts(item.getId());
+
         String cursor = item.getCursor();
 
-        List<Transaction> added= new ArrayList<>();
+        List<Transaction> added = new ArrayList<>();
         List<Transaction> modified = new ArrayList<>();
         List<RemovedTransaction> removed = new ArrayList<>();
 

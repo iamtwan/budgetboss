@@ -39,15 +39,15 @@ public class WebhookController {
     @GetMapping("/item/{id}/fire")
     @Operation(summary = "Fire a webhook event for the given Item", description = "Fire a webhook event for the given Item")
     public void fireItemWebhook(@PathVariable Long id) throws IOException {
-        logger.info("/api/webhooks/item/fire/{} GET request received", id);
+        logger.info("/api/webhooks/item/{}/fire GET request received", id);
         webhookService.fireItemWebhook(id);
-        logger.info("/api/webhooks/item/fire/{} fired a webhook event for the given item", id);
+        logger.info("/api/webhooks/item/{}/fire fired a webhook event for the given item", id);
     }
 
     @GetMapping("/item/{id}/reset")
     @Operation(summary = "Reset the login state for the given Item", description = "Forces an Item into an ITEM_LOGIN_REQUIRED state in order to simulate an Item whose login is no longer valid")
     public void resetLoginWebhook(@PathVariable Long id) throws IOException {
-        logger.info("/api/webhooks/item/reset/{} GET request received", id);
+        logger.info("/api/webhooks/item/{}/reset GET request received", id);
         webhookService.resetLoginWebhook(id);
         logger.info("/api/webhooks/item/reset/{} reset the login state for the given item", id);
     }

@@ -2,29 +2,37 @@ package com.backend.budgetboss.account;
 
 import com.backend.budgetboss.account.exception.AccountRequestException;
 import com.backend.budgetboss.item.Item;
+import com.backend.budgetboss.item.ItemRepository;
 import com.backend.budgetboss.item.helper.ItemHelper;
+import com.plaid.client.model.AccountBase;
 import com.plaid.client.model.AccountsGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
 import com.plaid.client.request.PlaidApi;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
+    private final ItemRepository itemRepository;
     private final ItemHelper itemHelper;
     private final PlaidApi plaidApi;
+    private final ModelMapper modelMapper;
 
     public AccountServiceImpl(AccountRepository accountRepository,
+                              ItemRepository itemRepository,
                               ItemHelper itemHelper,
-                              PlaidApi plaidApi) {
+                              PlaidApi plaidApi,
+                              ModelMapper modelMapper) {
         this.accountRepository = accountRepository;
+        this.itemRepository = itemRepository;
         this.itemHelper = itemHelper;
         this.plaidApi = plaidApi;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -41,11 +49,15 @@ public class AccountServiceImpl implements AccountService {
             throw new AccountRequestException("Unable to retrieve accounts for item: " + item.getId());
         }
 
-        List<Account> accounts = response.body().getAccounts()
-                .stream()
-                .map(accountBase -> new Account(accountBase, item))
-                .toList();
+        item.getAccounts().clear();
 
-        accountRepository.saveAll(accounts);
+        for (AccountBase accountBase : response.body().getAccounts()) {
+            Account account = accountRepository.findByAccountId(accountBase.getAccountId())
+                    .orElse(new Account(item));
+            modelMapper.map(accountBase, account);
+            item.getAccounts().add(account);
+        }
+
+        itemRepository.save(item);
     }
 }

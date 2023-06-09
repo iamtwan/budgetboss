@@ -1,6 +1,10 @@
 package com.backend.budgetboss.config;
 
+import com.backend.budgetboss.account.Account;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.plaid.client.ApiClient;
+import com.plaid.client.model.AccountBase;
 import com.plaid.client.request.PlaidApi;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +18,17 @@ import java.util.Map;
 public class GlobalConfig {
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.typeMap(AccountBase.class, Account.class)
+                .addMappings(mapper -> mapper.skip(Account::setId));
+
+        return modelMapper;
+    }
+
+    @Bean
+    public Gson gson() {
+        return new GsonBuilder().setPrettyPrinting().create();
     }
 
     @Bean

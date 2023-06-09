@@ -58,6 +58,7 @@ public class UserController {
     @PostMapping("/logout")
     @Operation(summary = "Logout user", description = "Logs out the current user")
     public void logout() {
+        logger.info("/api/users/logout POST request received");
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security's filter chain.");
     }
 }

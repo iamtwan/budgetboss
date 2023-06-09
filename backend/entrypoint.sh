@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Start RabbitMQ server
-service rabbitmq-server start
-
 # Run ngrok in the background
 ngrok http --scheme=http --log=stdout 8080 &
 
@@ -26,8 +23,6 @@ shutdown() {
   kill $JAVA_PID
   # Wait for java to exit
   wait $JAVA_PID
-  # Stop RabbitMQ server
-  service rabbitmq-server stop
   # Exit the script
   exit
 }

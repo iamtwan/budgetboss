@@ -9,6 +9,7 @@ import com.backend.budgetboss.user.helper.UserHelper;
 import com.backend.budgetboss.webhook.exception.FireWebhookException;
 import com.backend.budgetboss.webhook.exception.ResetLoginException;
 import com.backend.budgetboss.webhook.helper.WebhookItemHelper;
+import com.google.gson.Gson;
 import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,20 @@ public class WebhookServiceImpl implements WebhookService {
     private final WebhookItemHelper webhookItemHelper;
     private final TransactionService transactionService;
     private final PlaidApi plaidApi;
+    private final Gson gson;
 
     public WebhookServiceImpl(UserHelper userHelper,
                               ItemHelper itemHelper,
-                                WebhookItemHelper webhookItemHelper,
+                              WebhookItemHelper webhookItemHelper,
                               TransactionService transactionService,
-                              PlaidApi plaidApi) {
+                              PlaidApi plaidApi,
+                              Gson gson) {
         this.userHelper = userHelper;
         this.itemHelper = itemHelper;
         this.webhookItemHelper = webhookItemHelper;
         this.transactionService = transactionService;
         this.plaidApi = plaidApi;
+        this.gson = gson;
     }
 
     @Override
@@ -46,7 +50,7 @@ public class WebhookServiceImpl implements WebhookService {
 
         SandboxItemFireWebhookRequest request = new SandboxItemFireWebhookRequest()
                 .accessToken(item.getAccessToken())
-                .webhookCode(SandboxItemFireWebhookRequest.WebhookCodeEnum.ERROR);
+                .webhookCode(SandboxItemFireWebhookRequest.WebhookCodeEnum.NEW_ACCOUNTS_AVAILABLE);
 
         Response<SandboxItemFireWebhookResponse> response = plaidApi
                 .sandboxItemFireWebhook(request)
@@ -85,7 +89,8 @@ public class WebhookServiceImpl implements WebhookService {
 
         switch (code) {
             case "ERROR":
-                webhookItemHelper.handleError((ItemErrorWebhook) event);
+                ItemErrorWebhook error = gson.fromJson(gson.toJson(event), ItemErrorWebhook.class);
+                webhookItemHelper.handleError(error);
                 break;
             case "PENDING EXPIRATION":
                 webhookItemHelper.handlePendingExpiration(id);

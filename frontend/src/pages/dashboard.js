@@ -3,13 +3,14 @@ import { usePlaidLink } from 'react-plaid-link';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import withAuth from '../components/ProtectedRoute';
-
+import CashAccount from '../components/CashAccount';
 
 const Link = ({ linkToken }) => {
     const onSuccess = React.useCallback((public_token, metadata) => {
-        axios.post("http://localhost:8080/api/items/token", {
+        axios.post("http://localhost:8080/api/tokens/exchange", {
             publicToken: public_token,
-            metadata: institution.institution_id,
+            id: metadata.institution.institution_id,
+            name: metadata.institution.name
         }, { withCredentials: true });
     });
 
@@ -33,29 +34,41 @@ const Link = ({ linkToken }) => {
 };
 
 const DashboardPage = () => {
-    const [userAccounts, setUserAccounts] = useState([]);
+    const [institutions, setInstitutions] = useState([]);
     const [linkToken, setLinkToken] = useState(null);
 
     const generateToken = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/items/token", {
+            const response = await axios.post("http://localhost:8080/api/tokens", {}, {
                 withCredentials: true,
             });
-            setLinkToken(response.data.linkToken);
 
-            const accountsResponse = await axios.get("http://localhost:8080/api/??????", {
-                withCredentials: true,
-            });
-            setUserAccounts(accountsResponse.data.accounts);
+            console.log(response);
+            setLinkToken(response.data.linkToken);
         } catch (err) {
             console.log(err);
         }
     };
 
+
+
     useEffect(() => {
         generateToken();
     }, []);
 
+    useEffect(() => {
+        const fetchAccounts = async () => {
+            try {
+                const response = await axios.get("http://localhost:8080/api/items", {withCredentials: true});
+                console.log(response);
+                setInstitutions(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchAccounts();
+    }, []);
 
     return (
         <main className="vh-100">
@@ -72,16 +85,9 @@ const DashboardPage = () => {
                                 <div className="col border m-2">
                                     <h4 className="text-uppercase">Cash Accounts</h4>
                                     <ul className="list-group list-group-flush">
-                                        {userAccounts.map((account) => (
-                                            <li className="list-group-item" key={account.id}>
-                                                <p className="fw-bolder mb-1">{account.institution}</p>
-                                                <div className="d-flex justify-content-between ms-3 mb-n1">
-                                                    <p className="fw-medium">{account.type}</p>
-                                                    <p className="me-4">-</p>
-                                                    <p>{account.balance}</p>
-                                                </div>
-                                            </li>
-                                        ))}
+                                        {
+                                            institutions.map((institution) => <CashAccount key={institution.id} institution={institution}/>)
+                                        }
                                     </ul>
                                 </div>
                                 <div className="col border m-2">
