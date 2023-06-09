@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import TransactionModal from '../Transactions/TransactionModal';
+import TransactionListModal from '../Transactions/TransactionModals/TransactionListModal';
+import { resetItem, fireEvent } from '../../../services/apiWebhooks';
 
 const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
@@ -44,7 +45,7 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
                     name: account.name,
                     balance: account.balances.current || account.balances.available,
                     type: account.type,
-                    accountType: "linked"
+                    accountType: "linked",
                 });
             });
         });
@@ -73,6 +74,22 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
 
         return Object.values(mergedAccounts);
     }
+
+    const handleReset = async (id) => {
+        try {
+            await resetItem(id);
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    const handleFireEvent = async (id) => {
+        try {
+            await fireEvent(id);
+        } catch (err) {
+            console.log(err)
+        }
+    };
 
     return (
         <div className="col border m-2">
@@ -114,6 +131,8 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
                                         >
                                             Transactions
                                         </a>
+                                        {/* <button onClick={() => handleReset(account.id)}>Reset</button>
+                                        <button onClick={() => handleFireEvent(account.id)}>Fire Webhook Event</button> */}
                                     </div>
                                 </li>
                             ))}
@@ -122,7 +141,7 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
                 })
             }
             {selectedAccount && (
-                <TransactionModal
+                <TransactionListModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
                     manualData={manualData}

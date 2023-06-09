@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TransactionModal from '../Transactions/TransactionModal';
+import TransactionModal from '../Transactions/TransactionModals/TransactionListModal';
 
 const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);

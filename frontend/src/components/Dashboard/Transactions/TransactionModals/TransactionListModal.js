@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import TransactionView from './TransactionView/TransactionView';
-import AddTransactionForm from './AddTransactionForm/AddTransactionForm';
-import useTransactions from '../../../hooks/useTransactions';
+import TransactionView from '../TransactionView/TransactionView';
+import TransactionModal from './TransactionModal';
+import useTransactions from '../../../../hooks/useTransactions';
 import {
     createManualTransaction,
     deleteManualTransaction,
     updateManualTransaction
-} from '../../../services/apiService';
+} from '../../../../services/apiService';
 
-const TransactionModal = ({ account, onClose, manualData, setManualData, type }) => {
+const TransactionListModal = ({ account, onClose, manualData, setManualData, type }) => {
     const [showModal, setShowModal] = useState(true);
     const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
     const [selectedTransactionId, setSelectedTransactionId] = useState(null);
     const [selectedTransactions, setSelectedTransactions] = useState([]);
     const { transactions, isLoading, setTransactions } = useTransactions(account);
+    const [isAddingTransaction, setIsAddingTransaction] = useState(false);
+    const [isEditingTransaction, setIsEditingTransaction] = useState(false);
+    const [showTransactionList, setShowTransactionList] = useState(true);
+
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -22,10 +26,21 @@ const TransactionModal = ({ account, onClose, manualData, setManualData, type })
     };
 
     const handleShowAddTransactionForm = () => {
+        setShowTransactionList(false);
         setShowAddTransactionForm(true);
+        setIsAddingTransaction(true);
+        setIsEditingTransaction(false);
+    };
+
+    const handleShowEditTransactionForm = () => {
+        setShowTransactionList(false);
+        setShowAddTransactionForm(true);
+        setIsAddingTransaction(false);
+        setIsEditingTransaction(true);
     };
 
     const handleHideAddTransactionForm = () => {
+        setShowTransactionList(true);
         setShowAddTransactionForm(false);
         setSelectedTransactionId(null);
     };
@@ -72,7 +87,7 @@ const TransactionModal = ({ account, onClose, manualData, setManualData, type })
     const handleTransactionClick = (transactionId) => {
         if (isLinkedAccount) return;
         setSelectedTransactionId(transactionId);
-        setShowAddTransactionForm(true);
+        handleShowEditTransactionForm();
     };
 
     const handleDeleteSelected = async () => {
@@ -111,36 +126,40 @@ const TransactionModal = ({ account, onClose, manualData, setManualData, type })
     };
 
     return (
-        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>{account.name} Transactions</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {!isLinkedAccount && (
-                    <div className="mb-3">
-                        <Button onClick={handleShowAddTransactionForm}>Add Transaction</Button>
-                        <Button variant="danger" onClick={handleDeleteSelected}>Delete Selected</Button>
-                    </div>
-                )}
-                {showAddTransactionForm && (
-                    <AddTransactionForm
-                        account={account}
-                        transaction={selectedTransactionId ? transactions.find(t => t.id === selectedTransactionId) : null}
-                        onClose={handleHideAddTransactionForm}
-                        onSubmit={handleAddTransaction}
-                        show={showAddTransactionForm}
+        <>
+            <Modal show={showModal && showTransactionList} onHide={handleCloseModal} size="lg" centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{account.name} Transactions</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {!isLinkedAccount && (
+                        <div className="mb-3">
+                            <Button onClick={handleShowAddTransactionForm}>Add Transaction</Button>
+                            <Button variant="danger" onClick={handleDeleteSelected}>Delete Selected</Button>
+                        </div>
+                    )}
+                    <TransactionView
+                        transactions={transactions}
+                        isLoading={isLoading}
+                        onTransactionClick={handleTransactionClick}
+                        selectedTransactions={selectedTransactions}
+                        handleSelectTransaction={handleSelectTransaction}
                     />
-                )}
-                <TransactionView
-                    transactions={transactions}
-                    isLoading={isLoading}
-                    onTransactionClick={handleTransactionClick}
-                    selectedTransactions={selectedTransactions}
-                    handleSelectTransaction={handleSelectTransaction}
+                </Modal.Body>
+            </Modal>
+            {showAddTransactionForm && (
+                <TransactionModal
+                    account={account}
+                    transaction={selectedTransactionId ? transactions.find(t => t.id === selectedTransactionId) : null}
+                    onClose={handleHideAddTransactionForm}
+                    onSubmit={handleAddTransaction}
+                    show={showAddTransactionForm}
+                    isAdding={isAddingTransaction}
+                    isEditing={isEditingTransaction}
                 />
-            </Modal.Body>
-        </Modal>
+            )}
+        </>
     );
 };
 
-export default TransactionModal;
+export default TransactionListModal;

@@ -8,6 +8,7 @@ const Logout = () => {
     const handleLogout = async () => {
         try {
             await userLogout();
+
             router.push('/');
         } catch (err) {
             console.error('Logout failed', err);
