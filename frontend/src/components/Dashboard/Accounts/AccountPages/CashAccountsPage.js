@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import TransactionModal from '../Transactions/TransactionModals/TransactionListModal';
+import TransactionListModal from '../../Transactions/TransactionModals/TransactionListModal';
+import { resetItem, fireEvent } from '../../../../services/apiWebhooks';
+import useAccounts from '@/hooks/useAccounts';
 
-const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEditModal }) => {
+const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
+    const { mergeAccounts } = useAccounts();
+
+    const accounts = mergeAccounts(linkedCash, manualData.cash, "cash");
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
@@ -23,62 +28,30 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
     };
 
     const formatCurrency = (value) => {
-        return value.toFixed(2);
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
     };
 
-    const mergeAccounts = () => {
-        const mergedAccounts = {};
+    const handleReset = async (id) => {
+        try {
+            await resetItem(id);
+        } catch (err) {
+            console.log(err)
+        }
+    };
 
-        linkedCredit.forEach(institution => {
-            const key = institution.name.toLowerCase();
-
-            mergedAccounts[key] = mergedAccounts[key] || {
-                name: institution.name,
-                accounts: []
-            };
-
-            institution.accounts.forEach(account => {
-                mergedAccounts[key].accounts.push({
-                    key: 'linked' + account.id,
-                    id: account.id,
-                    name: account.name,
-                    balance: account.balances.current || account.balances.available,
-                    type: account.type,
-                    accountType: "linked"
-                });
-            });
-        });
-
-        manualData.credit.forEach(institution => {
-            const key = institution.name.toLowerCase();
-
-            mergedAccounts[key] = mergedAccounts[key] || {
-                name: institution.name,
-                accounts: []
-            };
-
-            mergedAccounts[key].id = institution.id
-
-            institution.accounts.forEach(account => {
-                mergedAccounts[key].accounts.push({
-                    key: 'manual' + account.id,
-                    id: account.id,
-                    name: account.name,
-                    balance: account.balance,
-                    type: account.type,
-                    accountType: "manual"
-                });
-            });
-        });
-
-        return Object.values(mergedAccounts);
-    }
+    const handleFireEvent = async (id) => {
+        try {
+            await fireEvent(id);
+        } catch (err) {
+            console.log(err)
+        }
+    };
 
     return (
         <div className="col border m-2">
-            <h4 className="text-uppercase text-info">Credit Accounts</h4>
+            <h4 className="text-uppercase text-info">Cash Accounts</h4>
             {
-                mergeAccounts().map(institution => {
+                accounts.map(institution => {
                     return institution.accounts.length > 0 && (
                         <ul className="list-group list-group-flush" key={institution.name}>
                             <h5 className="fw-bolder text-uppercase">{institution.name}</h5>
@@ -93,12 +66,11 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
                                             <p className="fw-bolder m-0 p-0 text-primary">{account.name}</p>
                                             <p
                                                 className={`m-0 p-0 ${account.balance < 0
-                                                    ? 'text-success'
-                                                    : 'text-danger'
+                                                    ? 'text-danger'
+                                                    : 'text-success'
                                                     } fw-bold`}
                                             >
                                                 {account.balance < 0 ? '-' : ''}
-                                                $
                                                 {formatCurrency(Math.abs(account.balance))}
                                             </p>
                                         </div>
@@ -114,6 +86,8 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
                                         >
                                             Transactions
                                         </a>
+                                        {/* <button onClick={() => handleReset(account.id)}>Reset</button>
+                                        <button onClick={() => handleFireEvent(account.id)}>Fire Webhook Event</button> */}
                                     </div>
                                 </li>
                             ))}
@@ -122,16 +96,16 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
                 })
             }
             {selectedAccount && (
-                <TransactionModal
+                <TransactionListModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
                     manualData={manualData}
                     setManualData={setManualData}
-                    type="credit"
+                    type="cash"
                 />
             )}
         </div>
     );
 };
 
-export default CreditAccountsPage;
+export default CashAccountsPage;

@@ -1,8 +1,13 @@
 import React from 'react';
+import useAccounts from '@/hooks/useAccounts';
 
 const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal }) => {
+    const { mergeAccounts } = useAccounts();
+
+    const accounts = mergeAccounts(linkedInvestment, manualData.investment, "investment");
+
     const formatCurrency = (value) => {
-        return value.toFixed(2);
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
     };
 
     const handleAccountClick = (account) => {
@@ -11,59 +16,11 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal 
         onOpenEditModal(account);
     };
 
-    const mergeAccounts = () => {
-        const mergedAccounts = {};
-
-        linkedInvestment.forEach(institution => {
-            const key = institution.name.toLowerCase();
-
-            mergedAccounts[key] = mergedAccounts[key] || {
-                name: institution.name,
-                accounts: []
-            };
-
-            institution.accounts.forEach(account => {
-                mergedAccounts[key].accounts.push({
-                    key: 'linked' + account.id,
-                    id: account.id,
-                    name: account.name,
-                    balance: account.balances.current || account.balances.available,
-                    type: account.type,
-                    accountType: "linked"
-                });
-            });
-        });
-
-        manualData.investment.forEach(institution => {
-            const key = institution.name.toLowerCase();
-
-            mergedAccounts[key] = mergedAccounts[key] || {
-                name: institution.name,
-                accounts: []
-            };
-
-            mergedAccounts[key].id = institution.id
-
-            institution.accounts.forEach(account => {
-                mergedAccounts[key].accounts.push({
-                    key: 'manual' + account.id,
-                    id: account.id,
-                    name: account.name,
-                    balance: account.balance,
-                    type: account.type,
-                    accountType: "manual"
-                });
-            });
-        });
-
-        return Object.values(mergedAccounts);
-    }
-
     return (
         <div className="col border m-2">
             <h4 className="text-uppercase text-info">Investment Accounts</h4>
             {
-                mergeAccounts().map(institution => {
+                accounts.map(institution => {
                     return institution.accounts.length > 0 && (
                         <ul className="list-group list-group-flush" key={institution.name}>
                             <h5 className="fw-bolder text-uppercase">{institution.name}</h5>
@@ -83,7 +40,6 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal 
                                                     } fw-bold`}
                                             >
                                                 {account.balance < 0 ? '-' : ''}
-                                                $
                                                 {formatCurrency(Math.abs(account.balance))}
                                             </p>
                                         </div>
