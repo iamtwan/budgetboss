@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import TransactionListModal from '../../Transactions/TransactionModals/TransactionListModal';
 import useAccounts from '@/hooks/useAccounts';
+import AccountsList from '../AccountsList';
 
 const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
@@ -31,61 +31,18 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
     };
 
     return (
-        <div className="col border m-2">
-            <h4 className="text-uppercase text-info">Credit Accounts</h4>
-            {
-                accounts.map(institution => {
-                    return institution.accounts.length > 0 && (
-                        <ul className="list-group list-group-flush" key={institution.name}>
-                            <h5 className="fw-bolder text-uppercase">{institution.name}</h5>
-                            {institution.accounts.map((account) => (
-                                <li className="d-flex flex-column mb-2" key={account.key}>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className="d-shrink-1"
-                                        onClick={() => handleAccountClick(account)}
-                                    >
-                                        <div className="d-flex justify-content-between w-100">
-                                            <p className="fw-bolder m-0 p-0 text-primary">{account.name}</p>
-                                            <p
-                                                className={`m-0 p-0 ${account.balance < 0
-                                                    ? 'text-success'
-                                                    : 'text-danger'
-                                                    } fw-bold`}
-                                            >
-                                                {account.balance < 0 ? '-' : ''}
-                                                {formatCurrency(Math.abs(account.balance))}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="ms-3">
-                                        <a
-                                            className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                handleAccountTransactionsClick(institution.id, account, account.accountType);
-                                            }}
-                                        >
-                                            Transactions
-                                        </a>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    )
-                })
-            }
-            {selectedAccount && (
-                <TransactionListModal
-                    account={selectedAccount}
-                    onClose={handleCloseModal}
-                    manualData={manualData}
-                    setManualData={setManualData}
-                    type="credit"
-                />
-            )}
-        </div>
+        <AccountsList
+            accounts={accounts}
+            selectedAccount={selectedAccount}
+            handleAccountClick={handleAccountClick}
+            handleAccountTransactionsClick={handleAccountTransactionsClick}
+            formatCurrency={formatCurrency}
+            manualData={manualData}
+            setManualData={setManualData}
+            handleCloseModal={handleCloseModal}
+            type='credit'
+            title='Credit Accounts'
+        />
     );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import useAccounts from '@/hooks/useAccounts';
+import AccountsList from '../AccountsList';
 
 const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal }) => {
     const { mergeAccounts } = useAccounts();
@@ -17,40 +18,18 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal 
     };
 
     return (
-        <div className="col border m-2">
-            <h4 className="text-uppercase text-info">Investment Accounts</h4>
-            {
-                accounts.map(institution => {
-                    return institution.accounts.length > 0 && (
-                        <ul className="list-group list-group-flush" key={institution.name}>
-                            <h5 className="fw-bolder text-uppercase">{institution.name}</h5>
-                            {institution.accounts.map((account) => (
-                                <li className="d-flex flex-column mb-2" key={account.key}>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className="d-shrink-1"
-                                        onClick={() => handleAccountClick(account)}
-                                    >
-                                        <div className="d-flex justify-content-between w-100">
-                                            <p className="fw-bolder m-0 p-0 text-primary">{account.name}</p>
-                                            <p
-                                                className={`m-0 p-0 ${account.balance < 0
-                                                    ? 'text-danger'
-                                                    : 'text-success'
-                                                    } fw-bold`}
-                                            >
-                                                {account.balance < 0 ? '-' : ''}
-                                                {formatCurrency(Math.abs(account.balance))}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    )
-                })
-            }
-        </div>
+        <AccountsList
+            accounts={accounts}
+            handleAccountClick={handleAccountClick}
+            formatCurrency={formatCurrency}
+            manualData={manualData}
+            type='investment'
+            title='Investment Accounts'
+            showTransactions={false}
+        // selectedAccount={selectedAccount}
+        // setManualData={setManualData}
+        // handleCloseModal={handleCloseModal}
+        />
     );
 };
 
