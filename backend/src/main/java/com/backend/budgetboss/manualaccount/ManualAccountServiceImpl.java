@@ -65,6 +65,7 @@ public class ManualAccountServiceImpl implements ManualAccountService {
     }
 
     @Override
+    @Transactional
     public void deleteManualAccount(Long id) {
         User user = userHelper.getUser();
         ManualAccount manualAccount = manualAccountHelper.getAccount(id);
