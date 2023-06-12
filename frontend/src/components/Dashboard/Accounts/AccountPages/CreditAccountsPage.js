@@ -6,7 +6,7 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
     const [selectedAccount, setSelectedAccount] = useState(null);
     const { mergeAccounts } = useAccounts();
 
-    const accounts = mergeAccounts(linkedCredit, manualData.credit, "credit");
+    const institutions = mergeAccounts(linkedCredit, manualData.credit, "credit");
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
@@ -32,7 +32,7 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
 
     return (
         <AccountsList
-            accounts={accounts}
+            institutions={institutions}
             selectedAccount={selectedAccount}
             handleAccountClick={handleAccountClick}
             handleAccountTransactionsClick={handleAccountTransactionsClick}

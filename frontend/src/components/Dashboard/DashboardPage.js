@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-
 import withAuth from '../Authentication/ProtectedRoute';
 import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsPage';
 import CashAccountsPage from './Accounts/AccountPages/CashAccountsPage';
 import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsPage';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
-import { LinkAccount } from './Accounts/LinkAccount';
+import { LinkAccount } from './Accounts/Link/LinkAccount';
 import useAccounts from '../../hooks/useAccounts';
 
 import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';

@@ -5,7 +5,7 @@ import AccountsList from '../AccountsList';
 const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal }) => {
     const { mergeAccounts } = useAccounts();
 
-    const accounts = mergeAccounts(linkedInvestment, manualData.investment, "investment");
+    const institutions = mergeAccounts(linkedInvestment, manualData.investment, "investment");
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
@@ -19,7 +19,7 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal 
 
     return (
         <AccountsList
-            accounts={accounts}
+            institutions={institutions}
             handleAccountClick={handleAccountClick}
             formatCurrency={formatCurrency}
             manualData={manualData}
