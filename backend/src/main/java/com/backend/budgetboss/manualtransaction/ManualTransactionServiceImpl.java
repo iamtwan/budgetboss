@@ -52,6 +52,7 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
         ManualTransaction manualTransaction = modelMapper.map(manualTransactionDTO, ManualTransaction.class);
         manualTransaction.setManualAccount(account);
+
         account.setBalance(account.getBalance().subtract(manualTransaction.getAmount()));
 
         return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);
@@ -64,14 +65,6 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
         ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(id);
 
         manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
-        ManualAccount account = manualTransaction.getManualAccount();
-        BigDecimal diff = manualTransaction.getAmount().subtract(manualTransactionDTO.getAmount());
-
-        if (diff.compareTo(BigDecimal.ZERO) <= 0) {
-            account.setBalance(account.getBalance().add(diff));
-        } else {
-            account.setBalance(account.getBalance().subtract(diff));
-        }
 
         modelMapper.map(manualTransactionDTO, manualTransaction);
         return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);

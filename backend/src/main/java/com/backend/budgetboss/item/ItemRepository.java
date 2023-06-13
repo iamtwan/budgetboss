@@ -12,4 +12,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByUser(User user);
     boolean existsByUserAndInstitutionId(User user, String institutionId);
     Optional<Item> findByItemId(String itemId);
+    void deleteByItemId(String itemId);
 }

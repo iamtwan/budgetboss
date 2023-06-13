@@ -65,12 +65,20 @@ public class ManualAccountServiceImpl implements ManualAccountService {
     }
 
     @Override
+    @Transactional
     public void deleteManualAccount(Long id) {
         User user = userHelper.getUser();
         ManualAccount manualAccount = manualAccountHelper.getAccount(id);
 
         manualAccountHelper.assertAccountOwnership(user, manualAccount);
 
-        manualAccountRepository.delete(manualAccount);
+        ManualInstitution manualInstitution = manualAccount.getManualInstitution();
+
+        if (manualInstitution.getManualAccounts().size() == 1) {
+            manualInstitutionRepository.delete(manualInstitution);
+        } else {
+            manualInstitution.getManualAccounts().remove(manualAccount);
+            manualInstitutionRepository.save(manualInstitution);
+        }
     }
 }

@@ -1,18 +1,17 @@
 package com.backend.budgetboss.transaction;
 
 import com.backend.budgetboss.account.Account;
+import com.backend.budgetboss.account.AccountService;
 import com.backend.budgetboss.account.helper.AccountHelper;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.transaction.dto.TransactionResponseDTO;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.helper.UserHelper;
-import com.plaid.client.model.RemovedTransaction;
-import com.plaid.client.model.Transaction;
-import com.plaid.client.model.TransactionsSyncRequest;
-import com.plaid.client.model.TransactionsSyncResponse;
+import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
 import org.modelmapper.ModelMapper;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
@@ -28,6 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final UserHelper userHelper;
     private final ItemHelper itemHelper;
     private final AccountHelper accountHelper;
+    private final AccountService accountService;
     private final PlaidApi plaidApi;
     private final ModelMapper modelMapper;
 
@@ -35,23 +35,30 @@ public class TransactionServiceImpl implements TransactionService {
                                   UserHelper userHelper,
                                   ItemHelper itemHelper,
                                   AccountHelper accountHelper,
-                                  PlaidApi plaidApi, ModelMapper modelMapper) {
+                                  AccountService accountService,
+                                  PlaidApi plaidApi,
+                                  ModelMapper modelMapper) {
         this.transactionRepository = transactionRepository;
         this.userHelper = userHelper;
         this.itemHelper = itemHelper;
         this.accountHelper = accountHelper;
+        this.accountService = accountService;
         this.plaidApi = plaidApi;
         this.modelMapper = modelMapper;
     }
 
     @Override
     @Transactional
+    @Retryable(retryFor = SyncFailedException.class)
     public void syncTransactions(String itemId) throws IOException {
         Item item = itemHelper.getItemByItemId(itemId);
 
+        accountService.createAccounts(item.getId());
+
         String cursor = item.getCursor();
 
-        List<Transaction> addedAndModified = new ArrayList<>();
+        List<Transaction> added = new ArrayList<>();
+        List<Transaction> modified = new ArrayList<>();
         List<RemovedTransaction> removed = new ArrayList<>();
 
         boolean hasMore = true;
@@ -69,8 +76,8 @@ public class TransactionServiceImpl implements TransactionService {
                 throw new SyncFailedException("Unable to sync transactions for item: " + item.getId());
             }
 
-            addedAndModified.addAll(response.body().getAdded());
-            addedAndModified.addAll(response.body().getModified());
+            added.addAll(response.body().getAdded());
+            modified.addAll(response.body().getModified());
             removed.addAll(response.body().getRemoved());
 
             hasMore = response.body().getHasMore();
@@ -86,9 +93,19 @@ public class TransactionServiceImpl implements TransactionService {
             transactionIds.add(transaction.getTransactionId());
         }
 
-        for (Transaction transaction : addedAndModified) {
+        for (Transaction transaction : added) {
             Account account = accountHelper.getAccountByAccountId(transaction.getAccountId());
             transactionEntities.add(new TransactionEntity(transaction, account));
+        }
+
+        for (Transaction transaction : modified) {
+            Account account = accountHelper.getAccountByAccountId(transaction.getAccountId());
+
+            TransactionEntity existingTransaction = transactionRepository
+                    .findByTransactionId(transaction.getTransactionId())
+                    .orElse(new TransactionEntity(transaction, account));
+
+            transactionEntities.add(existingTransaction);
         }
 
         transactionRepository.deleteAllByTransactionIdIn(transactionIds);

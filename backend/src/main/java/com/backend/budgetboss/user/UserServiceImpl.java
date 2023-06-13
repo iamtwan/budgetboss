@@ -1,6 +1,6 @@
 package com.backend.budgetboss.user;
 
-import com.backend.budgetboss.security.UserDetailsImpl;
+import com.backend.budgetboss.security.UserPrinciple;
 import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
                 new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), createUserDTO.getPassword())
         );
         setAuthenticationContext(authentication, request, response);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
         return modelMapper.map(userDetails, UserResponseDTO.class);
     }
 

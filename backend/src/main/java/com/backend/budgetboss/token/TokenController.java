@@ -1,5 +1,6 @@
 package com.backend.budgetboss.token;
 
+import com.backend.budgetboss.token.dto.CreateTokenDTO;
 import com.plaid.client.model.LinkTokenCreateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,9 +8,11 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tokens")
@@ -22,21 +25,30 @@ public class TokenController {
         this.tokenService = tokenService;
     }
 
-    @GetMapping
+    @PostMapping
     @Operation(summary = "Create a link token", description = "Create a link token for the current user")
     public ResponseEntity<LinkTokenCreateResponse> createLinkToken() throws IOException {
-        logger.info("/api/tokens GET request received");
+        logger.info("/api/tokens POST request received");
         LinkTokenCreateResponse linkTokenCreateResponse = tokenService.createLinkToken();
         logger.info("/api/tokens created link token: {}", linkTokenCreateResponse);
         return ResponseEntity.ok(linkTokenCreateResponse);
     }
 
-    @PostMapping
+    @PostMapping("/{id}")
+    @Operation(summary = "Update the given Item via Link", description = "Enables update mode for Link. https://plaid.com/docs/link/update-mode/")
+    public ResponseEntity<LinkTokenCreateResponse> updateMode(@PathVariable Long id) throws IOException {
+        logger.info("/api/tokens/{} POST request received", id);
+        LinkTokenCreateResponse linkTokenCreateResponse = tokenService.createLinkToken(id);
+        logger.info("/api/tokens/{} created link token: {}", id, linkTokenCreateResponse);
+        return ResponseEntity.ok(linkTokenCreateResponse);
+    }
+
+    @PostMapping("/exchange")
     @Operation(summary = "Exchange public token", description = "Exchange a public token for an access token")
-    public ResponseEntity<Void> exchangePublicToken(@Valid @RequestBody Token token) throws IOException {
-        logger.info("/api/tokens POST request received");
+        public ResponseEntity<Void> exchangePublicToken(@Valid @RequestBody Token token) throws IOException {
+        logger.info("/api/tokens/exchange POST request received");
         tokenService.exchangePublicToken(token);
-        logger.info("/api/tokens exchanged public token for access token");
+        logger.info("/api/tokens/exchange exchanged public token for access token");
         return ResponseEntity.noContent().build();
     }
 }

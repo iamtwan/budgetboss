@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface TransactionService {
     void syncTransactions(String itemId) throws IOException;
-
     List<TransactionResponseDTO> getTransactionsByAccountId(Long id);
 }
