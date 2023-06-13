@@ -26,9 +26,6 @@ const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal 
             type='investment'
             title='Investment Accounts'
             showTransactions={false}
-        // selectedAccount={selectedAccount}
-        // setManualData={setManualData}
-        // handleCloseModal={handleCloseModal}
         />
     );
 };

@@ -3,6 +3,7 @@ import withAuth from '../Authentication/ProtectedRoute';
 import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsPage';
 import CashAccountsPage from './Accounts/AccountPages/CashAccountsPage';
 import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsPage';
+import BudgetChart from './Budget/BudgetChart';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import { LinkAccount } from './Accounts/Link/LinkAccount';
@@ -118,8 +119,12 @@ const DashboardPage = () => {
                     </div>
                 </div>
                 <div className="d-flex justify-content-evenly p-0 m-2 h-50">
-                    <div className="container border m-2">
+                    <div className="container border m-2 h-100">
                         <h3>Budget</h3>
+                        <div className="h-100">
+                            <BudgetChart />
+                            {/* <BudgetChart dataset={dataset} /> */}
+                        </div>
                     </div>
                     <div className="container border m-2">
                         <h3>Goals</h3>
