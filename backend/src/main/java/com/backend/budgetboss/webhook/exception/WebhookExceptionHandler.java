@@ -9,35 +9,39 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class WebhookExceptionHandler {
-    private final Logger logger = LoggerFactory.getLogger(WebhookExceptionHandler.class);
 
-    @ExceptionHandler(FireWebhookException.class)
-    public ProblemDetail handleFireWebhookException(FireWebhookException e) {
-        logger.error(e.getMessage());
+  private final Logger logger = LoggerFactory.getLogger(WebhookExceptionHandler.class);
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Fire WebHook Exception");
+  @ExceptionHandler(FireWebhookException.class)
+  public ProblemDetail handleFireWebhookException(FireWebhookException e) {
+    logger.error(e.getMessage());
 
-        return problemDetail;
-    }
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        e.getMessage());
+    problemDetail.setTitle("Fire WebHook Exception");
 
-    @ExceptionHandler(InvalidWebhookRequestException.class)
-    public ProblemDetail handleInvalidWebhookRequestException(InvalidWebhookRequestException e) {
-        logger.error(e.getMessage());
+    return problemDetail;
+  }
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Invalid WebHook Request");
+  @ExceptionHandler(InvalidWebhookRequestException.class)
+  public ProblemDetail handleInvalidWebhookRequestException(InvalidWebhookRequestException e) {
+    logger.error(e.getMessage());
 
-        return problemDetail;
-    }
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        e.getMessage());
+    problemDetail.setTitle("Invalid WebHook Request");
 
-    @ExceptionHandler(ResetLoginException.class)
-    public ProblemDetail handleInvalidWebhookRequestException(ResetLoginException e) {
-        logger.error(e.getMessage());
+    return problemDetail;
+  }
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Invalid WebHook Request");
+  @ExceptionHandler(ResetLoginException.class)
+  public ProblemDetail handleInvalidWebhookRequestException(ResetLoginException e) {
+    logger.error(e.getMessage());
 
-        return problemDetail;
-    }
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        e.getMessage());
+    problemDetail.setTitle("Invalid WebHook Request");
+
+    return problemDetail;
+  }
 }

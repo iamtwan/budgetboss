@@ -1,54 +1,54 @@
 package com.backend.budgetboss.manualaccount.dto;
 
 import com.backend.budgetboss.manualaccount.ManualAccountType;
-
 import java.math.BigDecimal;
 
 public class ManualAccountResponseDTO {
-    private Long id;
-    private String name;
-    private BigDecimal balance;
-    private ManualAccountType type;
 
-    public Long getId() {
-        return id;
-    }
+  private Long id;
+  private String name;
+  private BigDecimal balance;
+  private ManualAccountType type;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
+  public BigDecimal getBalance() {
+    return balance;
+  }
 
-    public ManualAccountType getType() {
-        return type;
-    }
+  public void setBalance(BigDecimal balance) {
+    this.balance = balance;
+  }
 
-    public void setType(ManualAccountType type) {
-        this.type = type;
-    }
+  public ManualAccountType getType() {
+    return type;
+  }
 
-    @Override
-    public String toString() {
-        return "ManualAccountResponse{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", balance=" + balance +
-                ", type=" + type +
-                '}';
-    }
+  public void setType(ManualAccountType type) {
+    this.type = type;
+  }
+
+  @Override
+  public String toString() {
+    return "ManualAccountResponse{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", balance=" + balance +
+        ", type=" + type +
+        '}';
+  }
 }

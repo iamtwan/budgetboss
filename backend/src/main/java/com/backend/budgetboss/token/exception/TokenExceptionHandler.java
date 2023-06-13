@@ -10,15 +10,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class TokenExceptionHandler {
-    private final Logger logger = LoggerFactory.getLogger(TokenExceptionHandler.class);
 
-    @ExceptionHandler(TokenCreationException.class)
-    public ResponseEntity<ProblemDetail> handleTokenCreationException(TokenCreationException e) {
-        logger.error(e.getMessage());
+  private final Logger logger = LoggerFactory.getLogger(TokenExceptionHandler.class);
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Token Creation Exception");
+  @ExceptionHandler(TokenCreationException.class)
+  public ResponseEntity<ProblemDetail> handleTokenCreationException(TokenCreationException e) {
+    logger.error(e.getMessage());
 
-        return new ResponseEntity<>(problemDetail, HttpStatus.BAD_REQUEST);
-    }
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        e.getMessage());
+    problemDetail.setTitle("Token Creation Exception");
+
+    return new ResponseEntity<>(problemDetail, HttpStatus.BAD_REQUEST);
+  }
 }

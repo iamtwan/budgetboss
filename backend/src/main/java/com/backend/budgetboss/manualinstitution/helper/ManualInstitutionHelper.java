@@ -5,30 +5,32 @@ import com.backend.budgetboss.manualinstitution.ManualInstitutionRepository;
 import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionNotFoundException;
 import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionOwnershipException;
 import com.backend.budgetboss.user.User;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ManualInstitutionHelper {
-    private final ManualInstitutionRepository manualInstitutionRepository;
 
-    public ManualInstitutionHelper(ManualInstitutionRepository manualInstitutionRepository) {
-        this.manualInstitutionRepository = manualInstitutionRepository;
-    }
+  private final ManualInstitutionRepository manualInstitutionRepository;
 
-    public ManualInstitution getManualInstitution(Long id) {
-        return manualInstitutionRepository.findById(id)
-                .orElseThrow(() -> new ManualInstitutionNotFoundException("Manual Institution not found with id: " + id));
-    }
+  public ManualInstitutionHelper(ManualInstitutionRepository manualInstitutionRepository) {
+    this.manualInstitutionRepository = manualInstitutionRepository;
+  }
 
-    public Optional<ManualInstitution> getManualInstitutionByUserAndName(User user, String name) {
-        return manualInstitutionRepository.findByUserAndName(user, name);
-    }
+  public ManualInstitution getManualInstitution(Long id) {
+    return manualInstitutionRepository.findById(id)
+        .orElseThrow(() -> new ManualInstitutionNotFoundException(
+            "Manual Institution not found with id: " + id));
+  }
 
-    public void assertManualInstitutionOwnership(User user, ManualInstitution institution) {
-        if (!institution.getUser().equals(user)) {
-            throw new ManualInstitutionOwnershipException("Manual Institution does not belong to user: " + user.getEmail());
-        }
+  public Optional<ManualInstitution> getManualInstitutionByUserAndName(User user, String name) {
+    return manualInstitutionRepository.findByUserAndName(user, name);
+  }
+
+  public void assertManualInstitutionOwnership(User user, ManualInstitution institution) {
+    if (!institution.getUser().equals(user)) {
+      throw new ManualInstitutionOwnershipException(
+          "Manual Institution does not belong to user: " + user.getEmail());
     }
+  }
 }

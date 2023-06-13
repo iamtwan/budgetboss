@@ -3,38 +3,39 @@ package com.backend.budgetboss.chart;
 import java.time.Month;
 
 public class ChartResponse {
-    public Month month;
-    public Double balance;
 
-    public ChartResponse() {
-    }
+  public Month month;
+  public Double balance;
 
-    public ChartResponse(Month month, Double balance) {
-        this.month = month;
-        this.balance = balance;
-    }
+  public ChartResponse() {
+  }
 
-    public Month getMonth() {
-        return month;
-    }
+  public ChartResponse(Month month, Double balance) {
+    this.month = month;
+    this.balance = balance;
+  }
 
-    public void setMonth(Month month) {
-        this.month = month;
-    }
+  public Month getMonth() {
+    return month;
+  }
 
-    public Double getBalance() {
-        return balance;
-    }
+  public void setMonth(Month month) {
+    this.month = month;
+  }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
+  public Double getBalance() {
+    return balance;
+  }
 
-    @Override
-    public String toString() {
-        return "ChartResponse{" +
-                "month=" + month +
-                ", balance=" + balance +
-                '}';
-    }
+  public void setBalance(Double balance) {
+    this.balance = balance;
+  }
+
+  @Override
+  public String toString() {
+    return "ChartResponse{" +
+        "month=" + month +
+        ", balance=" + balance +
+        '}';
+  }
 }

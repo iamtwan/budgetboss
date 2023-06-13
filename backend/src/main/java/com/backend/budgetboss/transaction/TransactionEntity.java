@@ -2,8 +2,13 @@ package com.backend.budgetboss.transaction;
 
 import com.backend.budgetboss.account.Account;
 import com.plaid.client.model.Transaction;
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,154 +17,159 @@ import java.util.Objects;
 @Entity
 @Table(name = "transactions")
 public class TransactionEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Double amount;
-    private String isoCurrencyCode;
-    private List<String> category = new ArrayList<>();
-    private LocalDate date;
-    private String name;
-    private String merchantName;
-    private Boolean pending;
-    private String paymentChannel;
-    private String transactionId;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private Double amount;
+  private String isoCurrencyCode;
+  private List<String> category = new ArrayList<>();
+  private LocalDate date;
+  private String name;
+  private String merchantName;
+  private Boolean pending;
+  private String paymentChannel;
+  private String transactionId;
 
-    public TransactionEntity() {
-    }
+  @ManyToOne
+  @JoinColumn(name = "account_id")
+  private Account account;
 
-    public TransactionEntity(Transaction transaction, Account account) {
-        this.amount = transaction.getAmount();
-        this.isoCurrencyCode = transaction.getIsoCurrencyCode();
-        this.category = transaction.getCategory();
-        this.date = transaction.getDate();
-        this.name = transaction.getName();
-        this.merchantName = transaction.getMerchantName();
-        this.pending = transaction.getPending();
-        this.paymentChannel = transaction.getPaymentChannel().getValue();
-        this.transactionId = transaction.getTransactionId();
-        this.account = account;
-    }
+  public TransactionEntity() {
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public TransactionEntity(Transaction transaction, Account account) {
+    this.amount = transaction.getAmount();
+    this.isoCurrencyCode = transaction.getIsoCurrencyCode();
+    this.category = transaction.getCategory();
+    this.date = transaction.getDate();
+    this.name = transaction.getName();
+    this.merchantName = transaction.getMerchantName();
+    this.pending = transaction.getPending();
+    this.paymentChannel = transaction.getPaymentChannel().getValue();
+    this.transactionId = transaction.getTransactionId();
+    this.account = account;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public Double getAmount() {
-        return amount;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+  public Double getAmount() {
+    return amount;
+  }
 
-    public String getIsoCurrencyCode() {
-        return isoCurrencyCode;
-    }
+  public void setAmount(Double amount) {
+    this.amount = amount;
+  }
 
-    public void setIsoCurrencyCode(String isoCurrencyCode) {
-        this.isoCurrencyCode = isoCurrencyCode;
-    }
+  public String getIsoCurrencyCode() {
+    return isoCurrencyCode;
+  }
 
-    public List<String> getCategory() {
-        return category;
-    }
+  public void setIsoCurrencyCode(String isoCurrencyCode) {
+    this.isoCurrencyCode = isoCurrencyCode;
+  }
 
-    public void setCategory(List<String> category) {
-        this.category = category;
-    }
+  public List<String> getCategory() {
+    return category;
+  }
 
-    public LocalDate getDate() {
-        return date;
-    }
+  public void setCategory(List<String> category) {
+    this.category = category;
+  }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+  public LocalDate getDate() {
+    return date;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getMerchantName() {
-        return merchantName;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
-    }
+  public String getMerchantName() {
+    return merchantName;
+  }
 
-    public Boolean getPending() {
-        return pending;
-    }
+  public void setMerchantName(String merchantName) {
+    this.merchantName = merchantName;
+  }
 
-    public void setPending(Boolean pending) {
-        this.pending = pending;
-    }
+  public Boolean getPending() {
+    return pending;
+  }
 
-    public String getPaymentChannel() {
-        return paymentChannel;
-    }
+  public void setPending(Boolean pending) {
+    this.pending = pending;
+  }
 
-    public void setPaymentChannel(String paymentChannel) {
-        this.paymentChannel = paymentChannel;
-    }
+  public String getPaymentChannel() {
+    return paymentChannel;
+  }
 
-    public String getTransactionId() {
-        return transactionId;
-    }
+  public void setPaymentChannel(String paymentChannel) {
+    this.paymentChannel = paymentChannel;
+  }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
+  public String getTransactionId() {
+    return transactionId;
+  }
 
-    public Account getAccount() {
-        return account;
-    }
+  public void setTransactionId(String transactionId) {
+    this.transactionId = transactionId;
+  }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+  public Account getAccount() {
+    return account;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TransactionEntity that = (TransactionEntity) o;
-        return Objects.equals(id, that.id);
-    }
+  public void setAccount(Account account) {
+    this.account = account;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+  @Override
+  public boolean equals(Object o) {
+      if (this == o) {
+          return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+          return false;
+      }
+    TransactionEntity that = (TransactionEntity) o;
+    return Objects.equals(id, that.id);
+  }
 
-    @Override
-    public String toString() {
-        return "TransactionEntity{" +
-                "id=" + id +
-                ", amount=" + amount +
-                ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
-                ", category=" + category +
-                ", date=" + date +
-                ", name='" + name + '\'' +
-                ", merchantName='" + merchantName + '\'' +
-                ", pending=" + pending +
-                ", paymentChannel='" + paymentChannel + '\'' +
-                ", transactionId='" + transactionId + '\'' +
-                ", account=" + account.getName() +
-                '}';
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
+  public String toString() {
+    return "TransactionEntity{" +
+        "id=" + id +
+        ", amount=" + amount +
+        ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
+        ", category=" + category +
+        ", date=" + date +
+        ", name='" + name + '\'' +
+        ", merchantName='" + merchantName + '\'' +
+        ", pending=" + pending +
+        ", paymentChannel='" + paymentChannel + '\'' +
+        ", transactionId='" + transactionId + '\'' +
+        ", account=" + account.getName() +
+        '}';
+  }
 }

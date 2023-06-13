@@ -10,24 +10,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class SecurityExceptionHandler {
-    private final Logger logger = LoggerFactory.getLogger(SecurityExceptionHandler.class);
-    @ExceptionHandler(AuthenticationException.class)
-    public ProblemDetail handleAuthenticationException(AuthenticationException e) {
-        logger.error(e.getMessage());
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
-        problemDetail.setTitle("Authentication failed");
+  private final Logger logger = LoggerFactory.getLogger(SecurityExceptionHandler.class);
 
-        return problemDetail;
-    }
+  @ExceptionHandler(AuthenticationException.class)
+  public ProblemDetail handleAuthenticationException(AuthenticationException e) {
+    logger.error(e.getMessage());
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ProblemDetail handleUserAlreadyExistsException(UserAlreadyExistsException e) {
-        logger.error(e.getMessage());
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED,
+        e.getMessage());
+    problemDetail.setTitle("Authentication failed");
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("User already exists");
+    return problemDetail;
+  }
 
-        return problemDetail;
-    }
+  @ExceptionHandler(UserAlreadyExistsException.class)
+  public ProblemDetail handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+    logger.error(e.getMessage());
+
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        e.getMessage());
+    problemDetail.setTitle("User already exists");
+
+    return problemDetail;
+  }
 }

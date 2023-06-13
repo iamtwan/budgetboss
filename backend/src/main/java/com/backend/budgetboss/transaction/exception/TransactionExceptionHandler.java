@@ -9,15 +9,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class TransactionExceptionHandler {
-    private final Logger logger = LoggerFactory.getLogger(TransactionExceptionHandler.class);
 
-    @ExceptionHandler(SyncFailedException.class)
-    public ProblemDetail handleSyncFailedException(SyncFailedException e) {
-        logger.error(e.getMessage());
+  private final Logger logger = LoggerFactory.getLogger(TransactionExceptionHandler.class);
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Transaction Sync Failed");
+  @ExceptionHandler(SyncFailedException.class)
+  public ProblemDetail handleSyncFailedException(SyncFailedException e) {
+    logger.error(e.getMessage());
 
-        return problemDetail;
-    }
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        e.getMessage());
+    problemDetail.setTitle("Transaction Sync Failed");
+
+    return problemDetail;
+  }
 }

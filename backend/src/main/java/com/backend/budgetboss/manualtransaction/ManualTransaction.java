@@ -1,10 +1,16 @@
 package com.backend.budgetboss.manualtransaction;
 
 import com.backend.budgetboss.manualaccount.ManualAccount;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,96 +20,101 @@ import java.util.Objects;
 @Entity
 @Table(name = "manual_transactions")
 public class ManualTransaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @NotBlank(message = "Transaction name is required")
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotNull(message = "Date is required")
-    private LocalDate date;
+  @NotBlank(message = "Transaction name is required")
+  private String name;
 
-    @Column(precision = 19, scale = 2)
-    @NotNull(message = "Amount is required")
-    private BigDecimal amount;
+  @NotNull(message = "Date is required")
+  private LocalDate date;
 
-    private List<String> category = new ArrayList<>();
+  @Column(precision = 19, scale = 2)
+  @NotNull(message = "Amount is required")
+  private BigDecimal amount;
 
-    @ManyToOne
-    @JoinColumn(name = "manual_account_id")
-    private ManualAccount manualAccount;
+  private List<String> category = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
+  @ManyToOne
+  @JoinColumn(name = "manual_account_id")
+  private ManualAccount manualAccount;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public LocalDate getDate() {
-        return date;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+  public LocalDate getDate() {
+    return date;
+  }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-    public List<String> getCategory() {
-        return category;
-    }
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
+  }
 
-    public void setCategory(List<String> category) {
-        this.category = category;
-    }
+  public List<String> getCategory() {
+    return category;
+  }
 
-    public ManualAccount getManualAccount() {
-        return manualAccount;
-    }
+  public void setCategory(List<String> category) {
+    this.category = category;
+  }
 
-    public void setManualAccount(ManualAccount manualAccount) {
-        this.manualAccount = manualAccount;
-    }
+  public ManualAccount getManualAccount() {
+    return manualAccount;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ManualTransaction that = (ManualTransaction) o;
-        return Objects.equals(id, that.id);
-    }
+  public void setManualAccount(ManualAccount manualAccount) {
+    this.manualAccount = manualAccount;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+  @Override
+  public boolean equals(Object o) {
+      if (this == o) {
+          return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+          return false;
+      }
+    ManualTransaction that = (ManualTransaction) o;
+    return Objects.equals(id, that.id);
+  }
 
-    @Override
-    public String toString() {
-        return "ManualTransaction{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", date=" + date +
-                ", amount=" + amount +
-                ", category=" + category +
-                ", manualAccount=" + manualAccount.getName() +
-                '}';
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
+  public String toString() {
+    return "ManualTransaction{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", date=" + date +
+        ", amount=" + amount +
+        ", category=" + category +
+        ", manualAccount=" + manualAccount.getName() +
+        '}';
+  }
 }

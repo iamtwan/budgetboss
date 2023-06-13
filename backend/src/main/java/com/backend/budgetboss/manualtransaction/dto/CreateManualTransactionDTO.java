@@ -2,63 +2,63 @@ package com.backend.budgetboss.manualtransaction.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateManualTransactionDTO {
-    @NotBlank(message = "Transaction name is required")
-    private String name;
 
-    @NotNull(message = "Date is required")
-    private LocalDate date;
+  @NotBlank(message = "Transaction name is required")
+  private String name;
 
-    @NotNull(message = "Amount is required")
-    private BigDecimal amount;
+  @NotNull(message = "Date is required")
+  private LocalDate date;
 
-    private List<String> category = new ArrayList<>();
+  @NotNull(message = "Amount is required")
+  private BigDecimal amount;
 
-    public String getName() {
-        return name;
-    }
+  private List<String> category = new ArrayList<>();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public LocalDate getDate() {
-        return date;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+  public LocalDate getDate() {
+    return date;
+  }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-    public List<String> getCategory() {
-        return category;
-    }
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
+  }
 
-    public void setCategory(List<String> category) {
-        this.category = category;
-    }
+  public List<String> getCategory() {
+    return category;
+  }
 
-    @Override
-    public String toString() {
-        return "CreateManualTransactionDTO{" +
-                ", name='" + name + '\'' +
-                ", date=" + date +
-                ", amount=" + amount +
-                ", category=" + category +
-                '}';
-    }
+  public void setCategory(List<String> category) {
+    this.category = category;
+  }
+
+  @Override
+  public String toString() {
+    return "CreateManualTransactionDTO{" +
+        ", name='" + name + '\'' +
+        ", date=" + date +
+        ", amount=" + amount +
+        ", category=" + category +
+        '}';
+  }
 }

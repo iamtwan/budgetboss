@@ -9,20 +9,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ManualTransactionHelper {
-    private final ManualTransactionRepository manualTransactionRepository;
 
-    public ManualTransactionHelper(ManualTransactionRepository manualTransactionRepository) {
-        this.manualTransactionRepository = manualTransactionRepository;
-    }
+  private final ManualTransactionRepository manualTransactionRepository;
 
-    public ManualTransaction getManualTransaction(Long id) {
-        return manualTransactionRepository.findById(id)
-                .orElseThrow(() -> new ManualTransactionNotFoundException("Manual Transaction not found with id: " + id));
-    }
+  public ManualTransactionHelper(ManualTransactionRepository manualTransactionRepository) {
+    this.manualTransactionRepository = manualTransactionRepository;
+  }
 
-    public void assertManualTransactionOwnership(User user, ManualTransaction manualTransaction) {
-        if (!manualTransaction.getManualAccount().getManualInstitution().getUser().equals(user)) {
-            throw new ManualInstitutionOwnershipException("Manual Transaction does not belong to user: " + user.getEmail());
-        }
+  public ManualTransaction getManualTransaction(Long id) {
+    return manualTransactionRepository.findById(id)
+        .orElseThrow(() -> new ManualTransactionNotFoundException(
+            "Manual Transaction not found with id: " + id));
+  }
+
+  public void assertManualTransactionOwnership(User user, ManualTransaction manualTransaction) {
+    if (!manualTransaction.getManualAccount().getManualInstitution().getUser().equals(user)) {
+      throw new ManualInstitutionOwnershipException(
+          "Manual Transaction does not belong to user: " + user.getEmail());
     }
+  }
 }

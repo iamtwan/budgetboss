@@ -8,56 +8,56 @@ import com.plaid.client.model.AccountBase;
 import com.plaid.client.model.AccountsGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
 import com.plaid.client.request.PlaidApi;
+import java.io.IOException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
 
-import java.io.IOException;
-
 @Service
 public class AccountServiceImpl implements AccountService {
-    private final AccountRepository accountRepository;
-    private final ItemRepository itemRepository;
-    private final ItemHelper itemHelper;
-    private final PlaidApi plaidApi;
-    private final ModelMapper modelMapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository,
-                              ItemRepository itemRepository,
-                              ItemHelper itemHelper,
-                              PlaidApi plaidApi,
-                              ModelMapper modelMapper) {
-        this.accountRepository = accountRepository;
-        this.itemRepository = itemRepository;
-        this.itemHelper = itemHelper;
-        this.plaidApi = plaidApi;
-        this.modelMapper = modelMapper;
+  private final AccountRepository accountRepository;
+  private final ItemRepository itemRepository;
+  private final ItemHelper itemHelper;
+  private final PlaidApi plaidApi;
+  private final ModelMapper modelMapper;
+
+  public AccountServiceImpl(AccountRepository accountRepository,
+      ItemRepository itemRepository,
+      ItemHelper itemHelper,
+      PlaidApi plaidApi,
+      ModelMapper modelMapper) {
+    this.accountRepository = accountRepository;
+    this.itemRepository = itemRepository;
+    this.itemHelper = itemHelper;
+    this.plaidApi = plaidApi;
+    this.modelMapper = modelMapper;
+  }
+
+  @Override
+  @Transactional
+  public void createAccounts(Long id) throws IOException {
+    Item item = itemHelper.getItem(id);
+
+    AccountsGetRequest request = new AccountsGetRequest()
+        .accessToken(item.getAccessToken());
+
+    Response<AccountsGetResponse> response = plaidApi.accountsGet(request).execute();
+
+    if (!response.isSuccessful() || response.body() == null) {
+      throw new AccountRequestException("Unable to retrieve accounts for item: " + item.getId());
     }
 
-    @Override
-    @Transactional
-    public void createAccounts(Long id) throws IOException {
-        Item item = itemHelper.getItem(id);
+    item.getAccounts().clear();
 
-        AccountsGetRequest request = new AccountsGetRequest()
-                .accessToken(item.getAccessToken());
-
-        Response<AccountsGetResponse> response = plaidApi.accountsGet(request).execute();
-
-        if (!response.isSuccessful() || response.body() == null) {
-            throw new AccountRequestException("Unable to retrieve accounts for item: " + item.getId());
-        }
-
-        item.getAccounts().clear();
-
-        for (AccountBase accountBase : response.body().getAccounts()) {
-            Account account = accountRepository.findByAccountId(accountBase.getAccountId())
-                    .orElse(new Account(item));
-            modelMapper.map(accountBase, account);
-            item.getAccounts().add(account);
-        }
-
-        itemRepository.save(item);
+    for (AccountBase accountBase : response.body().getAccounts()) {
+      Account account = accountRepository.findByAccountId(accountBase.getAccountId())
+          .orElse(new Account(item));
+      modelMapper.map(accountBase, account);
+      item.getAccounts().add(account);
     }
+
+    itemRepository.save(item);
+  }
 }

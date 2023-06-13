@@ -7,75 +7,81 @@ import com.backend.budgetboss.manualtransaction.dto.ManualTransactionResponseDTO
 import com.backend.budgetboss.manualtransaction.helper.ManualTransactionHelper;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.helper.UserHelper;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @Service
 public class ManualTransactionServiceImpl implements ManualTransactionService {
-    private final ManualTransactionRepository manualTransactionRepository;
-    private final ManualTransactionHelper manualTransactionHelper;
-    private final UserHelper userHelper;
-    private final ManualAccountHelper accountHelper;
-    private final ModelMapper modelMapper;
 
-    public ManualTransactionServiceImpl(ManualTransactionRepository manualTransactionRepository,
-                                        ManualTransactionHelper manualTransactionHelper,
-                                        UserHelper userHelper,
-                                        ManualAccountHelper accountHelper,
-                                        ModelMapper modelMapper) {
-        this.manualTransactionRepository = manualTransactionRepository;
-        this.manualTransactionHelper = manualTransactionHelper;
-        this.userHelper = userHelper;
-        this.accountHelper = accountHelper;
-        this.modelMapper = modelMapper;
-    }
+  private final ManualTransactionRepository manualTransactionRepository;
+  private final ManualTransactionHelper manualTransactionHelper;
+  private final UserHelper userHelper;
+  private final ManualAccountHelper accountHelper;
+  private final ModelMapper modelMapper;
 
-    @Override
-    public List<ManualTransactionResponseDTO> getManualTransactions(Long id) {
-        return manualTransactionRepository.findAllByManualAccountId(id)
-                .stream()
-                .map(manualTransaction -> modelMapper.map(manualTransaction, ManualTransactionResponseDTO.class))
-                .toList();
-    }
+  public ManualTransactionServiceImpl(ManualTransactionRepository manualTransactionRepository,
+      ManualTransactionHelper manualTransactionHelper,
+      UserHelper userHelper,
+      ManualAccountHelper accountHelper,
+      ModelMapper modelMapper) {
+    this.manualTransactionRepository = manualTransactionRepository;
+    this.manualTransactionHelper = manualTransactionHelper;
+    this.userHelper = userHelper;
+    this.accountHelper = accountHelper;
+    this.modelMapper = modelMapper;
+  }
 
-    @Override
-    @Transactional
-    public ManualTransactionResponseDTO createManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO) {
-        User user = userHelper.getUser();
-        ManualAccount account = accountHelper.getAccount(id);
+  @Override
+  public List<ManualTransactionResponseDTO> getManualTransactions(Long id) {
+    return manualTransactionRepository.findAllByManualAccountId(id)
+        .stream()
+        .map(manualTransaction -> modelMapper.map(manualTransaction,
+            ManualTransactionResponseDTO.class))
+        .toList();
+  }
 
-        accountHelper.assertAccountOwnership(user, account);
+  @Override
+  @Transactional
+  public ManualTransactionResponseDTO createManualTransaction(Long id,
+      CreateManualTransactionDTO manualTransactionDTO) {
+    User user = userHelper.getUser();
+    ManualAccount account = accountHelper.getAccount(id);
 
-        ManualTransaction manualTransaction = modelMapper.map(manualTransactionDTO, ManualTransaction.class);
-        manualTransaction.setManualAccount(account);
+    accountHelper.assertAccountOwnership(user, account);
 
-        account.setBalance(account.getBalance().subtract(manualTransaction.getAmount()));
+    ManualTransaction manualTransaction = modelMapper.map(manualTransactionDTO,
+        ManualTransaction.class);
+    manualTransaction.setManualAccount(account);
 
-        return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);
-    }
+    account.setBalance(account.getBalance().subtract(manualTransaction.getAmount()));
 
-    @Override
-    @Transactional
-    public ManualTransactionResponseDTO updateManualTransaction(Long id, CreateManualTransactionDTO manualTransactionDTO) {
-        User user = userHelper.getUser();
-        ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(id);
+    return modelMapper.map(manualTransactionRepository.save(manualTransaction),
+        ManualTransactionResponseDTO.class);
+  }
 
-        manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
+  @Override
+  @Transactional
+  public ManualTransactionResponseDTO updateManualTransaction(Long id,
+      CreateManualTransactionDTO manualTransactionDTO) {
+    User user = userHelper.getUser();
+    ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(id);
 
-        modelMapper.map(manualTransactionDTO, manualTransaction);
-        return modelMapper.map(manualTransactionRepository.save(manualTransaction), ManualTransactionResponseDTO.class);
-    }
+    manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
 
-    @Override
-    public void deleteManualTransaction(Long transactionId) {
-        User user = userHelper.getUser();
-        ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(transactionId);
+    modelMapper.map(manualTransactionDTO, manualTransaction);
+    return modelMapper.map(manualTransactionRepository.save(manualTransaction),
+        ManualTransactionResponseDTO.class);
+  }
 
-        manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
-        manualTransactionRepository.delete(manualTransaction);
-    }
+  @Override
+  public void deleteManualTransaction(Long transactionId) {
+    User user = userHelper.getUser();
+    ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(
+        transactionId);
+
+    manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
+    manualTransactionRepository.delete(manualTransaction);
+  }
 }

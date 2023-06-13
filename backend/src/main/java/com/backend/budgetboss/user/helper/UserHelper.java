@@ -9,16 +9,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserHelper {
-    private final UserRepository userRepository;
 
-    public UserHelper(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  private final UserRepository userRepository;
 
-    public User getUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  public UserHelper(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-        return userRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + authentication.getName()));
-    }
+  public User getUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    return userRepository.findByEmail(authentication.getName())
+        .orElseThrow(() -> new UsernameNotFoundException(
+            "User not found with email: " + authentication.getName()));
+  }
 }
