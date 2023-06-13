@@ -7,7 +7,7 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
     const [selectedAccount, setSelectedAccount] = useState(null);
     const { mergeAccounts } = useAccounts();
 
-    const accounts = mergeAccounts(linkedCash, manualData.cash, "cash");
+    const institutions = mergeAccounts(linkedCash, manualData.cash, "cash");
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
@@ -49,7 +49,7 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
 
     return (
         <AccountsList
-            accounts={accounts}
+            institutions={institutions}
             selectedAccount={selectedAccount}
             handleAccountClick={handleAccountClick}
             handleAccountTransactionsClick={handleAccountTransactionsClick}

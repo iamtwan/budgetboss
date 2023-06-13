@@ -27,11 +27,15 @@ export const fetchManualAccounts = () => {
 };
 
 export const createLinkToken = (tokenData) => {
-    return axios.post(`${API_BASE_URL}/tokens`, tokenData, { withCredentials: true });
+    return axios.post(`${API_BASE_URL}/tokens/exchange`, tokenData, { withCredentials: true });
 };
 
 export const fetchLinkToken = () => {
-    return axios.get(`${API_BASE_URL}/tokens`, { withCredentials: true });
+    return axios.post(`${API_BASE_URL}/tokens`, {}, { withCredentials: true });
+}
+
+export const updateItem = (id) => {
+    return axios.post(`${API_BASE_URL}/tokens/${id}`, {}, { withCredentials: true });
 }
 
 export const fetchLinkedTransactions = (accountId) => {
