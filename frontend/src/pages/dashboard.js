@@ -1,4 +1,5 @@
-import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css'; // development
+// import 'bootstrap/dist/css/bootstrap.min.css'; // production
 import withAuth from '../components/Authentication/ProtectedRoute';
 import DashboardPage from '../components/Dashboard/DashboardPage';
 import Logout from '../components/Authentication/Logout';

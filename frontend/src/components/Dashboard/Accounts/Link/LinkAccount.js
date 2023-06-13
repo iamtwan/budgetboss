@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePlaidLink } from 'react-plaid-link';
-import { createLinkToken } from '../../../services/apiService';
-import { fetchAccounts } from '../../../utils/accountUtils';
+import { createLinkToken } from '../../../../services/apiService';
+import { fetchAccounts } from '../../../../utils/accountUtils';
 
 export const LinkAccount = ({
     linkToken,
