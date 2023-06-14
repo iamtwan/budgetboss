@@ -18,7 +18,7 @@ const useAccounts = () => {
         investment: [],
     });
 
-    const mergeAccounts = (linkedAccounts, manualAccountsData, accountType) => {
+    const mergeAccounts = (linkedAccounts, manualAccountsData) => {
         const mergedAccounts = {};
 
         linkedAccounts.forEach(institution => {
@@ -50,7 +50,7 @@ const useAccounts = () => {
                 accounts: []
             };
 
-            mergedAccounts[key].id = institution.id
+            mergedAccounts[key].id = institution.name;
 
             institution.accounts.forEach(account => {
                 mergedAccounts[key].accounts.push({

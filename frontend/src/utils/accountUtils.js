@@ -29,7 +29,7 @@ export const fetchAccounts = async (
             ...manualData,
             institutions: [...filteredManualAccounts],
             accounts: [...filteredManualAccounts],
-            cash: filterManualAccounts(filteredManualAccounts, 'CASH'),
+            cash: filterManualAccounts(filteredManualAccounts, 'DEPOSITORY'),
             credit: filterManualAccounts(filteredManualAccounts, 'CREDIT'),
             investment: filterManualAccounts(filteredManualAccounts, 'INVESTMENT'),
         });
