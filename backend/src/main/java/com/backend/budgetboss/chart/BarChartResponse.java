@@ -2,17 +2,17 @@ package com.backend.budgetboss.chart;
 
 import java.time.Month;
 
-public class ChartResponse {
+public class BarChartResponse {
 
   public Month month;
-  public Double balance;
+  public Double netBalance;
 
-  public ChartResponse() {
+  public BarChartResponse() {
   }
 
-  public ChartResponse(Month month, Double balance) {
+  public BarChartResponse(Month month, Double netBalance) {
     this.month = month;
-    this.balance = balance;
+    this.netBalance = netBalance;
   }
 
   public Month getMonth() {
@@ -23,19 +23,19 @@ public class ChartResponse {
     this.month = month;
   }
 
-  public Double getBalance() {
-    return balance;
+  public Double getNetBalance() {
+    return netBalance;
   }
 
-  public void setBalance(Double balance) {
-    this.balance = balance;
+  public void setNetBalance(Double netBalance) {
+    this.netBalance = netBalance;
   }
 
   @Override
   public String toString() {
     return "ChartResponse{" +
         "month=" + month +
-        ", balance=" + balance +
+        ", netBalance=" + netBalance +
         '}';
   }
 }

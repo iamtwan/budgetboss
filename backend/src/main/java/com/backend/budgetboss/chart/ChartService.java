@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ChartService {
 
-  List<ChartResponse> getChartData(User user);
+  List<BarChartResponse> getBarChartData(User user);
 
-  Map<String, ChartTransactionsResponse> getTransactionsForMonth(User user, Month month);
+  BarChartMonthlyResponse getBarChartMonthlyData(User user, Month month);
 }

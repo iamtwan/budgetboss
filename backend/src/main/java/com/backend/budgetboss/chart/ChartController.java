@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Month;
 import java.util.List;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -27,25 +26,25 @@ public class ChartController {
     this.chartService = chartService;
   }
 
-  @GetMapping
-  @Operation(summary = "Get the past 6 months of transaction data", description = "Get the past 6 months of transaction data")
-  public ResponseEntity<List<ChartResponse>> getChartData(
+  @GetMapping("/bar")
+  @Operation(summary = "Get the past 6 months of transaction data", description = "Get the past 6 months of transaction data for bar chart")
+  public ResponseEntity<List<BarChartResponse>> getBarChartData(
       @AuthenticationPrincipal UserPrinciple principle) {
-    logger.info("/api/charts GET request received");
-    List<ChartResponse> charts = chartService.getChartData(principle.getUser());
-    logger.info("/api/charts got all data: {}", charts.size());
+    logger.info("/api/charts/bar GET request received");
+    List<BarChartResponse> charts = chartService.getBarChartData(principle.getUser());
+    logger.info("/api/charts/bar got all data: {}", charts.size());
     return ResponseEntity.ok(charts);
   }
 
-  @GetMapping("/{month}")
-  @Operation(summary = "Get all transactions for the given month", description = "Get all transactions for the given month")
-  public ResponseEntity<Map<String, ChartTransactionsResponse>> getTransactionsForMonth(
+  @GetMapping("/bar/{month}")
+  @Operation(summary = "Get monthly data", description = "Get the monthly data for the given month")
+  public ResponseEntity<BarChartMonthlyResponse> getBarChartMonthlyData(
       @AuthenticationPrincipal UserPrinciple principle,
       @PathVariable Month month) {
-    logger.info("/api/charts/{month} GET request received");
-    Map<String, ChartTransactionsResponse> response = chartService
-        .getTransactionsForMonth(principle.getUser(), month);
-    logger.info("/api/charts/{month} got all transactions: {}", response.size());
+    logger.info("/api/charts/bar/{month} GET request received");
+    BarChartMonthlyResponse response = chartService
+        .getBarChartMonthlyData(principle.getUser(), month);
+    logger.info("/api/charts/bar/{month} got data: {}", response);
     return ResponseEntity.ok(response);
   }
 }

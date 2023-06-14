@@ -5,15 +5,15 @@ import com.backend.budgetboss.transaction.dto.TransactionResponseDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChartTransactionsResponse {
+public class PieChartMonthlyResponse {
 
   private List<TransactionResponseDTO> transactions = new ArrayList<>();
   private List<ManualTransactionResponseDTO> manualTransactions = new ArrayList<>();
 
-  public ChartTransactionsResponse() {
+  public PieChartMonthlyResponse() {
   }
 
-  public ChartTransactionsResponse(List<TransactionResponseDTO> transactions,
+  public PieChartMonthlyResponse(List<TransactionResponseDTO> transactions,
       List<ManualTransactionResponseDTO> manualTransactions) {
     this.transactions = transactions;
     this.manualTransactions = manualTransactions;
@@ -37,9 +37,9 @@ public class ChartTransactionsResponse {
 
   @Override
   public String toString() {
-    return "ChartTransactionsResponse{" +
-        "transactions=" + transactions.size() +
-        ", manualTransactions=" + manualTransactions.size() +
+    return "PieChartMonthlyResponse{" +
+        "transactions=" + transactions +
+        ", manualTransactions=" + manualTransactions +
         '}';
   }
 }
