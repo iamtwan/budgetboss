@@ -32,8 +32,11 @@ const TransactionForm = ({ show, account, onClose, onSubmit, transaction, isEdit
 	};
 
 	const handleTransactionCategoryChange = (e) => {
-		setTransactionCategory(e.target.value);
+		const inputValue = e.target.value;
+		const cleanedValue = inputValue.trim().split(' ')[0];
+		setTransactionCategory(cleanedValue);
 	};
+
 
 	const handleTransactionTypeChange = (e) => {
 		setTransactionType(e.target.value);
@@ -112,13 +115,14 @@ const TransactionForm = ({ show, account, onClose, onSubmit, transaction, isEdit
 						/>
 					</Form.Group>
 					<Form.Group controlId="transactionCategory">
-						<Form.Label className="mt-2">Category (optional)</Form.Label>
+						<Form.Label className="mt-2">Category</Form.Label>
 						<Form.Control
 							type="text"
-							placeholder="e.g. Food, Restaurant, Entertainment"
+							placeholder="e.g. Food, Bills, Entertainment"
 							value={transactionCategory}
 							onChange={handleTransactionCategoryChange}
-							maxLength="20"
+							maxLength="15"
+							required
 						/>
 					</Form.Group>
 					<div className="d-flex justify-content-center">

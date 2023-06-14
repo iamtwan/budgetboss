@@ -57,7 +57,7 @@ const TransactionListModal = ({ account, onClose, manualData, setManualData, typ
             const response = await createManualTransaction(account.id, formData);
 
             const newManualData = manualData[type].map(institution => {
-                if (institution.id === account.institutionId) {
+                if (institution.name === account.institutionId) {
                     return {
                         ...institution,
                         accounts: institution.accounts.map(acc => {
