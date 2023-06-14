@@ -91,7 +91,7 @@ const AddAccountForm = ({ show, manualInstitutions, onClose, onSubmitSuccess }) 
                         <Form.Label>Account Type</Form.Label>
                         <Form.Select value={selectedAccountType} onChange={handleAccountTypeChange} required>
                             <option value="">Select an account type</option>
-                            <option value="Cash">Cash</option>
+                            <option value="Depository">Cash</option>
                             <option value="Credit">Credit</option>
                             <option value="Investment">Investment</option>
                         </Form.Select>
