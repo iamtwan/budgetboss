@@ -3,11 +3,12 @@ import withAuth from '../Authentication/ProtectedRoute';
 import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsPage';
 import CashAccountsPage from './Accounts/AccountPages/CashAccountsPage';
 import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsPage';
-import BudgetChart from './Budget/BudgetChart';
+import BudgetPage from './Budget/BudgetSection';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import { LinkAccount } from './Accounts/Link/LinkAccount';
 import useAccounts from '../../hooks/useAccounts';
+import { Button } from 'react-bootstrap';
 
 import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';
 
@@ -76,24 +77,28 @@ const DashboardPage = () => {
             <div className="container-lg border rounded m-2 pb-4">
                 <div className="d-flex justify-content-evenly p-0 m-2 h-50">
                     <div className="container border m-2 d-flex flex-column">
-                        <div className="d-inline-flex align-items-center">
-                            <h3 className="me-2">Accounts</h3>
-                            {linkToken && <LinkAccount
-                                linkToken={linkToken}
-                                generateToken={generateToken}
-                                fetchAccounts={fetchAccounts}
-                                setIsLoading={setIsLoading}
-                                setLinkedCashAccounts={setLinkedCashAccounts}
-                                setLinkedCreditAccounts={setLinkedCreditAccounts}
-                                setInvestmentAccounts={setInvestmentAccounts}
-                                setLinkedInstitutions={setLinkedInstitutions}
-                                setManualData={setManualData}
-                                setError={setError}
-                                manualData={manualData}
-                            />}
-                            <button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
-                                Add Account
-                            </button>
+                        <div className="d-inline-flex d-flex justify-content-center align-items-center pb-0">
+                            <div className="mt-2">
+                                <h3 className="me-2 text-uppercase fw-bold d-inline-flex">Accounts</h3>
+                            </div>
+                            <div>
+                                {linkToken && <LinkAccount
+                                    linkToken={linkToken}
+                                    generateToken={generateToken}
+                                    fetchAccounts={fetchAccounts}
+                                    setIsLoading={setIsLoading}
+                                    setLinkedCashAccounts={setLinkedCashAccounts}
+                                    setLinkedCreditAccounts={setLinkedCreditAccounts}
+                                    setInvestmentAccounts={setInvestmentAccounts}
+                                    setLinkedInstitutions={setLinkedInstitutions}
+                                    setManualData={setManualData}
+                                    setError={setError}
+                                    manualData={manualData}
+                                />}
+                                <Button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
+                                    Add Account
+                                </Button>
+                            </div>
                         </div>
                         <div className="row h-100">
                             <CashAccountsPage
@@ -120,14 +125,13 @@ const DashboardPage = () => {
                 </div>
                 <div className="d-flex justify-content-evenly p-0 m-2 h-50">
                     <div className="container border m-2 h-100">
-                        <h3>Budget</h3>
+                        <h3 className="text-center text-uppercase fw-bold">Budget</h3>
                         <div className="h-100">
-                            <BudgetChart />
-                            {/* <BudgetChart dataset={dataset} /> */}
+                            <BudgetPage />
                         </div>
                     </div>
                     <div className="container border m-2">
-                        <h3>Goals</h3>
+                        <h3 className="text-center text-uppercase fw-bold">Goals</h3>
                     </div>
                 </div>
             </div>
