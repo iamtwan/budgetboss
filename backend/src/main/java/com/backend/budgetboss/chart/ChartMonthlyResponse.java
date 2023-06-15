@@ -1,46 +1,47 @@
 package com.backend.budgetboss.chart;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ChartMonthlyResponse {
 
-  private double totalDeposits;
-  private double totalExpenses;
-  private double netBalance;
-  private Map<String, Double> categories = new HashMap<>();
+  private BigDecimal totalDeposits;
+  private BigDecimal totalExpenses;
+  private BigDecimal netBalance;
+  private Map<String, BigDecimal> categories = new HashMap<>();
   private Map<String, List<MonthlyTransactionResponse>> accounts = new HashMap<>();
 
-  public double getTotalDeposits() {
+  public BigDecimal getTotalDeposits() {
     return totalDeposits;
   }
 
-  public void setTotalDeposits(double totalDeposits) {
+  public void setTotalDeposits(BigDecimal totalDeposits) {
     this.totalDeposits = totalDeposits;
   }
 
-  public double getTotalExpenses() {
+  public BigDecimal getTotalExpenses() {
     return totalExpenses;
   }
 
-  public void setTotalExpenses(double totalExpenses) {
+  public void setTotalExpenses(BigDecimal totalExpenses) {
     this.totalExpenses = totalExpenses;
   }
 
-  public double getNetBalance() {
+  public BigDecimal getNetBalance() {
     return netBalance;
   }
 
-  public void setNetBalance(double netBalance) {
+  public void setNetBalance(BigDecimal netBalance) {
     this.netBalance = netBalance;
   }
 
-  public Map<String, Double> getCategories() {
+  public Map<String, BigDecimal> getCategories() {
     return categories;
   }
 
-  public void setCategories(Map<String, Double> categories) {
+  public void setCategories(Map<String, BigDecimal> categories) {
     this.categories = categories;
   }
 

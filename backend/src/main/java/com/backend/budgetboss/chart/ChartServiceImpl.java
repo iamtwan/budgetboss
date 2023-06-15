@@ -7,6 +7,7 @@ import com.backend.budgetboss.transaction.TransactionEntity;
 import com.backend.budgetboss.transaction.TransactionRepository;
 import com.backend.budgetboss.user.User;
 import com.plaid.client.model.AccountType;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -37,17 +38,17 @@ public class ChartServiceImpl implements ChartService {
     LocalDate startDate = getStartDate();
     LocalDate endDate = startDate.plusMonths(5);
     endDate = endDate.withDayOfMonth(endDate.lengthOfMonth());
-    
+
     List<TransactionEntity> transactions = transactionRepository
         .findByAccount_Item_UserAndDateBetween(user, startDate, endDate);
 
     List<ManualTransaction> manualTransactions = manualTransactionRepository
         .findByManualAccount_ManualInstitution_UserAndDateBetween(user, startDate, endDate);
 
-    Map<Month, Double> monthlyTransactions = new LinkedHashMap<>();
+    Map<Month, BigDecimal> monthlyTransactions = new LinkedHashMap<>();
 
     for (int i = 0; i < 6; i++) {
-      monthlyTransactions.put(startDate.getMonth(), 0.0);
+      monthlyTransactions.put(startDate.getMonth(), BigDecimal.ZERO);
       startDate = startDate.plusMonths(1);
     }
 
@@ -55,20 +56,20 @@ public class ChartServiceImpl implements ChartService {
       Month month = transaction.getDate().getMonth();
       AccountType type = transaction.getAccount().getType();
 
-      double amount = transaction.getAmount();
-      amount *= type.toString().equals("credit") ? 1 : -1;
+      BigDecimal amount = transaction.getAmount();
+      amount = type.toString().equals("credit") ? amount : amount.negate();
 
-      monthlyTransactions.merge(month, amount, Double::sum);
+      monthlyTransactions.merge(month, amount, BigDecimal::add);
     }
 
     for (ManualTransaction transaction : manualTransactions) {
       Month month = transaction.getDate().getMonth();
       ManualAccountType type = transaction.getManualAccount().getType();
 
-      double amount = transaction.getAmount().doubleValue();
-      amount *= type.toString().equals("credit") ? 1 : -1;
+      BigDecimal amount = transaction.getAmount();
+      amount = type.toString().equals("credit") ? amount : amount.negate();
 
-      monthlyTransactions.merge(month, amount, Double::sum);
+      monthlyTransactions.merge(month, amount, BigDecimal::add);
     }
 
     return monthlyTransactions.entrySet().stream()
@@ -87,48 +88,48 @@ public class ChartServiceImpl implements ChartService {
     List<ManualTransaction> manualTransactions = manualTransactionRepository
         .findByManualAccount_ManualInstitution_UserAndDateBetween(user, startDate, endDate);
 
-    double totalDeposits = 0;
-    double totalExpenses = 0;
+    BigDecimal totalDeposits = BigDecimal.ZERO;
+    BigDecimal totalExpenses = BigDecimal.ZERO;
 
-    Map<String, Double> categories = new HashMap<>();
+    Map<String, BigDecimal> categories = new HashMap<>();
     Map<String, List<MonthlyTransactionResponse>> accounts = new HashMap<>();
 
     for (TransactionEntity transaction : transactions) {
       String accountName = transaction.getAccount().getName();
       String category = transaction.getCategory().toLowerCase();
-      double amount = transaction.getAmount();
+      BigDecimal amount = transaction.getAmount();
 
       accounts.putIfAbsent(accountName, new ArrayList<>());
       accounts.get(accountName).add(modelMapper.map(transaction, MonthlyTransactionResponse.class));
 
-      if (amount >= 0) {
-        totalExpenses += amount;
-        categories.merge(category, amount, Double::sum);
+      if (amount.compareTo(BigDecimal.ZERO) >= 0) {
+        totalExpenses = totalExpenses.add(amount);
+        categories.merge(category, amount, BigDecimal::add);
       } else {
-        totalDeposits += Math.abs(amount);
+        totalDeposits = totalDeposits.add(amount.abs());
       }
     }
 
     for (ManualTransaction transaction : manualTransactions) {
       String accountName = transaction.getManualAccount().getName();
       String category = transaction.getCategory().toLowerCase();
-      double amount = transaction.getAmount().doubleValue();
+      BigDecimal amount = transaction.getAmount();
 
       accounts.putIfAbsent(accountName, new ArrayList<>());
       accounts.get(accountName).add(modelMapper.map(transaction, MonthlyTransactionResponse.class));
 
-      if (amount >= 0) {
-        totalExpenses += amount;
-        categories.merge(category, amount, Double::sum);
+      if (amount.compareTo(BigDecimal.ZERO) >= 0) {
+        totalExpenses = totalExpenses.add(amount);
+        categories.merge(category, amount, BigDecimal::add);
       } else {
-        totalDeposits += Math.abs(amount);
+        totalDeposits = totalDeposits.add(amount.abs());
       }
     }
 
     ChartMonthlyResponse response = new ChartMonthlyResponse();
     response.setTotalDeposits(totalDeposits);
     response.setTotalExpenses(totalExpenses);
-    response.setNetBalance(totalDeposits - totalExpenses);
+    response.setNetBalance(totalDeposits.subtract(totalExpenses));
     response.setCategories(categories);
     response.setAccounts(accounts);
 

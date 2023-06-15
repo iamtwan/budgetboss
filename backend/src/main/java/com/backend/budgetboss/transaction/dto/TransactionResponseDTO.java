@@ -1,6 +1,7 @@
 package com.backend.budgetboss.transaction.dto;
 
 import com.plaid.client.model.PersonalFinanceCategory;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public class TransactionResponseDTO {
 
   private Long id;
-  private Double amount;
+  private BigDecimal amount;
   private String isoCurrencyCode;
   private String category;
   private LocalDate date;
@@ -25,11 +26,11 @@ public class TransactionResponseDTO {
     this.id = id;
   }
 
-  public Double getAmount() {
+  public BigDecimal getAmount() {
     return amount;
   }
 
-  public void setAmount(Double amount) {
+  public void setAmount(BigDecimal amount) {
     this.amount = amount;
   }
 

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class TransactionEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private Double amount;
+  private BigDecimal amount;
   private String isoCurrencyCode;
   private String category;
   private LocalDate date;
@@ -38,7 +39,7 @@ public class TransactionEntity {
   }
 
   public TransactionEntity(Transaction transaction, Account account) {
-    this.amount = transaction.getAmount();
+    this.amount = BigDecimal.valueOf(transaction.getAmount());
     this.isoCurrencyCode = transaction.getIsoCurrencyCode();
     this.date = transaction.getDate();
     this.name = transaction.getName();
@@ -60,11 +61,11 @@ public class TransactionEntity {
     this.id = id;
   }
 
-  public Double getAmount() {
+  public BigDecimal getAmount() {
     return amount;
   }
 
-  public void setAmount(Double amount) {
+  public void setAmount(BigDecimal amount) {
     this.amount = amount;
   }
 

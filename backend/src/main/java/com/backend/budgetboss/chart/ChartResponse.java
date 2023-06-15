@@ -1,16 +1,17 @@
 package com.backend.budgetboss.chart;
 
+import java.math.BigDecimal;
 import java.time.Month;
 
 public class ChartResponse {
 
   public Month month;
-  public Double netBalance;
+  public BigDecimal netBalance;
 
   public ChartResponse() {
   }
 
-  public ChartResponse(Month month, Double netBalance) {
+  public ChartResponse(Month month, BigDecimal netBalance) {
     this.month = month;
     this.netBalance = netBalance;
   }
@@ -23,11 +24,11 @@ public class ChartResponse {
     this.month = month;
   }
 
-  public Double getNetBalance() {
+  public BigDecimal getNetBalance() {
     return netBalance;
   }
 
-  public void setNetBalance(Double netBalance) {
+  public void setNetBalance(BigDecimal netBalance) {
     this.netBalance = netBalance;
   }
 

@@ -1,11 +1,12 @@
 package com.backend.budgetboss.chart;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class MonthlyTransactionResponse {
   private Long id;
   private String name;
-  private Double amount;
+  private BigDecimal amount;
   private LocalDate date;
   private String category;
 
@@ -25,11 +26,11 @@ public class MonthlyTransactionResponse {
     this.name = name;
   }
 
-  public Double getAmount() {
+  public BigDecimal getAmount() {
     return amount;
   }
 
-  public void setAmount(Double amount) {
+  public void setAmount(BigDecimal amount) {
     this.amount = amount;
   }
 
