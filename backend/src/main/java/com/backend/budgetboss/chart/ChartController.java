@@ -26,25 +26,24 @@ public class ChartController {
     this.chartService = chartService;
   }
 
-  @GetMapping("/bar")
-  @Operation(summary = "Get the past 6 months of transaction data", description = "Get the past 6 months of transaction data for bar chart")
-  public ResponseEntity<List<BarChartResponse>> getBarChartData(
+  @GetMapping
+  @Operation(summary = "Get the past 6 months of transaction data", description = "Get the past 6 months of transaction data.")
+  public ResponseEntity<List<ChartResponse>> getChartData(
       @AuthenticationPrincipal UserPrinciple principle) {
-    logger.info("/api/charts/bar GET request received");
-    List<BarChartResponse> charts = chartService.getBarChartData(principle.getUser());
-    logger.info("/api/charts/bar got all data: {}", charts.size());
+    logger.info("/api/charts GET request received");
+    List<ChartResponse> charts = chartService.getChartData(principle.getUser());
+    logger.info("/api/charts got all data: {}", charts.size());
     return ResponseEntity.ok(charts);
   }
 
-  @GetMapping("/bar/{month}")
+  @GetMapping("/{month}")
   @Operation(summary = "Get monthly data", description = "Get the monthly data for the given month")
-  public ResponseEntity<BarChartMonthlyResponse> getBarChartMonthlyData(
+  public ResponseEntity<ChartMonthlyResponse> getChartMonthlyData(
       @AuthenticationPrincipal UserPrinciple principle,
       @PathVariable Month month) {
-    logger.info("/api/charts/bar/{month} GET request received");
-    BarChartMonthlyResponse response = chartService
-        .getBarChartMonthlyData(principle.getUser(), month);
-    logger.info("/api/charts/bar/{month} got data: {}", response);
+    logger.info("/api/charts/{} GET request received", month);
+    ChartMonthlyResponse response = chartService.getChartMonthlyData(principle.getUser(), month);
+    logger.info("/api/charts/{} got data: {}", month, response);
     return ResponseEntity.ok(response);
   }
 }

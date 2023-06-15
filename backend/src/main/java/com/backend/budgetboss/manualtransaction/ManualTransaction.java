@@ -35,7 +35,8 @@ public class ManualTransaction {
   @NotNull(message = "Amount is required")
   private BigDecimal amount;
 
-  private List<String> category = new ArrayList<>();
+  @NotBlank(message = "Category is required")
+  private String category;
 
   @ManyToOne
   @JoinColumn(name = "manual_account_id")
@@ -73,11 +74,11 @@ public class ManualTransaction {
     this.amount = amount;
   }
 
-  public List<String> getCategory() {
+  public String getCategory() {
     return category;
   }
 
-  public void setCategory(List<String> category) {
+  public void setCategory(String category) {
     this.category = category;
   }
 
@@ -91,12 +92,12 @@ public class ManualTransaction {
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     ManualTransaction that = (ManualTransaction) o;
     return Objects.equals(id, that.id);
   }

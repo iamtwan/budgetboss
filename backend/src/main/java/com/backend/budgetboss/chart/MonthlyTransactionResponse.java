@@ -1,16 +1,12 @@
-package com.backend.budgetboss.manualtransaction.dto;
+package com.backend.budgetboss.chart;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ManualTransactionResponseDTO {
-
+public class MonthlyTransactionResponse {
   private Long id;
   private String name;
+  private Double amount;
   private LocalDate date;
-  private BigDecimal amount;
   private String category;
 
   public Long getId() {
@@ -29,20 +25,20 @@ public class ManualTransactionResponseDTO {
     this.name = name;
   }
 
+  public Double getAmount() {
+    return amount;
+  }
+
+  public void setAmount(Double amount) {
+    this.amount = amount;
+  }
+
   public LocalDate getDate() {
     return date;
   }
 
   public void setDate(LocalDate date) {
     this.date = date;
-  }
-
-  public BigDecimal getAmount() {
-    return amount;
-  }
-
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
   }
 
   public String getCategory() {
@@ -55,12 +51,12 @@ public class ManualTransactionResponseDTO {
 
   @Override
   public String toString() {
-    return "ManualTransactionResponseDTO{" +
+    return "MonthlyTransactionResponse{" +
         "id=" + id +
         ", name='" + name + '\'' +
-        ", date=" + date +
         ", amount=" + amount +
-        ", category=" + category +
+        ", date=" + date +
+        ", category='" + category + '\'' +
         '}';
   }
 }

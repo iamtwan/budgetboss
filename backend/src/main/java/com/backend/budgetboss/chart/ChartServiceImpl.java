@@ -9,6 +9,8 @@ import com.backend.budgetboss.user.User;
 import com.plaid.client.model.AccountType;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +33,11 @@ public class ChartServiceImpl implements ChartService {
   }
 
   @Override
-  public List<BarChartResponse> getBarChartData(User user) {
-    LocalDate startDate = getStartDate(5);
-    LocalDate endDate = startDate.plusMonths(6);
-
+  public List<ChartResponse> getChartData(User user) {
+    LocalDate startDate = getStartDate();
+    LocalDate endDate = startDate.plusMonths(5);
+    endDate = endDate.withDayOfMonth(endDate.lengthOfMonth());
+    
     List<TransactionEntity> transactions = transactionRepository
         .findByAccount_Item_UserAndDateBetween(user, startDate, endDate);
 
@@ -69,14 +72,14 @@ public class ChartServiceImpl implements ChartService {
     }
 
     return monthlyTransactions.entrySet().stream()
-        .map(entry -> new BarChartResponse(entry.getKey(), entry.getValue()))
+        .map(entry -> new ChartResponse(entry.getKey(), entry.getValue()))
         .toList();
   }
 
   @Override
-  public BarChartMonthlyResponse getBarChartMonthlyData(User user, Month month) {
+  public ChartMonthlyResponse getChartMonthlyData(User user, Month month) {
     LocalDate startDate = getStartDate(month);
-    LocalDate endDate = startDate.plusMonths(1);
+    LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
     List<TransactionEntity> transactions = transactionRepository
         .findByAccount_Item_UserAndDateBetween(user, startDate, endDate);
@@ -87,52 +90,47 @@ public class ChartServiceImpl implements ChartService {
     double totalDeposits = 0;
     double totalExpenses = 0;
 
-    for (TransactionEntity transaction : transactions) {
-      AccountType type = transaction.getAccount().getType();
+    Map<String, Double> categories = new HashMap<>();
+    Map<String, List<MonthlyTransactionResponse>> accounts = new HashMap<>();
 
+    for (TransactionEntity transaction : transactions) {
+      String accountName = transaction.getAccount().getName();
+      String category = transaction.getCategory().toLowerCase();
       double amount = transaction.getAmount();
-      double absoluteAmount = Math.abs(amount);
+
+      accounts.putIfAbsent(accountName, new ArrayList<>());
+      accounts.get(accountName).add(modelMapper.map(transaction, MonthlyTransactionResponse.class));
 
       if (amount >= 0) {
-        if (type.equals(AccountType.CREDIT)) {
-          totalDeposits += amount;
-        } else {
-          totalExpenses += amount;
-        }
+        totalExpenses += amount;
+        categories.merge(category, amount, Double::sum);
       } else {
-        if (type.equals(AccountType.CREDIT)) {
-          totalExpenses += absoluteAmount;
-        } else {
-          totalDeposits += absoluteAmount;
-        }
+        totalDeposits += Math.abs(amount);
       }
     }
 
     for (ManualTransaction transaction : manualTransactions) {
-      ManualAccountType type = transaction.getManualAccount().getType();
-
+      String accountName = transaction.getManualAccount().getName();
+      String category = transaction.getCategory().toLowerCase();
       double amount = transaction.getAmount().doubleValue();
-      double absoluteAmount = Math.abs(amount);
+
+      accounts.putIfAbsent(accountName, new ArrayList<>());
+      accounts.get(accountName).add(modelMapper.map(transaction, MonthlyTransactionResponse.class));
 
       if (amount >= 0) {
-        if (type.equals(ManualAccountType.CREDIT)) {
-          totalExpenses += amount;
-        } else {
-          totalDeposits += amount;
-        }
+        totalExpenses += amount;
+        categories.merge(category, amount, Double::sum);
       } else {
-        if (type.equals(ManualAccountType.CREDIT)) {
-          totalDeposits += absoluteAmount;
-        } else {
-          totalExpenses += absoluteAmount;
-        }
+        totalDeposits += Math.abs(amount);
       }
     }
 
-    BarChartMonthlyResponse response = new BarChartMonthlyResponse();
+    ChartMonthlyResponse response = new ChartMonthlyResponse();
     response.setTotalDeposits(totalDeposits);
     response.setTotalExpenses(totalExpenses);
     response.setNetBalance(totalDeposits - totalExpenses);
+    response.setCategories(categories);
+    response.setAccounts(accounts);
 
     return response;
   }
@@ -170,9 +168,9 @@ public class ChartServiceImpl implements ChartService {
 //    return response;
 //  }
 
-  private LocalDate getStartDate(int months) {
+  private LocalDate getStartDate(Month month) {
     LocalDate today = LocalDate.now();
-    LocalDate startDate = LocalDate.of(today.getYear(), today.minusMonths(months).getMonth(), 1);
+    LocalDate startDate = LocalDate.of(today.getYear(), month, 1);
 
     if (startDate.isAfter(today)) {
       startDate = startDate.minusYears(1);
@@ -181,7 +179,7 @@ public class ChartServiceImpl implements ChartService {
     return startDate;
   }
 
-  private LocalDate getStartDate(Month month) {
-    return getStartDate(0);
+  private LocalDate getStartDate() {
+    return getStartDate(LocalDate.now().minusMonths(5).getMonth());
   }
 }

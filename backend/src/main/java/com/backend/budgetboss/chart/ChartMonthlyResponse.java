@@ -1,9 +1,16 @@
 package com.backend.budgetboss.chart;
 
-public class BarChartMonthlyResponse {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ChartMonthlyResponse {
+
   private double totalDeposits;
   private double totalExpenses;
   private double netBalance;
+  private Map<String, Double> categories = new HashMap<>();
+  private Map<String, List<MonthlyTransactionResponse>> accounts = new HashMap<>();
 
   public double getTotalDeposits() {
     return totalDeposits;
@@ -29,12 +36,30 @@ public class BarChartMonthlyResponse {
     this.netBalance = netBalance;
   }
 
+  public Map<String, Double> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(Map<String, Double> categories) {
+    this.categories = categories;
+  }
+
+  public Map<String, List<MonthlyTransactionResponse>> getAccounts() {
+    return accounts;
+  }
+
+  public void setAccounts(Map<String, List<MonthlyTransactionResponse>> accounts) {
+    this.accounts = accounts;
+  }
+
   @Override
   public String toString() {
-    return "BarChartMonthlyResponse{" +
+    return "ChartMonthlyResponse{" +
         "totalDeposits=" + totalDeposits +
         ", totalExpenses=" + totalExpenses +
         ", netBalance=" + netBalance +
+        ", categories=" + categories +
+        ", accounts=" + accounts +
         '}';
   }
 }

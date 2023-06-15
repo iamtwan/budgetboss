@@ -1,5 +1,6 @@
 package com.backend.budgetboss.transaction.dto;
 
+import com.plaid.client.model.PersonalFinanceCategory;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ public class TransactionResponseDTO {
   private Long id;
   private Double amount;
   private String isoCurrencyCode;
-  private List<String> category = new ArrayList<>();
+  private String category;
   private LocalDate date;
   private String name;
   private String merchantName;
@@ -40,11 +41,11 @@ public class TransactionResponseDTO {
     this.isoCurrencyCode = isoCurrencyCode;
   }
 
-  public List<String> getCategory() {
+  public String getCategory() {
     return category;
   }
 
-  public void setCategory(List<String> category) {
+  public void setCategory(String category) {
     this.category = category;
   }
 

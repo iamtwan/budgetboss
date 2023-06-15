@@ -18,7 +18,8 @@ public class CreateManualTransactionDTO {
   @NotNull(message = "Amount is required")
   private BigDecimal amount;
 
-  private List<String> category = new ArrayList<>();
+  @NotBlank(message = "Category is required")
+  private String category;
 
   public String getName() {
     return name;
@@ -44,11 +45,11 @@ public class CreateManualTransactionDTO {
     this.amount = amount;
   }
 
-  public List<String> getCategory() {
+  public String getCategory() {
     return category;
   }
 
-  public void setCategory(List<String> category) {
+  public void setCategory(String category) {
     this.category = category;
   }
 

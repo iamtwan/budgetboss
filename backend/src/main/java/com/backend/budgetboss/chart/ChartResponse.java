@@ -2,15 +2,15 @@ package com.backend.budgetboss.chart;
 
 import java.time.Month;
 
-public class BarChartResponse {
+public class ChartResponse {
 
   public Month month;
   public Double netBalance;
 
-  public BarChartResponse() {
+  public ChartResponse() {
   }
 
-  public BarChartResponse(Month month, Double netBalance) {
+  public ChartResponse(Month month, Double netBalance) {
     this.month = month;
     this.netBalance = netBalance;
   }

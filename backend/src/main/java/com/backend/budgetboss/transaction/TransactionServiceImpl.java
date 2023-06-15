@@ -11,6 +11,7 @@ import com.backend.budgetboss.user.helper.UserHelper;
 import com.plaid.client.model.RemovedTransaction;
 import com.plaid.client.model.Transaction;
 import com.plaid.client.model.TransactionsSyncRequest;
+import com.plaid.client.model.TransactionsSyncRequestOptions;
 import com.plaid.client.model.TransactionsSyncResponse;
 import com.plaid.client.request.PlaidApi;
 import java.io.IOException;
@@ -66,10 +67,14 @@ public class TransactionServiceImpl implements TransactionService {
 
     boolean hasMore = true;
 
+    TransactionsSyncRequestOptions options = new TransactionsSyncRequestOptions()
+        .includePersonalFinanceCategory(true);
+
     while (hasMore) {
       TransactionsSyncRequest request = new TransactionsSyncRequest()
           .accessToken(item.getAccessToken())
-          .cursor(cursor);
+          .cursor(cursor)
+          .options(options);
 
       Response<TransactionsSyncResponse> response = plaidApi
           .transactionsSync(request)

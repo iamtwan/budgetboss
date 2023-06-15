@@ -1,12 +1,14 @@
 package com.backend.budgetboss.manualtransaction;
 
 import com.backend.budgetboss.manualaccount.ManualAccount;
+import com.backend.budgetboss.manualaccount.ManualAccountType;
 import com.backend.budgetboss.manualaccount.helper.ManualAccountHelper;
 import com.backend.budgetboss.manualtransaction.dto.CreateManualTransactionDTO;
 import com.backend.budgetboss.manualtransaction.dto.ManualTransactionResponseDTO;
 import com.backend.budgetboss.manualtransaction.helper.ManualTransactionHelper;
 import com.backend.budgetboss.user.User;
 import com.backend.budgetboss.user.helper.UserHelper;
+import java.math.BigDecimal;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -37,8 +39,8 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
   public List<ManualTransactionResponseDTO> getManualTransactions(Long id) {
     return manualTransactionRepository.findAllByManualAccountId(id)
         .stream()
-        .map(manualTransaction -> modelMapper.map(manualTransaction,
-            ManualTransactionResponseDTO.class))
+        .map(manualTransaction -> modelMapper
+            .map(manualTransaction, ManualTransactionResponseDTO.class))
         .toList();
   }
 
@@ -51,11 +53,17 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
     accountHelper.assertAccountOwnership(user, account);
 
-    ManualTransaction manualTransaction = modelMapper.map(manualTransactionDTO,
-        ManualTransaction.class);
+    ManualTransaction manualTransaction = modelMapper
+        .map(manualTransactionDTO, ManualTransaction.class);
     manualTransaction.setManualAccount(account);
 
-    account.setBalance(account.getBalance().subtract(manualTransaction.getAmount()));
+    BigDecimal amount = manualTransaction.getAmount();
+
+    if (account.getType().equals(ManualAccountType.DEPOSITORY)) {
+      account.setBalance(account.getBalance().subtract(amount));
+    } else {
+      account.setBalance(account.getBalance().add(amount));
+    }
 
     return modelMapper.map(manualTransactionRepository.save(manualTransaction),
         ManualTransactionResponseDTO.class);

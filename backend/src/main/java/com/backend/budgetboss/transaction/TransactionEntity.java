@@ -1,6 +1,7 @@
 package com.backend.budgetboss.transaction;
 
 import com.backend.budgetboss.account.Account;
+import com.plaid.client.model.PersonalFinanceCategory;
 import com.plaid.client.model.Transaction;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,8 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,7 +22,7 @@ public class TransactionEntity {
   private Long id;
   private Double amount;
   private String isoCurrencyCode;
-  private List<String> category = new ArrayList<>();
+  private String category;
   private LocalDate date;
   private String name;
   private String merchantName;
@@ -41,7 +40,6 @@ public class TransactionEntity {
   public TransactionEntity(Transaction transaction, Account account) {
     this.amount = transaction.getAmount();
     this.isoCurrencyCode = transaction.getIsoCurrencyCode();
-    this.category = transaction.getCategory();
     this.date = transaction.getDate();
     this.name = transaction.getName();
     this.merchantName = transaction.getMerchantName();
@@ -49,6 +47,9 @@ public class TransactionEntity {
     this.paymentChannel = transaction.getPaymentChannel().getValue();
     this.transactionId = transaction.getTransactionId();
     this.account = account;
+
+    PersonalFinanceCategory category = transaction.getPersonalFinanceCategory();
+    this.category = category != null ? category.getPrimary() : "uncategorized";
   }
 
   public Long getId() {
@@ -75,11 +76,11 @@ public class TransactionEntity {
     this.isoCurrencyCode = isoCurrencyCode;
   }
 
-  public List<String> getCategory() {
+  public String getCategory() {
     return category;
   }
 
-  public void setCategory(List<String> category) {
+  public void setCategory(String category) {
     this.category = category;
   }
 
@@ -141,12 +142,12 @@ public class TransactionEntity {
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     TransactionEntity that = (TransactionEntity) o;
     return Objects.equals(id, that.id);
   }
