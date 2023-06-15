@@ -6,8 +6,8 @@ const BudgetPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(null);
 
-    const handleMonthClick = (monthData) => {
-        setSelectedMonth(monthData);
+    const handleMonthClick = (month) => {
+        setSelectedMonth(month);
         setShowModal(true);
     };
 
@@ -21,7 +21,7 @@ const BudgetPage = () => {
             <BudgetChart onMonthClick={handleMonthClick} />
             {selectedMonth && (
                 <MonthlyModal
-                    monthData={selectedMonth}
+                    month={selectedMonth}
                     show={showModal}
                     onHide={handleModalClose}
                 />

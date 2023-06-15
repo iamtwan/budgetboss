@@ -9,7 +9,6 @@ import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import { LinkAccount } from './Accounts/Link/LinkAccount';
 import useAccounts from '../../hooks/useAccounts';
 import { Button } from 'react-bootstrap';
-
 import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';
 
 const DashboardPage = () => {

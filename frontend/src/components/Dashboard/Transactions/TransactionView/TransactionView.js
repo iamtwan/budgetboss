@@ -44,7 +44,7 @@ const TransactionView = ({ transactions, isLoading, onTransactionClick, selected
                                     </span>
                                 )}
                             </td>
-                            <td>{transaction.category.join(', ')}</td>
+                            <td>{transaction.category}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -1,10 +1,11 @@
 import React from 'react';
 
-const MonthlyTransactionView = ({ monthData }) => {
+const MonthlyTransactionView = ({ month }) => {
+    console.log(month);
     return (
         <div className="mx-3">
-            {Object.keys(monthData.transactionsByAccount).map(account => {
-                const transactions = monthData.transactionsByAccount[account];
+            {Object.keys(month.accounts).map(account => {
+                const transactions = month.accounts[account];
 
                 return (
                     <div key={account}>
@@ -34,7 +35,7 @@ const MonthlyTransactionView = ({ monthData }) => {
                                                 </span>
                                             )}
                                         </td>
-                                        <td>{transaction.category.join(', ')}</td>
+                                        <td>{transaction.category}</td>
                                     </tr>
                                 ))}
                             </tbody>

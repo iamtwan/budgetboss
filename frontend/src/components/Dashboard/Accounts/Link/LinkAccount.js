@@ -16,6 +16,8 @@ export const LinkAccount = ({
 }) => {
     const onSuccess = async (public_token, metadata) => {
         try {
+            setIsLoading(true);
+
             const tokenData = {
                 publicToken: public_token,
                 id: metadata.institution.institution_id,
@@ -24,7 +26,7 @@ export const LinkAccount = ({
 
             await createLinkToken(tokenData);
 
-            fetchAccounts(
+            await fetchAccounts(
                 setIsLoading,
                 setLinkedCashAccounts,
                 setLinkedCreditAccounts,
@@ -34,8 +36,11 @@ export const LinkAccount = ({
                 setError,
                 manualData
             );
+
+            setIsLoading(false);
         } catch (err) {
             console.log(err);
+            setIsLoading(false);
         }
     };
 

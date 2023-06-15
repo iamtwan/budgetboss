@@ -20,15 +20,15 @@ export const fetchUser = () => {
 
 export const fetchLinkedAccounts = () => {
     return axios.get(`${API_BASE_URL}/items`, { withCredentials: true });
-};
+}
 
 export const fetchManualAccounts = () => {
     return axios.get(`${API_BASE_URL}/manual-institutions`, { withCredentials: true });
-};
+}
 
 export const createLinkToken = (tokenData) => {
     return axios.post(`${API_BASE_URL}/tokens/exchange`, tokenData, { withCredentials: true });
-};
+}
 
 export const fetchLinkToken = () => {
     return axios.post(`${API_BASE_URL}/tokens`, {}, { withCredentials: true });
@@ -40,11 +40,11 @@ export const updateItem = (id) => {
 
 export const fetchLinkedTransactions = (accountId) => {
     return axios.get(`${API_BASE_URL}/transactions/${accountId}`, { withCredentials: true });
-};
+}
 
 export const fetchManualTransactions = (accountId) => {
     return axios.get(`${API_BASE_URL}/manual-transactions/${accountId}`, { withCredentials: true });
-};
+}
 
 export const createManualAccount = (formData) => {
     return axios.post(`${API_BASE_URL}/manual-accounts`, formData, { withCredentials: true })
@@ -68,4 +68,12 @@ export const deleteManualTransaction = (transactionId) => {
 
 export const updateManualTransaction = (transactionId, formData) => {
     return axios.put(`${API_BASE_URL}/manual-transactions/${transactionId}`, formData, { withCredentials: true });
+}
+
+export const fetchBarChart = () => {
+    return axios.get(`${API_BASE_URL}/charts`, { withCredentials: true });
+}
+
+export const fetchPieChart = (month) => {
+    return axios.get(`${API_BASE_URL}/charts/${month}`, { withCredentials: true });
 }

@@ -1,30 +1,39 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Chart, BarController, BarElement, LinearScale, CategoryScale, Tooltip } from 'chart.js';
+import { fetchBarChart } from '@/services/apiService';
 
 Chart.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip);
 
-const BudgetChart = ({ dataset = [
-    { month: 'January', balance: 1345543 },
-    { month: 'February', balance: -1234262 },
-    { month: 'March', balance: 1752381 },
-    { month: 'April', balance: -1113111 },
-    { month: 'May', balance: 1834439 },
-    { month: 'June', balance: -1153346 },
-], onMonthClick }) => {
+const BudgetChart = ({ onMonthClick }) => {
+    const [dataset, setDataset] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetchBarChart();
+                setDataset(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const canvasRef = useRef(null);
-    const datasetCount = dataset.slice(0, 6);
 
     useEffect(() => {
         let chart = null;
 
-        if (canvasRef.current) {
+        if (canvasRef.current && dataset.length > 0) {
+            const datasetCount = dataset.slice(0, 6);
             const data = {
                 labels: datasetCount.map(d => d.month),
                 datasets: [{
                     label: 'Net balance',
-                    data: datasetCount.map(d => d.balance),
-                    backgroundColor: datasetCount.map(d => d.balance >= 0 ? 'rgba(0, 163, 35, 0.86)' : 'rgba(206, 0, 0, 0.86)'),
-                    borderColor: datasetCount.map(d => d.balance >= 0 ? 'rgba(0, 100, 0, 1)' : 'rgba(100, 0, 0, 1)'),
+                    data: datasetCount.map(d => d.netBalance),
+                    backgroundColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(0, 163, 35, 0.86)' : 'rgba(206, 0, 0, 0.86)'),
+                    borderColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(0, 100, 0, 1)' : 'rgba(100, 0, 0, 1)'),
                     borderWidth: 2.5,
                 }]
             };
@@ -88,19 +97,8 @@ const BudgetChart = ({ dataset = [
                         if (activeElements.length > 0) {
                             const firstPoint = activeElements[0];
                             const month = this.data.labels[firstPoint.index];
-                            const balance = this.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
 
-                            // fake data
-                            const monthData = {
-                                month,
-                                balance,
-                                transactions: [
-                                    { id: 1, name: 'Transaction 1', amount: 100 },
-                                    { id: 2, name: 'Transaction 2', amount: 200 },
-                                ],
-                            };
-
-                            onMonthClick(monthData);
+                            onMonthClick(month);
                         }
                     },
                 }

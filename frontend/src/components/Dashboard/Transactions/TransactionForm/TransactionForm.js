@@ -55,7 +55,7 @@ const TransactionForm = ({ show, account, onClose, onSubmit, transaction, isEdit
 			name: transactionName,
 			date: transactionDate,
 			amount: transactionType === 'Expense' && account.type === 'cash' ? -amount : amount,
-			category: transactionCategory ? [transactionCategory] : []
+			category: transactionCategory
 		};
 
 		if (isEditing) {
