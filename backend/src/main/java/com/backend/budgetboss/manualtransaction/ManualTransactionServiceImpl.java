@@ -7,7 +7,6 @@ import com.backend.budgetboss.manualtransaction.dto.CreateManualTransactionDTO;
 import com.backend.budgetboss.manualtransaction.dto.ManualTransactionResponseDTO;
 import com.backend.budgetboss.manualtransaction.helper.ManualTransactionHelper;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.helper.UserHelper;
 import java.math.BigDecimal;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -19,25 +18,22 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
   private final ManualTransactionRepository manualTransactionRepository;
   private final ManualTransactionHelper manualTransactionHelper;
-  private final UserHelper userHelper;
   private final ManualAccountHelper accountHelper;
   private final ModelMapper modelMapper;
 
   public ManualTransactionServiceImpl(ManualTransactionRepository manualTransactionRepository,
       ManualTransactionHelper manualTransactionHelper,
-      UserHelper userHelper,
       ManualAccountHelper accountHelper,
       ModelMapper modelMapper) {
     this.manualTransactionRepository = manualTransactionRepository;
     this.manualTransactionHelper = manualTransactionHelper;
-    this.userHelper = userHelper;
     this.accountHelper = accountHelper;
     this.modelMapper = modelMapper;
   }
 
   @Override
-  public List<ManualTransactionResponseDTO> getManualTransactions(Long id) {
-    return manualTransactionRepository.findAllByManualAccountId(id)
+  public List<ManualTransactionResponseDTO> getManualTransactions(User user, Long id) {
+    return manualTransactionRepository.findByManualAccount_ManualInstitution_User(user)
         .stream()
         .map(manualTransaction -> modelMapper
             .map(manualTransaction, ManualTransactionResponseDTO.class))
@@ -46,12 +42,9 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
   @Override
   @Transactional
-  public ManualTransactionResponseDTO createManualTransaction(Long id,
+  public ManualTransactionResponseDTO createManualTransaction(User user, Long id,
       CreateManualTransactionDTO manualTransactionDTO) {
-    User user = userHelper.getUser();
-    ManualAccount account = accountHelper.getAccount(id);
-
-    accountHelper.assertAccountOwnership(user, account);
+    ManualAccount account = accountHelper.getAccountByUserAndId(user, id);
 
     ManualTransaction manualTransaction = modelMapper
         .map(manualTransactionDTO, ManualTransaction.class);
@@ -71,12 +64,9 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
 
   @Override
   @Transactional
-  public ManualTransactionResponseDTO updateManualTransaction(Long id,
+  public ManualTransactionResponseDTO updateManualTransaction(User user, Long id,
       CreateManualTransactionDTO manualTransactionDTO) {
-    User user = userHelper.getUser();
-    ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(id);
-
-    manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
+    ManualTransaction manualTransaction = manualTransactionHelper.getByUserAndId(user, id);
 
     modelMapper.map(manualTransactionDTO, manualTransaction);
     return modelMapper.map(manualTransactionRepository.save(manualTransaction),
@@ -84,12 +74,8 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
   }
 
   @Override
-  public void deleteManualTransaction(Long transactionId) {
-    User user = userHelper.getUser();
-    ManualTransaction manualTransaction = manualTransactionHelper.getManualTransaction(
-        transactionId);
-
-    manualTransactionHelper.assertManualTransactionOwnership(user, manualTransaction);
+  public void deleteManualTransaction(User user, Long id) {
+    ManualTransaction manualTransaction = manualTransactionHelper.getByUserAndId(user, id);
     manualTransactionRepository.delete(manualTransaction);
   }
 }

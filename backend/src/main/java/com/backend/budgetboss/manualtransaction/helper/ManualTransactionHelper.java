@@ -1,6 +1,5 @@
 package com.backend.budgetboss.manualtransaction.helper;
 
-import com.backend.budgetboss.manualinstitution.exception.ManualInstitutionOwnershipException;
 import com.backend.budgetboss.manualtransaction.ManualTransaction;
 import com.backend.budgetboss.manualtransaction.ManualTransactionRepository;
 import com.backend.budgetboss.manualtransaction.exception.ManualTransactionNotFoundException;
@@ -16,16 +15,13 @@ public class ManualTransactionHelper {
     this.manualTransactionRepository = manualTransactionRepository;
   }
 
-  public ManualTransaction getManualTransaction(Long id) {
+  public ManualTransaction getById(Long id) {
     return manualTransactionRepository.findById(id)
-        .orElseThrow(() -> new ManualTransactionNotFoundException(
-            "Manual Transaction not found with id: " + id));
+        .orElseThrow(() -> new ManualTransactionNotFoundException(id));
   }
 
-  public void assertManualTransactionOwnership(User user, ManualTransaction manualTransaction) {
-    if (!manualTransaction.getManualAccount().getManualInstitution().getUser().equals(user)) {
-      throw new ManualInstitutionOwnershipException(
-          "Manual Transaction does not belong to user: " + user.getEmail());
-    }
+  public ManualTransaction getByUserAndId(User user, Long id) {
+    return manualTransactionRepository.findByManualAccount_ManualInstitution_UserAndId(user, id)
+        .orElseThrow(() -> new ManualTransactionNotFoundException(id));
   }
 }

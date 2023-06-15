@@ -13,6 +13,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
   boolean existsByUserAndInstitutionId(User user, String institutionId);
 
+  Optional<Item> findByUserAndId(User user, Long id);
+
   Optional<Item> findByItemId(String itemId);
 
   void deleteByItemId(String itemId);

@@ -7,7 +7,6 @@ import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.transaction.dto.TransactionResponseDTO;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.helper.UserHelper;
 import com.plaid.client.model.RemovedTransaction;
 import com.plaid.client.model.Transaction;
 import com.plaid.client.model.TransactionsSyncRequest;
@@ -28,7 +27,6 @@ import retrofit2.Response;
 public class TransactionServiceImpl implements TransactionService {
 
   private final TransactionRepository transactionRepository;
-  private final UserHelper userHelper;
   private final ItemHelper itemHelper;
   private final AccountHelper accountHelper;
   private final AccountService accountService;
@@ -36,14 +34,12 @@ public class TransactionServiceImpl implements TransactionService {
   private final ModelMapper modelMapper;
 
   public TransactionServiceImpl(TransactionRepository transactionRepository,
-      UserHelper userHelper,
       ItemHelper itemHelper,
       AccountHelper accountHelper,
       AccountService accountService,
       PlaidApi plaidApi,
       ModelMapper modelMapper) {
     this.transactionRepository = transactionRepository;
-    this.userHelper = userHelper;
     this.itemHelper = itemHelper;
     this.accountHelper = accountHelper;
     this.accountService = accountService;
@@ -57,7 +53,7 @@ public class TransactionServiceImpl implements TransactionService {
   public void syncTransactions(String itemId) throws IOException {
     Item item = itemHelper.getItemByItemId(itemId);
 
-    accountService.createAccounts(item.getId());
+    accountService.createAccounts(item);
 
     String cursor = item.getCursor();
 
@@ -121,11 +117,8 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
-  public List<TransactionResponseDTO> getTransactionsByAccountId(Long id) {
-    User user = userHelper.getUser();
-    Account account = accountHelper.getAccount(id);
-
-    accountHelper.assertAccountOwnership(user, account);
+  public List<TransactionResponseDTO> getTransactionsByAccountId(User user, Long id) {
+    Account account = accountHelper.getAccountByUserAndId(user, id);
 
     List<TransactionEntity> transactions = transactionRepository.findAllByAccount(account);
     List<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();

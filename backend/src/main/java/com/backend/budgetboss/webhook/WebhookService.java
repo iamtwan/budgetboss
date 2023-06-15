@@ -1,13 +1,14 @@
 package com.backend.budgetboss.webhook;
 
+import com.backend.budgetboss.user.User;
 import java.io.IOException;
 import java.util.Map;
 
 public interface WebhookService {
 
-  void fireItemWebhook(Long id) throws IOException;
+  void fireItemWebhook(User user, Long id) throws IOException;
 
-  void resetLoginWebhook(Long id) throws IOException;
+  void resetLoginWebhook(User user, Long id) throws IOException;
 
   void handleItemWebhook(Map<String, Object> event);
 

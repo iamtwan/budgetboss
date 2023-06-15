@@ -1,6 +1,6 @@
 package com.backend.budgetboss.chart;
 
-import com.backend.budgetboss.security.UserPrinciple;
+import com.backend.budgetboss.security.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Month;
@@ -29,7 +29,7 @@ public class ChartController {
   @GetMapping
   @Operation(summary = "Get the past 6 months of transaction data", description = "Get the past 6 months of transaction data.")
   public ResponseEntity<List<ChartResponse>> getChartData(
-      @AuthenticationPrincipal UserPrinciple principle) {
+      @AuthenticationPrincipal UserPrincipal principle) {
     logger.info("/api/charts GET request received");
     List<ChartResponse> charts = chartService.getChartData(principle.getUser());
     logger.info("/api/charts got all data: {}", charts.size());
@@ -39,7 +39,7 @@ public class ChartController {
   @GetMapping("/{month}")
   @Operation(summary = "Get monthly data", description = "Get the monthly data for the given month")
   public ResponseEntity<ChartMonthlyResponse> getChartMonthlyData(
-      @AuthenticationPrincipal UserPrinciple principle,
+      @AuthenticationPrincipal UserPrincipal principle,
       @PathVariable Month month) {
     logger.info("/api/charts/{} GET request received", month);
     ChartMonthlyResponse response = chartService.getChartMonthlyData(principle.getUser(), month);

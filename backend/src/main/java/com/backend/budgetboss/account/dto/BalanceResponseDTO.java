@@ -1,13 +1,14 @@
 package com.backend.budgetboss.account.dto;
 
 import com.backend.budgetboss.account.Balance;
+import java.math.BigDecimal;
 
 public class BalanceResponseDTO {
 
-  private Double available;
-  private Double current;
+  private BigDecimal available;
+  private BigDecimal current;
   private String isoCurrencyCode;
-  private Double balanceLimit;
+  private BigDecimal balanceLimit;
   private String unofficialCurrencyCode;
 
   public BalanceResponseDTO(Balance balances) {
@@ -18,19 +19,19 @@ public class BalanceResponseDTO {
     this.unofficialCurrencyCode = balances.getUnofficialCurrencyCode();
   }
 
-  public Double getAvailable() {
+  public BigDecimal getAvailable() {
     return available;
   }
 
-  public void setAvailable(Double available) {
+  public void setAvailable(BigDecimal available) {
     this.available = available;
   }
 
-  public Double getCurrent() {
+  public BigDecimal getCurrent() {
     return current;
   }
 
-  public void setCurrent(Double current) {
+  public void setCurrent(BigDecimal current) {
     this.current = current;
   }
 
@@ -42,11 +43,11 @@ public class BalanceResponseDTO {
     this.isoCurrencyCode = isoCurrencyCode;
   }
 
-  public Double getBalanceLimit() {
+  public BigDecimal getBalanceLimit() {
     return balanceLimit;
   }
 
-  public void setBalanceLimit(Double balanceLimit) {
+  public void setBalanceLimit(BigDecimal balanceLimit) {
     this.balanceLimit = balanceLimit;
   }
 

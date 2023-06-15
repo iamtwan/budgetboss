@@ -27,16 +27,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ProblemDetail handleUsernameNotFoundException(UsernameNotFoundException e) {
     logger.error(e.getMessage());
 
-    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
-        e.getMessage());
-    problemDetail.setTitle("User not found");
+    ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+    pd.setTitle("User not found");
 
-    return problemDetail;
+    return pd;
   }
 
   @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-      @NotNull HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
     logger.error(ex.getMessage());
 
     List<String> errors = new ArrayList<>();
@@ -45,12 +47,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       errors.add(error.getDefaultMessage());
     }
 
-    ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-    problemDetail.setTitle("Validation failed");
-    problemDetail.setDetail(
-        "One or more fields are invalid. See 'errors' property for more details.");
-    problemDetail.setProperty("errors", errors);
+    ProblemDetail pd = ProblemDetail.forStatus(status);
+    pd.setTitle("Validation failed");
+    pd.setDetail("One or more fields are invalid. See 'errors' property for more details.");
+    pd.setProperty("errors", errors);
 
-    return handleExceptionInternal(ex, problemDetail, headers, HttpStatus.BAD_REQUEST, request);
+    return handleExceptionInternal(ex, pd, headers, status, request);
   }
 }

@@ -111,8 +111,8 @@ public class Account {
     return balances;
   }
 
-  public void setBalances(AccountBalance balances) {
-    this.balances = new Balance(balances);
+  public void setBalances(Balance balances) {
+    this.balances = balances;
   }
 
   public Item getItem() {

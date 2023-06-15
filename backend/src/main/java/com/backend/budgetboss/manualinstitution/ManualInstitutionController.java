@@ -2,6 +2,7 @@ package com.backend.budgetboss.manualinstitution;
 
 import com.backend.budgetboss.manualinstitution.dto.ManualInstitutionResponseDTO;
 import com.backend.budgetboss.manualinstitution.dto.UpdateManualInstitutionDTO;
+import com.backend.budgetboss.security.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,9 +33,11 @@ public class ManualInstitutionController {
 
   @GetMapping
   @Operation(summary = "Get manual institutions", description = "Get all manual institutions")
-  public ResponseEntity<List<ManualInstitutionResponseDTO>> getManualInstitutions() {
+  public ResponseEntity<List<ManualInstitutionResponseDTO>> getManualInstitutions(
+      @AuthenticationPrincipal UserPrincipal principal) {
     logger.info("/api/manual-institutions GET request received");
-    List<ManualInstitutionResponseDTO> manualInstitutions = manualInstitutionService.getManualInstitutions();
+    List<ManualInstitutionResponseDTO> manualInstitutions = manualInstitutionService.getManualInstitutions(
+        principal.getUser());
     logger.info("/api/manual-institutions returning manual institutions: {}",
         manualInstitutions.size());
     return ResponseEntity.ok(manualInstitutions);
@@ -41,11 +45,13 @@ public class ManualInstitutionController {
 
   @PutMapping("/{id}")
   @Operation(summary = "Update manual institution", description = "Update a manual institution with the given name")
-  public ResponseEntity<ManualInstitutionResponseDTO> updateManualInstitution(@PathVariable Long id,
+  public ResponseEntity<ManualInstitutionResponseDTO> updateManualInstitution(
+      @AuthenticationPrincipal UserPrincipal principal,
+      @PathVariable Long id,
       @Valid @RequestBody UpdateManualInstitutionDTO updateManualInstitutionDTO) {
     logger.info("/api/manual-institutions/{} PUT request received", id);
     ManualInstitutionResponseDTO manualInstitution = manualInstitutionService.updateManualInstitution(
-        id, updateManualInstitutionDTO);
+        principal.getUser(), id, updateManualInstitutionDTO);
     logger.info("/api/manual-institutions/{} updated manual institution: {}", id,
         manualInstitution);
     return ResponseEntity.ok(manualInstitution);
@@ -53,9 +59,11 @@ public class ManualInstitutionController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "Delete manual institution", description = "Delete a manual institution with the given id")
-  public ResponseEntity<Void> deleteManualInstitution(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteManualInstitution(
+      @AuthenticationPrincipal UserPrincipal principal,
+      @PathVariable Long id) {
     logger.info("/api/manual-institutions/{} DELETE request received", id);
-    manualInstitutionService.deleteManualInstitution(id);
+    manualInstitutionService.deleteManualInstitution(principal.getUser(), id);
     logger.info("/api/manual-institutions/{} deleted manual institution", id);
     return ResponseEntity.noContent().build();
   }

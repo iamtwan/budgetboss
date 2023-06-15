@@ -6,11 +6,11 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserPrinciple implements UserDetails {
+public class UserPrincipal implements UserDetails {
 
   private final User user;
 
-  public UserPrinciple(User user) {
+  public UserPrincipal(User user) {
     this.user = user;
   }
 

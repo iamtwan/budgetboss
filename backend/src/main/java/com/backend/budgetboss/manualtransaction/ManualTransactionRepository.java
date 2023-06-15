@@ -3,6 +3,7 @@ package com.backend.budgetboss.manualtransaction;
 import com.backend.budgetboss.user.User;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,8 @@ public interface ManualTransactionRepository extends JpaRepository<ManualTransac
 
   List<ManualTransaction> findByManualAccount_ManualInstitution_UserAndDateBetween(User user,
       LocalDate start, LocalDate end);
+
+  List<ManualTransaction> findByManualAccount_ManualInstitution_User(User user);
+
+  Optional<ManualTransaction> findByManualAccount_ManualInstitution_UserAndId(User user, Long id);
 }

@@ -8,7 +8,6 @@ import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import com.backend.budgetboss.manualinstitution.ManualInstitutionRepository;
 import com.backend.budgetboss.manualinstitution.helper.ManualInstitutionHelper;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.helper.UserHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,20 +17,17 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
   private final ManualAccountRepository manualAccountRepository;
   private final ManualInstitutionRepository manualInstitutionRepository;
-  private final UserHelper userHelper;
   private final ManualAccountHelper manualAccountHelper;
   private final ManualInstitutionHelper manualInstitutionHelper;
   private final ModelMapper modelMapper;
 
   public ManualAccountServiceImpl(ManualAccountRepository manualAccountRepository,
       ManualInstitutionRepository manualInstitutionRepository,
-      UserHelper userHelper,
       ManualAccountHelper manualAccountHelper,
       ManualInstitutionHelper manualInstitutionHelper,
       ModelMapper modelMapper) {
     this.manualAccountRepository = manualAccountRepository;
     this.manualInstitutionRepository = manualInstitutionRepository;
-    this.userHelper = userHelper;
     this.manualAccountHelper = manualAccountHelper;
     this.manualInstitutionHelper = manualInstitutionHelper;
     this.modelMapper = modelMapper;
@@ -39,10 +35,10 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
   @Override
   @Transactional
-  public ManualAccountResponseDTO createManualAccount(CreateManualAccountDTO manualAccountDTO) {
-    User user = userHelper.getUser();
+  public ManualAccountResponseDTO createManualAccount(User user,
+      CreateManualAccountDTO manualAccountDTO) {
     ManualInstitution manualInstitution = manualInstitutionHelper
-        .getManualInstitutionByUserAndName(user, manualAccountDTO.getInstitutionName())
+        .getByUserAndName(user, manualAccountDTO.getInstitutionName())
         .orElse(new ManualInstitution(manualAccountDTO.getInstitutionName(), user));
 
     manualInstitutionRepository.save(manualInstitution);
@@ -56,12 +52,10 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
   @Override
   @Transactional
-  public ManualAccountResponseDTO updateManualAccount(Long id,
+  public ManualAccountResponseDTO updateManualAccount(User user,
+      Long id,
       UpdateManualAccountDTO manualAccountDTO) {
-    User user = userHelper.getUser();
-    ManualAccount manualAccount = manualAccountHelper.getAccount(id);
-
-    manualAccountHelper.assertAccountOwnership(user, manualAccount);
+    ManualAccount manualAccount = manualAccountHelper.getAccountByUserAndId(user, id);
 
     modelMapper.map(manualAccountDTO, manualAccount);
     return modelMapper.map(manualAccountRepository.save(manualAccount),
@@ -70,12 +64,8 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
   @Override
   @Transactional
-  public void deleteManualAccount(Long id) {
-    User user = userHelper.getUser();
-    ManualAccount manualAccount = manualAccountHelper.getAccount(id);
-
-    manualAccountHelper.assertAccountOwnership(user, manualAccount);
-
+  public void deleteManualAccount(User user, Long id) {
+    ManualAccount manualAccount = manualAccountHelper.getAccountByUserAndId(user, id);
     ManualInstitution manualInstitution = manualAccount.getManualInstitution();
 
     if (manualInstitution.getManualAccounts().size() == 1) {

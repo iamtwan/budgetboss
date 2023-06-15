@@ -2,6 +2,7 @@ package com.backend.budgetboss.manualtransaction;
 
 import com.backend.budgetboss.manualtransaction.dto.CreateManualTransactionDTO;
 import com.backend.budgetboss.manualtransaction.dto.ManualTransactionResponseDTO;
+import com.backend.budgetboss.security.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +35,11 @@ public class ManualTransactionController {
   @GetMapping("/{id}")
   @Operation(summary = "Get manual transactions for the given account", description = "Get all manual transactions for the given account")
   public ResponseEntity<List<ManualTransactionResponseDTO>> getManualTransactions(
+      @AuthenticationPrincipal UserPrincipal principal,
       @PathVariable Long id) {
     logger.info("/api/manual-transactions/{} GET request received", id);
     List<ManualTransactionResponseDTO> manualTransactions = manualTransactionService.getManualTransactions(
+        principal.getUser(),
         id);
     logger.info("/api/manual-transactions/{} retrieved manual transactions: {}",
         manualTransactions.size(), id);
@@ -45,12 +49,13 @@ public class ManualTransactionController {
   @PostMapping("/{accountId}")
   @Operation(summary = "Create a manual transaction", description = "Create a manual transaction for the given account")
   public ResponseEntity<ManualTransactionResponseDTO> createManualTransaction(
+      @AuthenticationPrincipal UserPrincipal principal,
       @PathVariable Long accountId,
       @Valid @RequestBody CreateManualTransactionDTO manualTransactionDTO) {
     logger.info("/api/manual-transactions/{} POST request received: {}", accountId,
         manualTransactionDTO);
     ManualTransactionResponseDTO manualTransaction = manualTransactionService.createManualTransaction(
-        accountId, manualTransactionDTO);
+        principal.getUser(), accountId, manualTransactionDTO);
     logger.info("/api/manual-transactions/{} created manual transaction: {}", manualTransaction,
         accountId);
     return ResponseEntity.ok(manualTransaction);
@@ -59,12 +64,13 @@ public class ManualTransactionController {
   @PutMapping("/{transactionId}")
   @Operation(summary = "Update a manual transaction", description = "Update a manual transaction with the given id")
   public ResponseEntity<ManualTransactionResponseDTO> updateManualTransaction(
+      @AuthenticationPrincipal UserPrincipal principal,
       @PathVariable Long transactionId,
       @Valid @RequestBody CreateManualTransactionDTO manualTransactionDTO) {
     logger.info("/api/manual-transactions/{} PUT request received: {}", transactionId,
         manualTransactionDTO);
     ManualTransactionResponseDTO manualTransaction = manualTransactionService.updateManualTransaction(
-        transactionId, manualTransactionDTO);
+        principal.getUser(), transactionId, manualTransactionDTO);
     logger.info("/api/manual-transactions/{} updated manual transaction: {}", manualTransaction,
         transactionId);
     return ResponseEntity.ok(manualTransaction);
@@ -72,9 +78,11 @@ public class ManualTransactionController {
 
   @DeleteMapping("/{transactionId}")
   @Operation(summary = "Delete a manual transaction", description = "Delete a manual transaction with the given id")
-  public ResponseEntity<Void> deleteManualTransaction(@PathVariable Long transactionId) {
+  public ResponseEntity<Void> deleteManualTransaction(
+      @AuthenticationPrincipal UserPrincipal principal,
+      @PathVariable Long transactionId) {
     logger.info("/api/manual-transactions/{} DELETE request received", transactionId);
-    manualTransactionService.deleteManualTransaction(transactionId);
+    manualTransactionService.deleteManualTransaction(principal.getUser(), transactionId);
     logger.info("/api/manual-transactions/{} deleted manual transaction", transactionId);
     return ResponseEntity.noContent().build();
   }

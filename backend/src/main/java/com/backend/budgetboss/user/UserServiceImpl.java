@@ -1,10 +1,9 @@
 package com.backend.budgetboss.user;
 
-import com.backend.budgetboss.security.UserPrinciple;
+import com.backend.budgetboss.security.UserPrincipal;
 import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
-import com.backend.budgetboss.user.helper.UserHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
@@ -26,25 +25,22 @@ public class UserServiceImpl implements UserService {
   private final ModelMapper modelMapper;
   private final BCryptPasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
-  private final UserHelper userHelper;
   private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
   private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
   public UserServiceImpl(UserRepository userRepository,
       ModelMapper modelMapper,
       BCryptPasswordEncoder passwordEncoder,
-      AuthenticationManager authenticationManager,
-      UserHelper userHelper) {
+      AuthenticationManager authenticationManager) {
     this.userRepository = userRepository;
     this.modelMapper = modelMapper;
     this.passwordEncoder = passwordEncoder;
     this.authenticationManager = authenticationManager;
-    this.userHelper = userHelper;
   }
 
   @Override
-  public UserResponseDTO getUser() {
-    return modelMapper.map(userHelper.getUser(), UserResponseDTO.class);
+  public UserResponseDTO getUser(User user) {
+    return modelMapper.map(user, UserResponseDTO.class);
   }
 
   @Override
@@ -77,7 +73,7 @@ public class UserServiceImpl implements UserService {
             createUserDTO.getPassword())
     );
     setAuthenticationContext(authentication, request, response);
-    UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
+    UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
     return modelMapper.map(userDetails, UserResponseDTO.class);
   }
 

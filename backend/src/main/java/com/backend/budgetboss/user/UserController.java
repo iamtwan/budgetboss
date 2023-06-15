@@ -1,5 +1,6 @@
 package com.backend.budgetboss.user;
 
+import com.backend.budgetboss.security.UserPrincipal;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,9 +33,10 @@ public class UserController {
 
   @GetMapping
   @Operation(summary = "Get current user", description = "Get the current user")
-  public ResponseEntity<UserResponseDTO> getCurrentUser() {
+  public ResponseEntity<UserResponseDTO> getCurrentUser(
+      @AuthenticationPrincipal UserPrincipal principal) {
     logger.info("/api/users GET request received");
-    UserResponseDTO userResponse = userService.getUser();
+    UserResponseDTO userResponse = userService.getUser(principal.getUser());
     logger.info("/api/users got current user: {}", userResponse);
     return ResponseEntity.ok(userResponse);
   }

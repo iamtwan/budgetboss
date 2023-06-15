@@ -1,11 +1,9 @@
 package com.backend.budgetboss.webhook;
 
 import com.backend.budgetboss.item.Item;
-import com.backend.budgetboss.item.exception.ItemDoesNotBelongToUserException;
 import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.transaction.TransactionService;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.helper.UserHelper;
 import com.backend.budgetboss.webhook.exception.FireWebhookException;
 import com.backend.budgetboss.webhook.exception.ResetLoginException;
 import com.backend.budgetboss.webhook.helper.WebhookItemHelper;
@@ -24,20 +22,17 @@ import retrofit2.Response;
 @Service
 public class WebhookServiceImpl implements WebhookService {
 
-  private final UserHelper userHelper;
   private final ItemHelper itemHelper;
   private final WebhookItemHelper webhookItemHelper;
   private final TransactionService transactionService;
   private final PlaidApi plaidApi;
   private final Gson gson;
 
-  public WebhookServiceImpl(UserHelper userHelper,
-      ItemHelper itemHelper,
+  public WebhookServiceImpl(ItemHelper itemHelper,
       WebhookItemHelper webhookItemHelper,
       TransactionService transactionService,
       PlaidApi plaidApi,
       Gson gson) {
-    this.userHelper = userHelper;
     this.itemHelper = itemHelper;
     this.webhookItemHelper = webhookItemHelper;
     this.transactionService = transactionService;
@@ -46,11 +41,8 @@ public class WebhookServiceImpl implements WebhookService {
   }
 
   @Override
-  public void fireItemWebhook(Long id) throws IOException {
-    User user = userHelper.getUser();
-    Item item = itemHelper.getItem(id);
-
-    itemHelper.assertItemOwnership(user, item);
+  public void fireItemWebhook(User user, Long id) throws IOException {
+    Item item = itemHelper.getItem(user, id);
 
     SandboxItemFireWebhookRequest request = new SandboxItemFireWebhookRequest()
         .accessToken(item.getAccessToken())
@@ -66,14 +58,8 @@ public class WebhookServiceImpl implements WebhookService {
   }
 
   @Override
-  public void resetLoginWebhook(Long id) throws IOException {
-    User user = userHelper.getUser();
-    Item item = itemHelper.getItem(id);
-
-    if (!item.getUser().equals(user)) {
-      throw new ItemDoesNotBelongToUserException(
-          "Item does not belong to user: " + user.getEmail());
-    }
+  public void resetLoginWebhook(User user, Long id) throws IOException {
+    Item item = itemHelper.getItem(user, id);
 
     SandboxItemResetLoginRequest request = new SandboxItemResetLoginRequest()
         .accessToken(item.getAccessToken());

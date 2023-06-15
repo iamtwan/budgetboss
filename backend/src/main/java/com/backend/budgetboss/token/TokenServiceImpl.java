@@ -6,7 +6,6 @@ import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.transaction.TransactionService;
 import com.backend.budgetboss.user.User;
-import com.backend.budgetboss.user.helper.UserHelper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plaid.client.model.CountryCode;
@@ -30,18 +29,15 @@ import retrofit2.Response;
 @Service
 public class TokenServiceImpl implements TokenService {
 
-  private final UserHelper userHelper;
   private final ItemHelper itemHelper;
   private final ItemRepository itemRepository;
   private final TransactionService transactionService;
   private final PlaidApi plaidApi;
 
-  public TokenServiceImpl(UserHelper userHelper,
-      ItemHelper itemHelper,
+  public TokenServiceImpl(ItemHelper itemHelper,
       ItemRepository itemRepository,
       TransactionService transactionService,
       PlaidApi plaidApi) {
-    this.userHelper = userHelper;
     this.itemHelper = itemHelper;
     this.itemRepository = itemRepository;
     this.transactionService = transactionService;
@@ -49,24 +45,21 @@ public class TokenServiceImpl implements TokenService {
   }
 
   @Override
-  public LinkTokenCreateResponse createLinkToken() throws IOException {
-    return createLink(null);
+  public LinkTokenCreateResponse createLinkToken(User user) throws IOException {
+    return createLink(user, null);
   }
 
   @Override
-  public LinkTokenCreateResponse createLinkToken(Long id) throws IOException {
-    return createLink(itemHelper.getItem(id));
+  public LinkTokenCreateResponse createLinkToken(User user, Long id) throws IOException {
+    return createLink(user, itemHelper.getItem(user, id));
   }
 
-  public LinkTokenCreateResponse createLink(Item item) throws IOException {
-    User user = userHelper.getUser();
-
+  public LinkTokenCreateResponse createLink(User user, Item item) throws IOException {
     String accessToken = null;
     List<Products> products = List.of(Products.TRANSACTIONS);
     LinkTokenCreateRequestUpdate update = new LinkTokenCreateRequestUpdate();
 
     if (item != null) {
-      itemHelper.assertItemOwnership(user, item);
       accessToken = item.getAccessToken();
       products = new ArrayList<>();
       update.setAccountSelectionEnabled(true);
@@ -118,12 +111,9 @@ public class TokenServiceImpl implements TokenService {
 
   @Override
   @Transactional
-  public void exchangePublicToken(Token token) throws IOException {
-    User user = userHelper.getUser();
-
+  public void exchangePublicToken(User user, Token token) throws IOException {
     if (itemRepository.existsByUserAndInstitutionId(user, token.getId())) {
-      throw new TokenCreationException(
-          "User already has an item for institution: " + token.getId());
+      throw new TokenCreationException("Duplicate institution found for id: " + token.getId());
     }
 
     ItemPublicTokenExchangeRequest request = new ItemPublicTokenExchangeRequest()

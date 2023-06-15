@@ -12,4 +12,6 @@ public interface ManualInstitutionRepository extends JpaRepository<ManualInstitu
   List<ManualInstitution> findByUser(User user);
 
   Optional<ManualInstitution> findByUserAndName(User user, String name);
+
+  Optional<ManualInstitution> findByUserAndId(User user, Long id);
 }

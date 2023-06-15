@@ -1,5 +1,6 @@
 package com.backend.budgetboss.transaction;
 
+import com.backend.budgetboss.security.UserPrincipal;
 import com.backend.budgetboss.transaction.dto.TransactionResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +28,13 @@ public class TransactionController {
 
   @GetMapping("/{id}")
   @Operation(summary = "Get transactions by account id", description = "Get transactions for the given account id")
-  public ResponseEntity<List<TransactionResponseDTO>> getTransactionsById(@PathVariable Long id) {
+  public ResponseEntity<List<TransactionResponseDTO>> getTransactionsById(
+      @AuthenticationPrincipal UserPrincipal principal,
+      @PathVariable Long id) {
     logger.info("/api/transactions/{} GET request received", id);
-    List<TransactionResponseDTO> transactionResponseDTOs = transactionService.getTransactionsByAccountId(
-        id);
-    logger.info("/api/transactions/{} retrieved transactions: {}", id,
-        transactionResponseDTOs.size());
-    return ResponseEntity.ok(transactionResponseDTOs);
+    List<TransactionResponseDTO> response = transactionService.getTransactionsByAccountId(
+        principal.getUser(), id);
+    logger.info("/api/transactions/{} retrieved transactions: {}", id, response.size());
+    return ResponseEntity.ok(response);
   }
 }

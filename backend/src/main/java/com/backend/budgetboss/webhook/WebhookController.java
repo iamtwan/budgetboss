@@ -1,5 +1,6 @@
 package com.backend.budgetboss.webhook;
 
+import com.backend.budgetboss.security.UserPrincipal;
 import com.backend.budgetboss.webhook.exception.InvalidWebhookRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,17 +46,19 @@ public class WebhookController {
 
   @GetMapping("/item/{id}/fire")
   @Operation(summary = "Fire a webhook event for the given Item", description = "Fire a webhook event for the given Item")
-  public void fireItemWebhook(@PathVariable Long id) throws IOException {
+  public void fireItemWebhook(@AuthenticationPrincipal UserPrincipal principal,
+      @PathVariable Long id) throws IOException {
     logger.info("/api/webhooks/item/{}/fire GET request received", id);
-    webhookService.fireItemWebhook(id);
+    webhookService.fireItemWebhook(principal.getUser(), id);
     logger.info("/api/webhooks/item/{}/fire fired a webhook event for the given item", id);
   }
 
   @GetMapping("/item/{id}/reset")
   @Operation(summary = "Reset the login state for the given Item", description = "Forces an Item into an ITEM_LOGIN_REQUIRED state in order to simulate an Item whose login is no longer valid")
-  public void resetLoginWebhook(@PathVariable Long id) throws IOException {
+  public void resetLoginWebhook(@AuthenticationPrincipal UserPrincipal principal,
+      @PathVariable Long id) throws IOException {
     logger.info("/api/webhooks/item/{}/reset GET request received", id);
-    webhookService.resetLoginWebhook(id);
+    webhookService.resetLoginWebhook(principal.getUser(), id);
     logger.info("/api/webhooks/item/reset/{} reset the login state for the given item", id);
   }
 }

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface UserService {
 
-  UserResponseDTO getUser();
+  UserResponseDTO getUser(User useer);
 
   UserResponseDTO registerUser(CreateUserDTO createUserDTO, HttpServletRequest request,
       HttpServletResponse response);

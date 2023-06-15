@@ -1,8 +1,11 @@
 package com.backend.budgetboss.manualinstitution.exception;
 
-public class ManualInstitutionNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-  public ManualInstitutionNotFoundException(String message) {
-    super(message);
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ManualInstitutionNotFoundException extends RuntimeException {
+  public ManualInstitutionNotFoundException(Long id) {
+    super("Manual institution not found with id: " + id);
   }
 }

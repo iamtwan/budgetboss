@@ -1,10 +1,12 @@
 package com.backend.budgetboss.item.dto;
 
+import java.math.BigDecimal;
+
 public class CreateAccountDTO {
 
   private String name;
   private String institutionName;
-  private double balance;
+  private BigDecimal balance;
 
   public String getName() {
     return name;
@@ -22,11 +24,11 @@ public class CreateAccountDTO {
     this.institutionName = institutionName;
   }
 
-  public double getBalance() {
+  public BigDecimal getBalance() {
     return balance;
   }
 
-  public void setBalance(double balance) {
+  public void setBalance(BigDecimal balance) {
     this.balance = balance;
   }
 

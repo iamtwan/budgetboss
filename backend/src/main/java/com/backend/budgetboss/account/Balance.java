@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -16,26 +17,15 @@ public class Balance {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private Double available;
-  private Double current;
+  private BigDecimal available;
+  private BigDecimal current;
   private String isoCurrencyCode;
-  private Double balanceLimit;
+  private BigDecimal balanceLimit;
   private String unofficialCurrencyCode;
 
   @OneToOne(mappedBy = "balances")
   private Account account;
 
-  public Balance() {
-
-  }
-
-  public Balance(AccountBalance accountBalance) {
-    this.available = accountBalance.getAvailable();
-    this.current = accountBalance.getCurrent();
-    this.isoCurrencyCode = accountBalance.getIsoCurrencyCode();
-    this.balanceLimit = accountBalance.getLimit();
-    this.unofficialCurrencyCode = accountBalance.getUnofficialCurrencyCode();
-  }
 
   public Long getId() {
     return id;
@@ -45,19 +35,19 @@ public class Balance {
     this.id = id;
   }
 
-  public Double getAvailable() {
+  public BigDecimal getAvailable() {
     return available;
   }
 
-  public void setAvailable(Double available) {
+  public void setAvailable(BigDecimal available) {
     this.available = available;
   }
 
-  public Double getCurrent() {
+  public BigDecimal getCurrent() {
     return current;
   }
 
-  public void setCurrent(Double current) {
+  public void setCurrent(BigDecimal current) {
     this.current = current;
   }
 
@@ -69,11 +59,11 @@ public class Balance {
     this.isoCurrencyCode = isoCurrencyCode;
   }
 
-  public Double getBalanceLimit() {
+  public BigDecimal getBalanceLimit() {
     return balanceLimit;
   }
 
-  public void setBalanceLimit(Double balanceLimit) {
+  public void setBalanceLimit(BigDecimal balanceLimit) {
     this.balanceLimit = balanceLimit;
   }
 
