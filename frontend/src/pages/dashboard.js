@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css'; // development
 import withAuth from '../components/Authentication/ProtectedRoute';
 import DashboardPage from '../components/Dashboard/DashboardPage';
 import Logout from '../components/Authentication/Logout';
-// import PlaidWebhooks from '@/hooks/plaidWebhooks';
+import PlaidWebhooks from '@/hooks/plaidWebhooks';
 
 
 const Dashboard = () => {
@@ -15,8 +15,8 @@ const Dashboard = () => {
                     <Logout />
                 </div>
             </div>
-            {/* <PlaidWebhooks> */}
-                <DashboardPage />
+            <PlaidWebhooks />
+            <DashboardPage />
             {/* </PlaidWebhooks> */}
         </main>
     );
