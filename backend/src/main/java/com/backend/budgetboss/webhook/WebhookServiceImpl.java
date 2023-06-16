@@ -79,6 +79,7 @@ public class WebhookServiceImpl implements WebhookService {
   }
 
   @Override
+  @Transactional
   public void handleItemWebhook(Map<String, Object> event) {
     String code = (String) event.get("webhook_code");
     String id = (String) event.get("item_id");

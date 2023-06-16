@@ -2,6 +2,7 @@ package com.backend.budgetboss.event;
 
 import com.backend.budgetboss.user.CurrentUser;
 import com.backend.budgetboss.user.User;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 @RequestMapping("/api/events")
-@Tag(name = "Server Sent Events")
+@Tag(name = "Events")
 public class EventController {
 
   private final Logger logger = LoggerFactory.getLogger(EventController.class);
@@ -24,6 +25,7 @@ public class EventController {
   }
 
   @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  @Operation(summary = "Subscribe to events", description = "Subscribe to events for the current user")
   public SseEmitter subscribeToEvents(@CurrentUser User user) {
     logger.info("/api/events GET request received");
     SseEmitter emitter = eventService.subscribe(user);
