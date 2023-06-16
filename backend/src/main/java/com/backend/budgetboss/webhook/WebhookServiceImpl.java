@@ -1,5 +1,6 @@
 package com.backend.budgetboss.webhook;
 
+import com.backend.budgetboss.event.EventService;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.transaction.TransactionService;
@@ -17,6 +18,7 @@ import com.plaid.client.request.PlaidApi;
 import java.io.IOException;
 import java.util.Map;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
 
 @Service
@@ -27,17 +29,20 @@ public class WebhookServiceImpl implements WebhookService {
   private final TransactionService transactionService;
   private final PlaidApi plaidApi;
   private final Gson gson;
+  private final EventService eventService;
 
   public WebhookServiceImpl(ItemHelper itemHelper,
       WebhookItemHelper webhookItemHelper,
       TransactionService transactionService,
       PlaidApi plaidApi,
-      Gson gson) {
+      Gson gson,
+      EventService eventService) {
     this.itemHelper = itemHelper;
     this.webhookItemHelper = webhookItemHelper;
     this.transactionService = transactionService;
     this.plaidApi = plaidApi;
     this.gson = gson;
+    this.eventService = eventService;
   }
 
   @Override
@@ -78,16 +83,21 @@ public class WebhookServiceImpl implements WebhookService {
     String code = (String) event.get("webhook_code");
     String id = (String) event.get("item_id");
 
+    Item item = itemHelper.getItemByItemId(id);
+
     switch (code) {
       case "ERROR":
         ItemErrorWebhook error = gson.fromJson(gson.toJson(event), ItemErrorWebhook.class);
-        webhookItemHelper.handleError(error);
+        webhookItemHelper.handleError(error, item);
+        eventService.sendEvent(item.getUser().getId(), "ERROR");
         break;
       case "PENDING EXPIRATION":
-        webhookItemHelper.handlePendingExpiration(id);
+        webhookItemHelper.handlePendingExpiration(item);
+        eventService.sendEvent(item.getUser().getId(), "PENDING EXPIRATION");
         break;
       case "USER_PERMISSION_REVOKED":
-        webhookItemHelper.handleUserPermissionRevoked(id);
+        webhookItemHelper.handleUserPermissionRevoked(item);
+        eventService.sendEvent(item.getUser().getId(), "USER_PERMISSION_REVOKED");
         break;
       case "NEW_ACCOUNTS_AVAILABLE":
       case "WEBHOOK_UPDATE_ACKNOWLEDGED":
@@ -98,13 +108,17 @@ public class WebhookServiceImpl implements WebhookService {
   }
 
   @Override
+  @Transactional
   public void handleTransactionsWebhook(Map<String, Object> event) throws IOException {
     String code = (String) event.get("webhook_code");
     String id = (String) event.get("item_id");
 
+    Item item = itemHelper.getItemByItemId(id);
+
     switch (code) {
       case "SYNC_UPDATES_AVAILABLE":
-        transactionService.syncTransactions(id);
+        transactionService.syncTransactions(item);
+        eventService.sendEvent(item.getUser().getId(), "SYNC_UPDATES_AVAILABLE");
         break;
       case "INITIAL_UPDATE":
       case "HISTORICAL_UPDATE":

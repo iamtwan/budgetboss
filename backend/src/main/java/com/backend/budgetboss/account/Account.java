@@ -3,6 +3,7 @@ package com.backend.budgetboss.account;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.transaction.TransactionEntity;
 import com.plaid.client.model.AccountBalance;
+import com.plaid.client.model.AccountBase;
 import com.plaid.client.model.AccountSubtype;
 import com.plaid.client.model.AccountType;
 import jakarta.persistence.CascadeType;
@@ -111,8 +112,8 @@ public class Account {
     return balances;
   }
 
-  public void setBalances(Balance balances) {
-    this.balances = balances;
+  public void setBalances(AccountBalance balances) {
+    this.balances = new Balance(balances);
   }
 
   public Item getItem() {

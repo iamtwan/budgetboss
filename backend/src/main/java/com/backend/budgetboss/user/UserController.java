@@ -33,10 +33,9 @@ public class UserController {
 
   @GetMapping
   @Operation(summary = "Get current user", description = "Get the current user")
-  public ResponseEntity<UserResponseDTO> getCurrentUser(
-      @AuthenticationPrincipal UserPrincipal principal) {
+  public ResponseEntity<UserResponseDTO> getCurrentUser(@CurrentUser User user) {
     logger.info("/api/users GET request received");
-    UserResponseDTO userResponse = userService.getUser(principal.getUser());
+    UserResponseDTO userResponse = userService.getUser(user);
     logger.info("/api/users got current user: {}", userResponse);
     return ResponseEntity.ok(userResponse);
   }

@@ -135,6 +135,6 @@ public class TokenServiceImpl implements TokenService {
     item.setInstitutionName(token.getName());
 
     itemRepository.save(item);
-    transactionService.syncTransactions(item.getItemId());
+    transactionService.syncTransactions(item);
   }
 }

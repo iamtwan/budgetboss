@@ -4,7 +4,6 @@ import com.backend.budgetboss.account.Account;
 import com.backend.budgetboss.account.AccountService;
 import com.backend.budgetboss.account.helper.AccountHelper;
 import com.backend.budgetboss.item.Item;
-import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.transaction.dto.TransactionResponseDTO;
 import com.backend.budgetboss.user.User;
 import com.plaid.client.model.RemovedTransaction;
@@ -27,20 +26,17 @@ import retrofit2.Response;
 public class TransactionServiceImpl implements TransactionService {
 
   private final TransactionRepository transactionRepository;
-  private final ItemHelper itemHelper;
   private final AccountHelper accountHelper;
   private final AccountService accountService;
   private final PlaidApi plaidApi;
   private final ModelMapper modelMapper;
 
   public TransactionServiceImpl(TransactionRepository transactionRepository,
-      ItemHelper itemHelper,
       AccountHelper accountHelper,
       AccountService accountService,
       PlaidApi plaidApi,
       ModelMapper modelMapper) {
     this.transactionRepository = transactionRepository;
-    this.itemHelper = itemHelper;
     this.accountHelper = accountHelper;
     this.accountService = accountService;
     this.plaidApi = plaidApi;
@@ -50,9 +46,7 @@ public class TransactionServiceImpl implements TransactionService {
   @Override
   @Transactional
   @Retryable(retryFor = SyncFailedException.class)
-  public void syncTransactions(String itemId) throws IOException {
-    Item item = itemHelper.getItemByItemId(itemId);
-
+  public void syncTransactions(Item item) throws IOException {
     accountService.createAccounts(item);
 
     String cursor = item.getCursor();

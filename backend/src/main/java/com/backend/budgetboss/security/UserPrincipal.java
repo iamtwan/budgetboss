@@ -6,24 +6,10 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserPrincipal implements UserDetails {
-
-  private final User user;
+public class UserPrincipal extends User implements UserDetails {
 
   public UserPrincipal(User user) {
-    this.user = user;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public Long getId() {
-    return user.getId();
-  }
-
-  public String getEmail() {
-    return user.getEmail();
+    super(user);
   }
 
   @Override
@@ -32,13 +18,8 @@ public class UserPrincipal implements UserDetails {
   }
 
   @Override
-  public String getPassword() {
-    return user.getPassword();
-  }
-
-  @Override
   public String getUsername() {
-    return user.getEmail();
+    return getEmail();
   }
 
   @Override

@@ -18,23 +18,22 @@ public class WebhookItemHelper {
     this.itemHelper = itemHelper;
   }
 
-  public void handleError(ItemErrorWebhook error) {
+  public void handleError(ItemErrorWebhook error, Item item) {
     String errorCode = error.getError().getErrorCode();
 
     if (errorCode.equals("ITEM_LOGIN_REQUIRED")) {
-      handlePendingExpiration(error.getItemId());
+      handlePendingExpiration(item);
     } else {
       System.out.println("Unhandled error code: " + errorCode);
     }
   }
 
-  public void handlePendingExpiration(String id) {
-    Item item = itemHelper.getItemByItemId(id);
+  public void handlePendingExpiration(Item item) {
     item.setStatus(Status.BAD);
     itemRepository.save(item);
   }
 
-  public void handleUserPermissionRevoked(String id) {
-    itemRepository.deleteByItemId(id);
+  public void handleUserPermissionRevoked(Item item) {
+    itemRepository.delete(item);
   }
 }

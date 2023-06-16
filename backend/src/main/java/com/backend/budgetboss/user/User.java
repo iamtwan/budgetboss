@@ -34,6 +34,16 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ManualInstitution> manualInstitutions = new ArrayList<>();
 
+  public User() {}
+
+  public User(User user) {
+    this.id = user.id;
+    this.email = user.email;
+    this.password = user.password;
+    this.items = user.items;
+    this.manualInstitutions = user.manualInstitutions;
+  }
+
   public Long getId() {
     return id;
   }

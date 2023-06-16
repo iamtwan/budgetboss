@@ -26,6 +26,26 @@ public class Balance {
   @OneToOne(mappedBy = "balances")
   private Account account;
 
+  public Balance() {
+  }
+
+  public Balance(AccountBalance accountBalance) {
+    if (accountBalance.getAvailable() != null) {
+      this.available = BigDecimal.valueOf(accountBalance.getAvailable());
+    }
+
+    if (accountBalance.getCurrent() != null) {
+      this.current = BigDecimal.valueOf(accountBalance.getCurrent());
+    }
+
+    if (accountBalance.getLimit() != null) {
+      this.balanceLimit = BigDecimal.valueOf(accountBalance.getLimit());
+    }
+
+    this.isoCurrencyCode = accountBalance.getIsoCurrencyCode();
+    this.unofficialCurrencyCode = accountBalance.getUnofficialCurrencyCode();
+  }
+
 
   public Long getId() {
     return id;
