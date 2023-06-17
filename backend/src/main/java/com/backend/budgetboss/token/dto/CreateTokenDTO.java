@@ -1,20 +1,21 @@
 package com.backend.budgetboss.token.dto;
 
 public class CreateTokenDTO {
-    private Long id;
 
-    public Long getItemId() {
-        return id;
-    }
+  private Long id;
 
-    public void setItemId(Long id) {
-        this.id = id;
-    }
+  public Long getItemId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "CreateTokenDTO{" +
-                "id=" + id +
-                '}';
-    }
+  public void setItemId(Long id) {
+    this.id = id;
+  }
+
+  @Override
+  public String toString() {
+    return "CreateTokenDTO{" +
+        "id=" + id +
+        '}';
+  }
 }

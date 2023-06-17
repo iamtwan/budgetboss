@@ -1,40 +1,42 @@
 package com.backend.budgetboss.chart;
 
+import java.math.BigDecimal;
 import java.time.Month;
 
 public class ChartResponse {
-    public Month month;
-    public Double balance;
 
-    public ChartResponse() {
-    }
+  public Month month;
+  public BigDecimal netBalance;
 
-    public ChartResponse(Month month, Double balance) {
-        this.month = month;
-        this.balance = balance;
-    }
+  public ChartResponse() {
+  }
 
-    public Month getMonth() {
-        return month;
-    }
+  public ChartResponse(Month month, BigDecimal netBalance) {
+    this.month = month;
+    this.netBalance = netBalance;
+  }
 
-    public void setMonth(Month month) {
-        this.month = month;
-    }
+  public Month getMonth() {
+    return month;
+  }
 
-    public Double getBalance() {
-        return balance;
-    }
+  public void setMonth(Month month) {
+    this.month = month;
+  }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
+  public BigDecimal getNetBalance() {
+    return netBalance;
+  }
 
-    @Override
-    public String toString() {
-        return "ChartResponse{" +
-                "month=" + month +
-                ", balance=" + balance +
-                '}';
-    }
+  public void setNetBalance(BigDecimal netBalance) {
+    this.netBalance = netBalance;
+  }
+
+  @Override
+  public String toString() {
+    return "ChartResponse{" +
+        "month=" + month +
+        ", netBalance=" + netBalance +
+        '}';
+  }
 }

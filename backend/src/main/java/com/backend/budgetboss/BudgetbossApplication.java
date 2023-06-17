@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableRetry
 @EnableCaching
 public class BudgetbossApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(BudgetbossApplication.class, args);
-	}
+
+  public static void main(String[] args) {
+    SpringApplication.run(BudgetbossApplication.class, args);
+  }
 }

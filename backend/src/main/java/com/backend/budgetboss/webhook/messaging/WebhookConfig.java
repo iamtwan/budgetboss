@@ -6,8 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class WebhookConfig {
-    @Bean
-    public Queue webhookQueue() {
-        return new Queue("webhook-queue");
-    }
+
+  @Bean
+  public Queue webhookQueue() {
+    return new Queue("webhook-queue");
+  }
 }

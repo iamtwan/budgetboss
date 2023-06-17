@@ -9,31 +9,31 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WebhookItemHelper {
-    private final ItemRepository itemRepository;
-    private final ItemHelper itemHelper;
 
-    public WebhookItemHelper(ItemRepository itemRepository, ItemHelper itemHelper) {
-        this.itemRepository = itemRepository;
-        this.itemHelper = itemHelper;
+  private final ItemRepository itemRepository;
+  private final ItemHelper itemHelper;
+
+  public WebhookItemHelper(ItemRepository itemRepository, ItemHelper itemHelper) {
+    this.itemRepository = itemRepository;
+    this.itemHelper = itemHelper;
+  }
+
+  public void handleError(ItemErrorWebhook error, Item item) {
+    String errorCode = error.getError().getErrorCode();
+
+    if (errorCode.equals("ITEM_LOGIN_REQUIRED")) {
+      handlePendingExpiration(item);
+    } else {
+      System.out.println("Unhandled error code: " + errorCode);
     }
+  }
 
-    public void handleError(ItemErrorWebhook error) {
-        String errorCode = error.getError().getErrorCode();
+  public void handlePendingExpiration(Item item) {
+    item.setStatus(Status.BAD);
+    itemRepository.save(item);
+  }
 
-        if (errorCode.equals("ITEM_LOGIN_REQUIRED")) {
-            handlePendingExpiration(error.getItemId());
-        } else {
-            System.out.println("Unhandled error code: " + errorCode);
-        }
-    }
-
-    public void handlePendingExpiration(String id) {
-        Item item = itemHelper.getItemByItemId(id);
-        item.setStatus(Status.BAD);
-        itemRepository.save(item);
-    }
-
-    public void handleUserPermissionRevoked(String id) {
-        itemRepository.deleteByItemId(id);
-    }
+  public void handleUserPermissionRevoked(Item item) {
+    itemRepository.delete(item);
+  }
 }
