@@ -1,56 +1,48 @@
-import { filterLinkedAccounts, filterManualAccounts } from "./helpers"
-import { fetchLinkedAccounts, fetchManualAccounts, fetchLinkToken } from "../services/apiService";
+export const mergeAccounts = (linkedAccounts, manualAccountsData) => {
+    const mergedAccounts = {};
 
-export const fetchAccounts = async (
-    setIsLoading,
-    setLinkedCashAccounts,
-    setLinkedCreditAccounts,
-    setInvestmentAccounts,
-    setLinkedInstitutions,
-    setManualData,
-    setError,
-    manualData
-) => {
-    setIsLoading(true);
-    try {
-        const [linkedAccountResponse, manualAccountsResponse] = await Promise.all([
-            fetchLinkedAccounts(),
-            fetchManualAccounts(),
-        ]);
+    linkedAccounts.forEach(institution => {
+        const key = institution.name.toLowerCase();
 
-        const filteredLinkedAccounts = linkedAccountResponse.data;
-        const filteredManualAccounts = manualAccountsResponse.data;
+        mergedAccounts[key] = mergedAccounts[key] || {
+            name: institution.name,
+            accounts: [],
+            id: institution.id
+        };
 
-        setLinkedCashAccounts(filterLinkedAccounts(filteredLinkedAccounts, 'DEPOSITORY'));
-        setLinkedCreditAccounts(filterLinkedAccounts(filteredLinkedAccounts, 'CREDIT'));
-        setInvestmentAccounts(filterLinkedAccounts(filteredLinkedAccounts, 'INVESTMENT'));
-        setLinkedInstitutions(filteredLinkedAccounts);
-        setManualData({
-            ...manualData,
-            institutions: [...filteredManualAccounts],
-            accounts: [...filteredManualAccounts],
-            cash: filterManualAccounts(filteredManualAccounts, 'DEPOSITORY'),
-            credit: filterManualAccounts(filteredManualAccounts, 'CREDIT'),
-            investment: filterManualAccounts(filteredManualAccounts, 'INVESTMENT'),
+        institution.accounts.forEach(account => {
+            mergedAccounts[key].accounts.push({
+                key: 'linked' + account.id,
+                id: account.id,
+                name: account.name,
+                balance: account.balances.current || account.balances.available,
+                type: account.type,
+                accountType: "linked",
+            });
         });
-    } catch (err) {
-        setError(err.message);
-    } finally {
-        setIsLoading(false);
-    }
-};
+    });
 
-export const handleToggleAddAccountForm = (showModal, setShowModal) => {
-    setShowModal(!showModal);
-};
+    manualAccountsData.forEach(institution => {
+        const key = institution.name.toLowerCase();
 
-export const generateToken = async (setLinkToken) => {
-    try {
-        const response = await fetchLinkToken();
-        const data = await response.json();
-        console.log(data);
-        setLinkToken(data.linkToken);
-    } catch (err) {
-        console.log(err);
-    }
-};
+        mergedAccounts[key] = mergedAccounts[key] || {
+            name: institution.name,
+            accounts: []
+        };
+
+        mergedAccounts[key].id = institution.name;
+
+        institution.accounts.forEach(account => {
+            mergedAccounts[key].accounts.push({
+                key: 'manual' + account.id,
+                id: account.id,
+                name: account.name,
+                balance: account.balance,
+                type: account.type,
+                accountType: "manual"
+            });
+        });
+    });
+
+    return Object.values(mergedAccounts);
+}

@@ -14,7 +14,6 @@ const withAuth = (WrappedComponent) => {
             const checkAuthentication = async () => {
                 try {
                     await fetchUser();
-
                     setIsAuthenticated(true);
                 } catch (error) {
                     console.error('Authentication error:', error);

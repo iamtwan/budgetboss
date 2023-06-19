@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
-import useAccounts from '../../../../hooks/useAccounts';
 import AccountsList from '../AccountsList';
+import { mergeAccounts } from '../../../../utils/accountUtils';
+import { useManualData, useLinkedData } from '../../../../services/apiService';
+import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
 
-const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEditModal }) => {
+const CreditAccountsPage = ({ onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
-    const { mergeAccounts } = useAccounts();
 
-    const institutions = mergeAccounts(linkedCredit, manualData.credit, "credit");
+    const { data: manualData, error: manualError, isLoading: manualLoading } = useManualData();
+    const { data: linkedData, error: linkedError, isLoading: linkedLoading } = useLinkedData();
+
+    if (manualError || linkedError) {
+        return <div>Error</div>
+    }
+
+    if (manualLoading || linkedLoading) {
+        return <div>Loading...</div>
+    }
+
+    const manualCredit = filterManualAccounts(manualData, "CREDIT");
+    const linkedCredit = filterLinkedAccounts(linkedData, "CREDIT");
+    const institutions = mergeAccounts(linkedCredit, manualCredit);
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
@@ -38,7 +52,6 @@ const CreditAccountsPage = ({ linkedCredit, manualData, setManualData, onOpenEdi
             handleAccountTransactionsClick={handleAccountTransactionsClick}
             formatCurrency={formatCurrency}
             manualData={manualData}
-            setManualData={setManualData}
             handleCloseModal={handleCloseModal}
             type='credit'
             title='Credit Accounts'

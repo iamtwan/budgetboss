@@ -1,11 +1,24 @@
 import React from 'react';
-import useAccounts from '../../../../hooks/useAccounts';
 import AccountsList from '../AccountsList';
+import { mergeAccounts } from '../../../../utils/accountUtils';
+import { useManualData, useLinkedData } from '../../../../services/apiService';
+import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
 
-const InvestmentAccountsPage = ({ linkedInvestment, manualData, onOpenEditModal }) => {
-    const { mergeAccounts } = useAccounts();
+const InvestmentAccountsPage = ({ onOpenEditModal }) => {
+    const { data: manualData, error: manualError, isLoading: manualLoading } = useManualData();
+    const { data: linkedData, error: linkedError, isLoading: linkedLoading } = useLinkedData();
 
-    const institutions = mergeAccounts(linkedInvestment, manualData.investment, "investment");
+    if (manualError || linkedError) {
+        return <div>Error</div>;
+    }
+
+    if (manualLoading || linkedLoading) {
+        return <div>Loading...</div>;
+    }
+
+    const manualInvestment = filterManualAccounts(manualData, 'INVESTMENT');
+    const linkedInvestment = filterLinkedAccounts(linkedData, 'INVESTMENT')
+    const institutions = mergeAccounts(linkedInvestment, manualInvestment);
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);

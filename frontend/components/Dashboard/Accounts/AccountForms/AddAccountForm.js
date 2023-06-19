@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { createManualAccount } from '../../../../services/apiService';
+import { createManualAccount, useManualData } from '../../../../services/apiService';
 
-const AddAccountForm = ({ show, manualInstitutions, onClose, onSubmitSuccess }) => {
+const AddAccountForm = ({ show, onClose }) => {
     const [selectedInstitution, setSelectedInstitution] = useState('');
     const [newInstitution, setNewInstitution] = useState('');
     const [accountName, setAccountName] = useState('');
     const [balance, setBalance] = useState('');
     const [selectedAccountType, setSelectedAccountType] = useState('');
     const [error, setError] = useState('');
+
+    const { data, error: manualError, isLoading, mutate } = useManualData();
+
+    if (manualError) {
+        return <div>{error}</div>;
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     const handleInstitutionChange = (e) => {
         const value = e.target.value;
@@ -29,17 +39,16 @@ const AddAccountForm = ({ show, manualInstitutions, onClose, onSubmitSuccess }) 
 
     const handleAddAccountFormSubmit = async (formData) => {
         try {
-            await createManualAccount(formData)
-
-            onSubmitSuccess();
-        } catch (err) {
-            setError(err.message);
+            await createManualAccount(formData);
+            mutate();
+        } catch(e) {
+            console.log(e);
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const institutionExists = manualInstitutions.some(
+        const institutionExists = data.some(
             (institution) => institution.name.toLowerCase() === newInstitution.toLowerCase()
         );
 
@@ -70,7 +79,7 @@ const AddAccountForm = ({ show, manualInstitutions, onClose, onSubmitSuccess }) 
                         <Form.Label>Institution</Form.Label>
                         <Form.Select value={selectedInstitution} onChange={handleInstitutionChange} required>
                             <option value="">Select an institution</option>
-                            {manualInstitutions.map((manualInstitution) => (
+                            {data.map((manualInstitution) => (
                                 <option key={manualInstitution.id} value={manualInstitution.name}>
                                     {manualInstitution.name}
                                 </option>

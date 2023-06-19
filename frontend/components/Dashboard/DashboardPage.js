@@ -9,69 +9,59 @@ import BudgetPage from './Budget/BudgetSection';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import { LinkAccount } from './Accounts/Link/LinkAccount';
-import useAccounts from '../../hooks/useAccounts';
 import { Button } from 'react-bootstrap';
-import { fetchAccounts, handleToggleAddAccountForm, generateToken } from '../../utils/accountUtils';
+import { fetchLinkToken } from '../../services/apiService';
+import useSWR from 'swr';
 
 const DashboardPage = () => {
+    const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState(null);
 
-    const {
-        linkToken,
-        isLoading,
-        error,
-        linkedCash,
-        linkedCredit,
-        linkedInvestment,
-        linkedInstitutions,
-        manualData,
-        setIsLoading,
-        setLinkedCashAccounts,
-        setLinkedCreditAccounts,
-        setInvestmentAccounts,
-        setLinkedInstitutions,
-        setManualData,
-        setError,
-    } = useAccounts();
+    const { data, error, isLoading } = useSWR("http://localhost:8080/api/tokens", fetchLinkToken, {
+        refreshInterval: 60 * 25 * 1000,
+        revalidateOnFocus: false,
+    });
 
-    const [showModal, setShowModal] = useState(false);
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     const handleOpenEditModal = (account) => {
         setSelectedAccount(account);
         setShowEditModal(true);
     };
 
-    const handleAccountUpdate = (formData) => {
-        setManualData((prevState) => {
-            const updatedAccounts = prevState.accounts.map((account) =>
-                account.id === formData.id ? formData : account
-            );
-            return {
-                ...prevState,
-                accounts: updatedAccounts,
-            };
-        });
+    // const handleAccountUpdate = (formData) => {
+    //     setManualData((prevState) => {
+    //         const updatedAccounts = prevState.accounts.map((account) =>
+    //             account.id === formData.id ? formData : account
+    //         );
+    //         return {
+    //             ...prevState,
+    //             accounts: updatedAccounts,
+    //         };
+    //     });
+    // };
+
+
+    // const handleAccountDelete = (accountId) => {
+    //     setManualData((prevState) => {
+    //         const updatedAccounts = prevState.accounts.filter((account) => account.id !== accountId);
+    //         return {
+    //             ...prevState,
+    //             accounts: updatedAccounts,
+    //         };
+    //     });
+    // };
+
+    const handleToggleAddAccountForm = (showModal, setShowModal) => {
+        setShowModal(!showModal);
     };
-
-
-    const handleAccountDelete = (accountId) => {
-        setManualData((prevState) => {
-            const updatedAccounts = prevState.accounts.filter((account) => account.id !== accountId);
-            return {
-                ...prevState,
-                accounts: updatedAccounts,
-            };
-        });
-    };
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     return (
         <div className="d-flex justify-content-center h-100">
@@ -83,19 +73,7 @@ const DashboardPage = () => {
                                 <h3 className="me-2 text-uppercase fw-bold d-inline-flex">Accounts</h3>
                             </div>
                             <div>
-                                {linkToken && <LinkAccount
-                                    linkToken={linkToken}
-                                    generateToken={generateToken}
-                                    fetchAccounts={fetchAccounts}
-                                    setIsLoading={setIsLoading}
-                                    setLinkedCashAccounts={setLinkedCashAccounts}
-                                    setLinkedCreditAccounts={setLinkedCreditAccounts}
-                                    setInvestmentAccounts={setInvestmentAccounts}
-                                    setLinkedInstitutions={setLinkedInstitutions}
-                                    setManualData={setManualData}
-                                    setError={setError}
-                                    manualData={manualData}
-                                />}
+                                {data.linkToken && <LinkAccount linkToken={data.linkToken} />}
                                 <Button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
                                     Add Account
                                 </Button>
@@ -103,24 +81,14 @@ const DashboardPage = () => {
                         </div>
                         <div className="row h-100">
                             <CashAccountsPage
-                                linkedCash={linkedCash}
-                                manualData={manualData}
-                                setManualData={setManualData}
                                 onOpenEditModal={handleOpenEditModal}
                             />
                             <CreditAccountsPage
-                                linkedCredit={linkedCredit}
-                                manualData={manualData}
-                                setManualData={setManualData}
                                 onOpenEditModal={handleOpenEditModal}
                             />
                             <InvestmentAccountsPage
-                                linkedInvestment={linkedInvestment}
-                                manualData={manualData}
-                                setManualData={setManualData}
                                 onOpenEditModal={handleOpenEditModal}
                             />
-
                         </div>
                     </div>
                 </div>
@@ -139,40 +107,19 @@ const DashboardPage = () => {
             <AddAccountForm
                 show={showModal}
                 onClose={() => handleToggleAddAccountForm(showModal, setShowModal)}
-                linkedInstitutions={linkedInstitutions}
-                manualInstitutions={manualData.institutions}
-                onSubmitSuccess={() =>
-                    fetchAccounts(
-                        setIsLoading,
-                        setLinkedCashAccounts,
-                        setLinkedCreditAccounts,
-                        setInvestmentAccounts,
-                        setLinkedInstitutions,
-                        setManualData,
-                        setError,
-                        manualData
-                    )
-                }
             />
-            <EditAccountModal
-                show={showEditModal}
-                account={selectedAccount}
-                onClose={() => setShowEditModal(false)}
-                onAccountUpdate={handleAccountUpdate}
-                onAccountDelete={handleAccountDelete}
-                onSubmitSuccess={() =>
-                    fetchAccounts(
-                        setIsLoading,
-                        setLinkedCashAccounts,
-                        setLinkedCreditAccounts,
-                        setInvestmentAccounts,
-                        setLinkedInstitutions,
-                        setManualData,
-                        setError,
-                        manualData
-                    )
-                }
-            />
+
+            {/* // <EditAccountModal
+            //     show={showEditModal}
+            //     account={selectedAccount}
+            //     onClose={() => setShowEditModal(false)}
+            //     onAccountUpdate={handleAccountUpdate}
+            //     onAccountDelete={handleAccountDelete}
+            //     onSubmitSuccess={() => {
+            //         fetchManualAccountsData();
+            //         fetchLinkedAccountsData();
+            //     }}
+            // /> */}
         </div>
     );
 };

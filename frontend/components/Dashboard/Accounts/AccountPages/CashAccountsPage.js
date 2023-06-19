@@ -1,13 +1,28 @@
+'use client';
+
 import React, { useState } from 'react';
-import useAccounts from '../../../../hooks/useAccounts';
 import AccountsList from '../AccountsList';
-// import { resetItem, fireEvent } from '../../../../services/apiWebhooks';
+import { useManualData, useLinkedData } from '../../../../services/apiService';
+import { mergeAccounts } from '../../../../utils/accountUtils';
+import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
 
-const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditModal }) => {
+const CashAccountsPage = ({ onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
-    const { mergeAccounts } = useAccounts();
 
-    const institutions = mergeAccounts(linkedCash, manualData.cash);
+    const { data: manualData, error: manualError, isLoading: manualLoading } = useManualData();
+    const { data: linkedData, error: linkedError, isLoading: linkedLoading } = useLinkedData();
+
+    if (manualError || linkedError) {
+        return <div>error...</div>;
+    }
+
+    if (manualLoading || linkedLoading) {
+        return <div>loading...</div>;
+    }
+
+    const manualCash = filterManualAccounts(manualData, 'DEPOSITORY');
+    const linkedCash = filterLinkedAccounts(linkedData, 'DEPOSITORY');
+    const institutions = mergeAccounts(linkedCash, manualCash);
 
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
@@ -31,22 +46,6 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
     };
 
-    // const handleReset = async (id) => {
-    //     try {
-    //         await resetItem(id);
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    // };
-
-    // const handleFireEvent = async (id) => {
-    //     try {
-    //         await fireEvent(id);
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    // };
-
     return (
         <AccountsList
             institutions={institutions}
@@ -54,8 +53,6 @@ const CashAccountsPage = ({ linkedCash, manualData, setManualData, onOpenEditMod
             handleAccountClick={handleAccountClick}
             handleAccountTransactionsClick={handleAccountTransactionsClick}
             formatCurrency={formatCurrency}
-            manualData={manualData}
-            setManualData={setManualData}
             handleCloseModal={handleCloseModal}
             type='cash'
             title='Cash Accounts'

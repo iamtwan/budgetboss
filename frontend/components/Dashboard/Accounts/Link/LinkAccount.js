@@ -1,23 +1,15 @@
 import React from 'react';
 import { usePlaidLink } from 'react-plaid-link';
 import { createLinkToken } from '../../../../services/apiService';
-import { fetchAccounts } from '../../../../utils/accountUtils';
+import { useSWRConfig } from 'swr';
 
 export const LinkAccount = ({
-    linkToken,
-    setIsLoading,
-    setLinkedCashAccounts,
-    setLinkedCreditAccounts,
-    setInvestmentAccounts,
-    setLinkedInstitutions,
-    setManualData,
-    setError,
-    manualData
+    linkToken
 }) => {
+    const { mutate } = useSWRConfig();
+
     const onSuccess = async (public_token, metadata) => {
         try {
-            setIsLoading(true);
-
             const tokenData = {
                 publicToken: public_token,
                 id: metadata.institution.institution_id,
@@ -25,22 +17,9 @@ export const LinkAccount = ({
             };
 
             await createLinkToken(tokenData);
-
-            await fetchAccounts(
-                setIsLoading,
-                setLinkedCashAccounts,
-                setLinkedCreditAccounts,
-                setInvestmentAccounts,
-                setLinkedInstitutions,
-                setManualData,
-                setError,
-                manualData
-            );
-
-            setIsLoading(false);
+            mutate("http://localhost:8080/api/items");
         } catch (err) {
             console.log(err);
-            setIsLoading(false);
         }
     };
 
@@ -53,8 +32,8 @@ export const LinkAccount = ({
 
     return (
         <button
-            type="button"
-            className="btn btn-secondary btn-sm"
+            type='button'
+            className='btn btn-secondary btn-sm'
             onClick={() => open()}
             disabled={!ready}
         >

@@ -9,7 +9,7 @@ import {
     updateManualTransaction
 } from '../../../../services/apiService';
 
-const TransactionListModal = ({ account, onClose, manualData, setManualData, type }) => {
+const TransactionListModal = ({ account, onClose, type }) => {
     const [showModal, setShowModal] = useState(true);
     const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
     const [selectedTransactionId, setSelectedTransactionId] = useState(null);
@@ -54,29 +54,7 @@ const TransactionListModal = ({ account, onClose, manualData, setManualData, typ
         formData.amount = (formData.type === "Deposit") === (type === "cash") ? -formData.amount : formData.amount;
 
         try {
-            const response = await createManualTransaction(account.id, formData);
-
-            const newManualData = manualData[type].map(institution => {
-                if (institution.name === account.institutionId) {
-                    return {
-                        ...institution,
-                        accounts: institution.accounts.map(acc => {
-                            if (acc.id === account.id) {
-                                return { ...account, balance: acc.balance - response.data.amount };
-                            }
-                            return acc;
-                        })
-                    };
-                }
-                return institution;
-            });
-
-            setManualData(prevData => ({
-                ...prevData,
-                [type]: newManualData
-            }));
-
-            setTransactions([...transactions, response.data]);
+            await createManualTransaction(account.id, formData);
         } catch (error) {
             console.error('Error adding transaction:', error);
         }

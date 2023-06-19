@@ -8,8 +8,6 @@ const AccountsList = ({
     handleAccountClick,
     handleAccountTransactionsClick,
     formatCurrency,
-    manualData,
-    setManualData,
     handleCloseModal,
     type,
     title,
@@ -36,7 +34,6 @@ const AccountsList = ({
                 <TransactionListModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
-                    manualData={manualData}
                     setManualData={setManualData}
                     type={type}
                 />
