@@ -33,18 +33,6 @@ public class SecurityConfig {
   }
 
   @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowCredentials(true);
-    configuration.addAllowedOrigin("http://localhost:3000");
-    configuration.addAllowedHeader("*");
-    configuration.addAllowedMethod("*");
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
-
-  @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .cors(withDefaults())
@@ -65,6 +53,18 @@ public class SecurityConfig {
             .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()));
 
     return http.build();
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowCredentials(true);
+    configuration.addAllowedOrigin("http://localhost:3000");
+    configuration.addAllowedHeader("*");
+    configuration.addAllowedMethod("*");
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 
   @Bean
