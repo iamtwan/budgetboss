@@ -92,9 +92,9 @@ public class WebhookServiceImpl implements WebhookService {
         webhookItemHelper.handleError(error, item);
         eventService.sendEvent(item.getUser().getId(), "ERROR");
         break;
-      case "PENDING EXPIRATION":
+      case "PENDING_EXPIRATION":
         webhookItemHelper.handlePendingExpiration(item);
-        eventService.sendEvent(item.getUser().getId(), "PENDING EXPIRATION");
+        eventService.sendEvent(item.getUser().getId(), "PENDING_EXPIRATION");
         break;
       case "USER_PERMISSION_REVOKED":
         webhookItemHelper.handleUserPermissionRevoked(item);

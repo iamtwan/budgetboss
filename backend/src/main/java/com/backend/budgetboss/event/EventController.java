@@ -25,7 +25,7 @@ public class EventController {
   }
 
   @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  @Operation(summary = "Subscribe to events", description = "Subscribe to events for the current user")
+  @Operation(summary = "Subscribe to events", description = "Subscribe to events for the current user. Possible values: ERROR, PENDING_EXPIRATION, USER_PERMISSION_REVOKED, SYNC_UPDATES_AVAILABLE")
   public SseEmitter subscribeToEvents(@CurrentUser User user) {
     logger.info("/api/events GET request received");
     SseEmitter emitter = eventService.subscribe(user);
