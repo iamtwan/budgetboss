@@ -38,7 +38,7 @@ const withAuth = (WrappedComponent) => {
                 router.push('/');
             }, 1000);
 
-            return <p>Unauthorized. Please log in to access this page.</p>;
+            return;
         }
 
         return <WrappedComponent />;

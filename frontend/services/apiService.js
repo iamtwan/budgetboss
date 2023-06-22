@@ -2,10 +2,10 @@ import useSWR from 'swr';
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
-const fetcher = (url) => fetch(url, { credentials: 'include' }).then((res) => res.json());
+const fetcher = (url) => fetch(url, { credentials: 'include' }).then((response) => response.json());
 
-export const createSignUp = (formData) => {
-    return fetch(`${API_BASE_URL}/users/register`, {
+export const createSignUp = async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/users/register`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -13,10 +13,16 @@ export const createSignUp = (formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return await response.json();
 }
 
-export const fetchUserLogin = (formData) => {
-    return fetch(`${API_BASE_URL}/users/login`, {
+export const fetchUserLogin = async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/users/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -24,21 +30,39 @@ export const fetchUserLogin = (formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return await response.json();
 }
 
-export const userLogout = () => {
-    return fetch(`${API_BASE_URL}/users/logout`, {
+export const userLogout = async () => {
+    const response = await fetch(`${API_BASE_URL}/users/logout`, {
         method: 'POST',
         credentials: 'include'
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return await response.json();
 }
 
-export const fetchUser = () => {
-    return fetch(`${API_BASE_URL}/users`, { credentials: 'include' });
+export const fetchUser = async () => {
+    const response = await fetch(`${API_BASE_URL}/users`, { credentials: 'include' });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return await response.json();
 }
 
-export const createLinkToken = (tokenData) => {
-    return fetch(`${API_BASE_URL}/tokens/exchange`, {
+export const createLinkToken = async (tokenData) => {
+    const response = await fetch(`${API_BASE_URL}/tokens/exchange`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -46,6 +70,8 @@ export const createLinkToken = (tokenData) => {
         },
         body: JSON.stringify(tokenData)
     });
+
+    return await response.json();
 }
 
 export const fetchLinkToken = async url => {
@@ -57,19 +83,22 @@ export const fetchLinkToken = async url => {
     return await response.json();
 }
 
-export const updateItem = (id) => {
-    return fetch(`${API_BASE_URL}/tokens/${id}`, {
+export const updateItem = async (id) => {
+    const response = await fetch(`${API_BASE_URL}/tokens/${id}`, {
         method: 'POST',
         credentials: 'include'
     });
+
+    return await response.json();
 }
 
-export const fetchManualTransactions = (accountId) => {
-    return fetch(`${API_BASE_URL}/manual-transactions/${accountId}`, { credentials: 'include' });
+export const fetchManualTransactions = async (accountId) => {
+    const response = await fetch(`${API_BASE_URL}/manual-transactions/${accountId}`, { credentials: 'include' });
+    return await response.json();
 }
 
-export const createManualAccount = (formData) => {
-    return fetch(`${API_BASE_URL}/manual-accounts`, {
+export const createManualAccount = async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/manual-accounts`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -77,17 +106,21 @@ export const createManualAccount = (formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    return await response.json();
 }
 
-export const deleteManualAccount = (accountId) => {
-    return fetch(`${API_BASE_URL}/manual-accounts/${accountId}`, {
+export const deleteManualAccount = async (accountId) => {
+    const response = await fetch(`${API_BASE_URL}/manual-accounts/${accountId}`, {
         method: 'DELETE',
         credentials: 'include'
     });
+
+    return await response.json();
 }
 
-export const updateManualAccount = (accountId, formData) => {
-    return fetch(`${API_BASE_URL}/manual-accounts/${accountId}`, {
+export const updateManualAccount = async (accountId, formData) => {
+    const response = await fetch(`${API_BASE_URL}/manual-accounts/${accountId}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -95,10 +128,12 @@ export const updateManualAccount = (accountId, formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    return await response.json();
 }
 
-export const createManualTransaction = (accountId, formData) => {
-    return fetch(`${API_BASE_URL}/manual-transactions/${accountId}`, {
+export const createManualTransaction = async (accountId, formData) => {
+    const response = await fetch(`${API_BASE_URL}/manual-transactions/${accountId}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -106,17 +141,21 @@ export const createManualTransaction = (accountId, formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    return await response.json();
 }
 
-export const deleteManualTransaction = (transactionId) => {
-    return fetch(`${API_BASE_URL}/manual-transactions/${transactionId}`, {
+export const deleteManualTransaction = async (transactionId) => {
+    const response = await fetch(`${API_BASE_URL}/manual-transactions/${transactionId}`, {
         method: 'DELETE',
         credentials: 'include'
     });
+
+    return await response.json();
 }
 
-export const updateManualTransaction = (transactionId, formData) => {
-    return fetch(`${API_BASE_URL}/manual-transactions/${transactionId}`, {
+export const updateManualTransaction = async (transactionId, formData) => {
+    const response = await fetch(`${API_BASE_URL}/manual-transactions/${transactionId}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -124,6 +163,8 @@ export const updateManualTransaction = (transactionId, formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    return await response.json();
 }
 
 export const fetchBarChart = () => {
