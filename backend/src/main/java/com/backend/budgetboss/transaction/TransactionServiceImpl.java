@@ -17,6 +17,8 @@ import java.io.SyncFailedException;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import retrofit2.Response;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
+  private final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
   private final TransactionRepository transactionRepository;
   private final AccountHelper accountHelper;
   private final AccountService accountService;
@@ -108,6 +111,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     transactionRepository.deleteAllByTransactionIdIn(transactionIds);
     transactionRepository.saveAll(transactionEntities);
+
+    logger.info("Deleted {} transactions, Added {} transactions, Modified {} transactions",
+        transactionIds.size(), added.size(), modified.size());
   }
 
   @Override

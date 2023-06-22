@@ -8,6 +8,8 @@ import com.plaid.client.model.AccountsGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
 import com.plaid.client.request.PlaidApi;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,15 +44,17 @@ public class AccountServiceImpl implements AccountService {
       throw new AccountRequestException("Unable to retrieve accounts for item: " + item.getId());
     }
 
-    item.getAccounts().clear();
+    List<Account> accounts = new ArrayList<>();
 
     for (AccountBase accountBase : response.body().getAccounts()) {
       Account account = accountRepository.findByAccountId(accountBase.getAccountId())
           .orElse(new Account(item));
       modelMapper.map(accountBase, account);
-      item.getAccounts().add(account);
+      accounts.add(account);
     }
 
+    item.getAccounts().clear();;
+    item.getAccounts().addAll(accounts);
     itemRepository.save(item);
   }
 }
