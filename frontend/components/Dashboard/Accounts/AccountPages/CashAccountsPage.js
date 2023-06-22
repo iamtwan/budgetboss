@@ -13,11 +13,11 @@ const CashAccountsPage = ({ onOpenEditModal }) => {
     const { data: linkedData, error: linkedError, isLoading: linkedLoading } = useLinkedData();
 
     if (manualError || linkedError) {
-        return <div>error...</div>;
+        return <div>Error...</div>;
     }
 
     if (manualLoading || linkedLoading) {
-        return <div>loading...</div>;
+        return <div>Loading...</div>;
     }
 
     const manualCash = filterManualAccounts(manualData, 'DEPOSITORY');

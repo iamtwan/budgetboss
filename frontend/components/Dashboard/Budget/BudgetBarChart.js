@@ -1,28 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Chart, BarController, BarElement, LinearScale, CategoryScale, Tooltip } from 'chart.js';
 import { fetchBarChart } from '../../../services/apiService';
 
 Chart.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip);
 
 const BudgetChart = ({ onMonthClick }) => {
-    const [dataset, setDataset] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetchBarChart();
-                setDataset(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
+    const { data: dataset, error, isLoading } = fetchBarChart();
     const canvasRef = useRef(null);
+
 
     useEffect(() => {
         let chart = null;
@@ -115,6 +102,13 @@ const BudgetChart = ({ onMonthClick }) => {
             }
         };
     }, [dataset, onMonthClick]);
+
+    if (error) {
+        return <div>Failed to load chart data</div>;
+    }
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
 
     return (
         <canvas className='' ref={canvasRef} />

@@ -34,7 +34,6 @@ const AccountsList = ({
                 <TransactionListModal
                     account={selectedAccount}
                     onClose={handleCloseModal}
-                    setManualData={setManualData}
                     type={type}
                 />
             )}

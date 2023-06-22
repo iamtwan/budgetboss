@@ -20,6 +20,15 @@ const AddAccountForm = ({ show, onClose }) => {
         return <div>Loading...</div>;
     }
 
+    const resetForm = () => {
+        setSelectedInstitution('');
+        setNewInstitution('');
+        setAccountName('');
+        setBalance('');
+        setSelectedAccountType('');
+        setError('');
+    }
+
     const handleInstitutionChange = (e) => {
         const value = e.target.value;
         setSelectedInstitution(value);
@@ -41,7 +50,7 @@ const AddAccountForm = ({ show, onClose }) => {
         try {
             await createManualAccount(formData);
             mutate();
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     };
@@ -64,6 +73,7 @@ const AddAccountForm = ({ show, onClose }) => {
         };
 
         handleAddAccountFormSubmit(formData);
+        resetForm();
         onClose();
     };
 

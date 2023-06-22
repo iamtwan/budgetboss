@@ -64,10 +64,6 @@ export const updateItem = (id) => {
     });
 }
 
-export const fetchLinkedTransactions = (accountId) => {
-    return fetch(`${API_BASE_URL}/transactions/${accountId}`, { credentials: 'include' });
-}
-
 export const fetchManualTransactions = (accountId) => {
     return fetch(`${API_BASE_URL}/manual-transactions/${accountId}`, { credentials: 'include' });
 }
@@ -131,7 +127,13 @@ export const updateManualTransaction = (transactionId, formData) => {
 }
 
 export const fetchBarChart = () => {
-    return fetch(`${API_BASE_URL}/charts`, { credentials: 'include' });
+    const { data, error, isLoading } = useSWR(`${API_BASE_URL}/charts`, fetcher);
+
+    return {
+        data,
+        error,
+        isLoading
+    };
 }
 
 export const fetchPieChart = (month) => {
@@ -151,6 +153,25 @@ export const useManualData = () => {
 
 export const useLinkedData = () => {
     const { data, error, isLoading, mutate } = useSWR(`${API_BASE_URL}/items`, fetcher);
+
+    return {
+        data,
+        error,
+        isLoading,
+        mutate
+    };
+}
+
+export const useTransactions = (accountType, id) => {
+    let url;
+
+    if (accountType === 'manual') {
+        url = `${API_BASE_URL}/manual-transactions/${id}`;
+    } else {
+        url = `${API_BASE_URL}/transactions/${id}`;
+    }
+
+    const { data, error, isLoading, mutate } = useSWR(url, fetcher);
 
     return {
         data,

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import TransactionView from '../TransactionView/TransactionView';
 import TransactionModal from './TransactionModal';
-import useTransactions from '../../../../hooks/useTransactions';
+// import useTransactions from '../../../../hooks/useTransactions';
+import { useTransactions } from '../../../../services/apiService';
 import {
     createManualTransaction,
     deleteManualTransaction,
@@ -14,10 +15,21 @@ const TransactionListModal = ({ account, onClose, type }) => {
     const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
     const [selectedTransactionId, setSelectedTransactionId] = useState(null);
     const [selectedTransactions, setSelectedTransactions] = useState([]);
-    const { transactions, isLoading, setTransactions } = useTransactions(account);
     const [isAddingTransaction, setIsAddingTransaction] = useState(false);
     const [isEditingTransaction, setIsEditingTransaction] = useState(false);
     const [showTransactionList, setShowTransactionList] = useState(true);
+
+    const { data: transactions  , error, isLoading } = useTransactions(account.type, account.id);
+
+    if (error) {
+        return <div>ERROR: {error}</div>
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+    console.log(transactions);
 
 
     const handleCloseModal = () => {
@@ -118,7 +130,6 @@ const TransactionListModal = ({ account, onClose, type }) => {
                     )}
                     <TransactionView
                         transactions={transactions}
-                        isLoading={isLoading}
                         onTransactionClick={handleTransactionClick}
                         selectedTransactions={selectedTransactions}
                         handleSelectTransaction={handleSelectTransaction}

@@ -1,8 +1,4 @@
-const TransactionView = ({ transactions, isLoading, onTransactionClick, selectedTransactions, handleSelectTransaction }) => {
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
+const TransactionView = ({ transactions, onTransactionClick, selectedTransactions, handleSelectTransaction }) => {
     return (
         <div>
             <table className="table">
