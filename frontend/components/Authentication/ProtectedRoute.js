@@ -1,49 +1,26 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { fetchUser } from '../../services/apiService';
+import { useUser } from '../../services/apiService';
+import { Spinner } from 'react-bootstrap';
 
 const withAuth = (WrappedComponent) => {
     return () => {
-        const [isAuthenticated, setIsAuthenticated] = useState(false);
-        const [isLoading, setIsLoading] = useState(true);
         const router = useRouter();
+        const { error, isLoading } = useUser();
 
-        useEffect(() => {
-            const checkAuthentication = async () => {
-                try {
-                    await fetchUser();
-                    setIsAuthenticated(true);
-                } catch (error) {
-                    console.error('Authentication error:', error);
-                } finally {
-                    setIsLoading(false);
-                }
-            };
-
-            checkAuthentication();
-        }, []);
-
-        if (isLoading) {
-            return <div className="d-flex justify-content-center vh-100 align-items-center">
-                <div>
-                    <p>Loading...</p>
-                </div>
-            </div>;
-        }
-
-        if (!isAuthenticated) {
+        if (error) {
             setTimeout(() => {
                 router.push('/');
             }, 1000);
 
-            return;
+            return <Spinner />;
+        }
+
+        if (isLoading) {
+            return <div>Loading...</div>
         }
 
         return <WrappedComponent />;
     };
-};
-
+}
 
 export default withAuth;

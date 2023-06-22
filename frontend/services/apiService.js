@@ -28,6 +28,7 @@ export const fetchUserLogin = async (formData) => {
         headers: {
             'Content-Type': 'application/json'
         },
+
         body: JSON.stringify(formData)
     });
 
@@ -48,17 +49,7 @@ export const userLogout = async () => {
         throw new Error('Network response was not ok');
     }
 
-    return await response.json();
-}
-
-export const fetchUser = async () => {
-    const response = await fetch(`${API_BASE_URL}/users`, { credentials: 'include' });
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    return await response.json();
+    return response;
 }
 
 export const createLinkToken = async (tokenData) => {
@@ -89,11 +80,6 @@ export const updateItem = async (id) => {
         credentials: 'include'
     });
 
-    return await response.json();
-}
-
-export const fetchManualTransactions = async (accountId) => {
-    const response = await fetch(`${API_BASE_URL}/manual-transactions/${accountId}`, { credentials: 'include' });
     return await response.json();
 }
 
@@ -219,5 +205,14 @@ export const useTransactions = (accountType, id) => {
         error,
         isLoading,
         mutate
+    };
+}
+
+export const useUser = () => {
+    const { error, isLoading } = useSWR(`${API_BASE_URL}/users`, fetcher);
+
+    return {
+        error,
+        isLoading,
     };
 }

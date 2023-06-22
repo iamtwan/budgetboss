@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import withAuth from '../Authentication/ProtectedRoute';
 import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsPage';
 import CashAccountsPage from './Accounts/AccountPages/CashAccountsPage';
 import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsPage';
@@ -24,7 +23,7 @@ const DashboardPage = () => {
     });
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div>Error occurred</div>;
     }
 
     if (isLoading) {
@@ -73,7 +72,7 @@ const DashboardPage = () => {
                                 <h3 className="me-2 text-uppercase fw-bold d-inline-flex">Accounts</h3>
                             </div>
                             <div>
-                                {data.linkToken && <LinkAccount linkToken={data.linkToken} />}
+                                {data.linkToken && <LinkAccount linkToken={data.linkToken} />}  
                                 <Button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
                                     Add Account
                                 </Button>
@@ -124,4 +123,4 @@ const DashboardPage = () => {
     );
 };
 
-export default withAuth(DashboardPage);
+export default DashboardPage;

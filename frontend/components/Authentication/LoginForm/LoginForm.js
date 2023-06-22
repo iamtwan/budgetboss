@@ -13,6 +13,7 @@ const LoginForm = ({ onToggleForm }) => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        e.stopPropagation();
 
         const formData = {
             email: e.target.email.value,
