@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService {
       accounts.add(account);
     }
 
-    item.getAccounts().clear();;
+    item.getAccounts().clear();
     item.getAccounts().addAll(accounts);
     itemRepository.save(item);
   }
