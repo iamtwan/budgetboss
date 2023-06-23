@@ -13,21 +13,22 @@ const AccountsList = ({
     title,
     showTransactions = true,
 }) => {
+    // console.log(selectedAccount);
     return (
         <div className="col border m-2">
             <h4 className="text-uppercase text-info">{title}</h4>
             {
                 institutions.map(institution => {
                     return institution.accounts.length > 0 &&
-                    <Institution
-                        key={institution.id}
-                        institution={institution}
-                        handleAccountClick={handleAccountClick}
-                        handleAccountTransactionsClick={handleAccountTransactionsClick}
-                        formatCurrency={formatCurrency}
-                        showTransactions={showTransactions}
-                        type={type}
-                    />
+                        <Institution
+                            key={institution.id}
+                            institution={institution}
+                            handleAccountClick={handleAccountClick}
+                            handleAccountTransactionsClick={handleAccountTransactionsClick}
+                            formatCurrency={formatCurrency}
+                            showTransactions={showTransactions}
+                            type={type}
+                        />
                 })
             }
             {selectedAccount && (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePlaidLink } from 'react-plaid-link';
-import { createLinkToken } from '../../../../services/apiService';
+import { exchangeLinkToken } from '../../../../services/apiService';
 import { useSWRConfig } from 'swr';
 
 export const LinkAccount = ({
@@ -16,7 +16,8 @@ export const LinkAccount = ({
                 name: metadata.institution.name
             };
 
-            await createLinkToken(tokenData);
+            const response = await exchangeLinkToken(tokenData);
+
             mutate("http://localhost:8080/api/items");
         } catch (err) {
             console.log(err);

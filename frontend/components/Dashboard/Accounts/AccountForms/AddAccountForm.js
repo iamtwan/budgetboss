@@ -46,7 +46,7 @@ const AddAccountForm = ({ show, onClose }) => {
         setSelectedAccountType(e.target.value);
     };
 
-    const handleAddAccountFormSubmit = async (formData) => {
+    const handleAddAccountSubmit = async (formData) => {
         try {
             await createManualAccount(formData);
             mutate();
@@ -72,7 +72,7 @@ const AddAccountForm = ({ show, onClose }) => {
             balance: parseFloat(balance),
         };
 
-        handleAddAccountFormSubmit(formData);
+        handleAddAccountSubmit(formData);
         resetForm();
         onClose();
     };
