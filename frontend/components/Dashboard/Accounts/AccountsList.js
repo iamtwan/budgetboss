@@ -13,7 +13,6 @@ const AccountsList = ({
     title,
     showTransactions = true,
 }) => {
-    // console.log(selectedAccount);
     return (
         <div className="col border m-2">
             <h4 className="text-uppercase text-info">{title}</h4>

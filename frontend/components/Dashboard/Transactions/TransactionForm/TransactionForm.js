@@ -13,8 +13,6 @@ const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => 
 
 	const { mutate } = useSWRConfig();
 
-	console.log(transaction);
-
 	useEffect(() => {
 		if (transaction) {
 			setTransactionName(transaction.name);
@@ -39,8 +37,8 @@ const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => 
 
 	const handleTransactionCategoryChange = (e) => {
 		// const inputValue = e.target.value;
-		const cleanedValue = e.target.value;
-		setTransactionCategory(cleanedValue);
+		// const cleanedValue = e.target.value;
+		setTransactionCategory(e.target.value);
 	};
 
 	const handleTransactionTypeChange = (e) => {
@@ -62,8 +60,6 @@ const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => 
 			handleUpdateTransaction(formData);
 			return;
 		}
-
-		// formData.amount = (formData.type === "Deposit") === (type === "cash") ? -formData.amount : formData.amount;
 
 		try {
 			await createManualTransaction(account.id, formData);

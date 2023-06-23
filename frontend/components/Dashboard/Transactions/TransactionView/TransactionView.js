@@ -1,5 +1,4 @@
 const TransactionView = ({ transactions, onTransactionClick, selectedTransactions, handleSelectTransaction }) => {
-    console.log(transactions, Array.isArray(transactions));
     return (
         <div>
             <table className="table">

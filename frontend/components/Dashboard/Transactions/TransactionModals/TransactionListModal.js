@@ -23,8 +23,6 @@ const TransactionListModal = ({ account, onClose }) => {
         return <div>Loading...</div>
     }
 
-    console.log("Transactions: ", transactions, "for account: ", account);
-
     const handleCloseModal = () => {
         setShowModal(false);
         onClose();
@@ -65,7 +63,6 @@ const TransactionListModal = ({ account, onClose }) => {
                 mutate();
             });
 
-            // setTransactions(transactions.filter(t => !selectedTransactions.includes(t.id)));
             setSelectedTransactions([]);
         } catch (error) {
             console.error('Error deleting transaction:', error)
@@ -93,12 +90,12 @@ const TransactionListModal = ({ account, onClose }) => {
                             <Button variant="danger" onClick={handleDeleteSelected}>Delete Selected</Button>
                         </div>
                     )}
-                        <TransactionView
-                            transactions={transactions}
-                            onTransactionClick={handleTransactionClick}
-                            selectedTransactions={selectedTransactions}
-                            handleSelectTransaction={handleSelectTransaction}
-                        />
+                    <TransactionView
+                        transactions={transactions}
+                        onTransactionClick={handleTransactionClick}
+                        selectedTransactions={selectedTransactions}
+                        handleSelectTransaction={handleSelectTransaction}
+                    />
                     {/* {Array.isArray(transactions) && transactions.length > 0 &&
                     } */}
                 </Modal.Body>

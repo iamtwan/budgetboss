@@ -16,7 +16,7 @@ export const LinkAccount = ({
                 name: metadata.institution.name
             };
 
-            const response = await exchangeLinkToken(tokenData);
+            await exchangeLinkToken(tokenData);
 
             mutate("http://localhost:8080/api/items");
         } catch (err) {
