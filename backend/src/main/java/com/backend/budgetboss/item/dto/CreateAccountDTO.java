@@ -1,43 +1,40 @@
 package com.backend.budgetboss.item.dto;
 
-import java.math.BigDecimal;
-
 public class CreateAccountDTO {
+    private String name;
+    private String institutionName;
+    private double balance;
 
-  private String name;
-  private String institutionName;
-  private BigDecimal balance;
+    public String getName() {
+        return name;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public String getInstitutionName() {
+        return institutionName;
+    }
 
-  public String getInstitutionName() {
-    return institutionName;
-  }
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
+    }
 
-  public void setInstitutionName(String institutionName) {
-    this.institutionName = institutionName;
-  }
+    public double getBalance() {
+        return balance;
+    }
 
-  public BigDecimal getBalance() {
-    return balance;
-  }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
-  public void setBalance(BigDecimal balance) {
-    this.balance = balance;
-  }
-
-  @Override
-  public String toString() {
-    return "CreateAccountDTO{" +
-        "name='" + name + '\'' +
-        ", institutionName='" + institutionName + '\'' +
-        ", balance=" + balance +
-        '}';
-  }
+    @Override
+    public String toString() {
+        return "CreateAccountDTO{" +
+                "name='" + name + '\'' +
+                ", institutionName='" + institutionName + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
 }

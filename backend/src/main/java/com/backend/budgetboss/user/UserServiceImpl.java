@@ -1,9 +1,10 @@
 package com.backend.budgetboss.user;
 
-import com.backend.budgetboss.security.UserPrincipal;
+import com.backend.budgetboss.security.UserDetailsImpl;
 import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
+import com.backend.budgetboss.user.helper.UserHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
@@ -20,69 +21,69 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final UserHelper userHelper;
+    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
-  private final UserRepository userRepository;
-  private final ModelMapper modelMapper;
-  private final BCryptPasswordEncoder passwordEncoder;
-  private final AuthenticationManager authenticationManager;
-  private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-  private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
-
-  public UserServiceImpl(UserRepository userRepository,
-      ModelMapper modelMapper,
-      BCryptPasswordEncoder passwordEncoder,
-      AuthenticationManager authenticationManager) {
-    this.userRepository = userRepository;
-    this.modelMapper = modelMapper;
-    this.passwordEncoder = passwordEncoder;
-    this.authenticationManager = authenticationManager;
-  }
-
-  @Override
-  public UserResponseDTO getUser(User user) {
-    return modelMapper.map(user, UserResponseDTO.class);
-  }
-
-  @Override
-  public UserResponseDTO registerUser(CreateUserDTO createUserDTO,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    if (userRepository.existsByEmail(createUserDTO.getEmail())) {
-      throw new UserAlreadyExistsException(
-          "User already exists for email: " + createUserDTO.getEmail());
+    public UserServiceImpl(UserRepository userRepository,
+                           ModelMapper modelMapper,
+                           BCryptPasswordEncoder passwordEncoder,
+                           AuthenticationManager authenticationManager,
+                           UserHelper userHelper) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.userHelper = userHelper;
     }
 
-    String temp = createUserDTO.getPassword();
-    createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
-    User user = userRepository.save(modelMapper.map(createUserDTO, User.class));
+    @Override
+    public UserResponseDTO getUser() {
+        return modelMapper.map(userHelper.getUser(), UserResponseDTO.class);
+    }
 
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), temp)
-    );
-    setAuthenticationContext(authentication, request, response);
+    @Override
+    public UserResponseDTO registerUser(CreateUserDTO createUserDTO,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) {
+        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
+            throw new UserAlreadyExistsException("User already exists for email: " + createUserDTO.getEmail());
+        }
 
-    return modelMapper.map(user, UserResponseDTO.class);
-  }
+        String temp = createUserDTO.getPassword();
+        createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        User user = userRepository.save(modelMapper.map(createUserDTO, User.class));
 
-  @Override
-  public UserResponseDTO loginUser(CreateUserDTO createUserDTO,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(),
-            createUserDTO.getPassword())
-    );
-    setAuthenticationContext(authentication, request, response);
-    UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
-    return modelMapper.map(userDetails, UserResponseDTO.class);
-  }
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), temp)
+        );
+        setAuthenticationContext(authentication, request, response);
 
-  private void setAuthenticationContext(Authentication authentication,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    SecurityContext context = securityContextHolderStrategy.createEmptyContext();
-    context.setAuthentication(authentication);
-    securityContextHolderStrategy.setContext(context);
-    securityContextRepository.saveContext(context, request, response);
-  }
+        return modelMapper.map(user, UserResponseDTO.class);
+    }
+
+    @Override
+    public UserResponseDTO loginUser(CreateUserDTO createUserDTO,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), createUserDTO.getPassword())
+        );
+        setAuthenticationContext(authentication, request, response);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return modelMapper.map(userDetails, UserResponseDTO.class);
+    }
+
+    private void setAuthenticationContext(Authentication authentication,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) {
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+        context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
+    }
 }

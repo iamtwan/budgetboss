@@ -1,63 +1,64 @@
 package com.backend.budgetboss.manualaccount.dto;
 
 import com.backend.budgetboss.manualaccount.ManualAccountType;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 
 public class CreateManualAccountDTO {
+    @NotBlank(message = "Institution name is required")
+    private String institutionName;
 
-  @NotBlank(message = "Institution name is required")
-  private String institutionName;
+    @NotBlank(message = "Account name is required")
+    private String name;
 
-  @NotBlank(message = "Account name is required")
-  private String name;
+    @NotNull(message = "Balance is required")
+    private BigDecimal balance;
 
-  @NotNull(message = "Balance is required")
-  private BigDecimal balance;
+    @NotNull(message = "Account type is required")
+    private ManualAccountType type;
 
-  @NotNull(message = "Account type is required")
-  private ManualAccountType type;
+    public String getInstitutionName() {
+        return institutionName;
+    }
 
-  public String getInstitutionName() {
-    return institutionName;
-  }
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
+    }
 
-  public void setInstitutionName(String institutionName) {
-    this.institutionName = institutionName;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public BigDecimal getBalance() {
+        return balance;
+    }
 
-  public BigDecimal getBalance() {
-    return balance;
-  }
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
-  public void setBalance(BigDecimal balance) {
-    this.balance = balance;
-  }
+    public ManualAccountType getType() {
+        return type;
+    }
 
-  public ManualAccountType getType() {
-    return type;
-  }
+    public void setType(ManualAccountType type) {
+        this.type = type;
+    }
 
-  public void setType(ManualAccountType type) {
-    this.type = type;
-  }
-
-  @Override
-  public String toString() {
-    return "CreateManualAccountDTO{" +
-        "institutionName='" + institutionName + '\'' +
-        ", name='" + name + '\'' +
-        ", balance=" + balance +
-        ", type=" + type +
-        '}';
-  }
+    @Override
+    public String toString() {
+        return "CreateManualAccountDTO{" +
+                "institutionName='" + institutionName + '\'' +
+                ", name='" + name + '\'' +
+                ", balance=" + balance +
+                ", type=" + type +
+                '}';
+    }
 }
