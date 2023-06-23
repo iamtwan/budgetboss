@@ -168,7 +168,13 @@ export const fetchBarChart = () => {
 }
 
 export const fetchPieChart = (month) => {
-    return fetch(`${API_BASE_URL}/charts/${month}`, { credentials: 'include' });
+    const { data, error, isLoading } = useSWR(`${API_BASE_URL}/charts/${month}`, fetcher);
+
+    return {
+        data,
+        error,
+        isLoading,
+    };
 }
 
 export const useManualData = () => {

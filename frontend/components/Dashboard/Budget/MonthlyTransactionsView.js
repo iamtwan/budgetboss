@@ -1,7 +1,6 @@
 import React from 'react';
 
 const MonthlyTransactionView = ({ month }) => {
-    console.log(month);
     return (
         <div className="mx-3">
             {Object.keys(month.accounts).map(account => {

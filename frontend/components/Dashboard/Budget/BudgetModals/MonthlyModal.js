@@ -1,32 +1,17 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
 import { Modal, Row, Col } from 'react-bootstrap';
 import MonthlyPieChart from '../BudgetCharts/MonthlyPieChart';
 import { fetchPieChart } from '../../../../services/apiService';
 import MonthlyTransactionView from '../MonthlyTransactionsView';
 
 const MonthlyModal = ({ month, show, onHide }) => {
-    const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { data, error, isLoading } = fetchPieChart(month);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetchPieChart(month);
-                setData(response.data);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [month]);
-
-    if (isLoading) return <div>Loading...</div>;
-    if (data === null) return <div>Error fetching data</div>;
+    if (error) {
+        return <div>Failed to load chart data</div>;
+    }
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
 
     return (
         <Modal show={show} onHide={onHide} size="xl" centered>
@@ -48,21 +33,18 @@ const MonthlyModal = ({ month, show, onHide }) => {
                                     <div className="row">
                                         <div className="col-6 text-start">Total Deposits:</div>
                                         <div className="col-6">{data.totalDeposits}</div>
-                                        {/* <div className="col-6 text-end pe-4">$30000</div> */}
                                     </div>
                                 </li>
                                 <li className="list-group-item">
                                     <div className="row">
                                         <div className="col-6 text-start">Total Expenses:</div>
                                         <div className="col-6">{data.totalExpenses}</div>
-                                        {/* <div className="col-6 text-end pe-4">$21000</div> */}
                                     </div>
                                 </li>
                                 <li className="list-group-item">
                                     <div className="row">
                                         <div className="col-6 text-start fw-bold">Net Balance:</div>
                                         <div className="col-6">{data.netBalance}</div>
-                                        {/* <div className="col-6 text-end pe-4 fw-bold text-success">$9000</div> */}
                                     </div>
                                 </li>
                             </ul>

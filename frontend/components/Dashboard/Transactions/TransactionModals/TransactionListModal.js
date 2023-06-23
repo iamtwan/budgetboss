@@ -79,7 +79,7 @@ const TransactionListModal = ({ account, onClose }) => {
 
     return (
         <>
-            <Modal show={showModal && showTransactionList} onHide={handleCloseModal} size="lg" centered>
+            <Modal show={showModal && showTransactionList} onHide={handleCloseModal} size="xl" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{account.name} Transactions</Modal.Title>
                 </Modal.Header>
