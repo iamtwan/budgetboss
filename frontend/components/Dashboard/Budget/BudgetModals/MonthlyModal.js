@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Modal, Row, Col } from 'react-bootstrap';
-import MonthlyPieChart from './MonthlyPieChart';
-import { fetchPieChart } from '../../../services/apiService';
-import MonthlyTransactionView from './MonthlyTransactionsView';
+import MonthlyPieChart from '../BudgetCharts/MonthlyPieChart';
+import { fetchPieChart } from '../../../../services/apiService';
+import MonthlyTransactionView from '../MonthlyTransactionsView';
 
 const MonthlyModal = ({ month, show, onHide }) => {
     const [data, setData] = useState(null);

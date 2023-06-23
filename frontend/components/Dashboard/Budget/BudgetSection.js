@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import BudgetChart from './BudgetBarChart';
-import MonthlyModal from './MonthlyModal';
+import BudgetChart from './BudgetCharts/BudgetBarChart';
+import MonthlyModal from './BudgetModals/MonthlyModal';
 
 const BudgetPage = () => {
     const [showModal, setShowModal] = useState(false);

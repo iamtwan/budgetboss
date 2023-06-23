@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Chart, BarController, BarElement, LinearScale, CategoryScale, Tooltip } from 'chart.js';
-import { fetchBarChart } from '../../../services/apiService';
+import { fetchBarChart } from '../../../../services/apiService';
 
 Chart.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip);
 

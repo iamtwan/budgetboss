@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import TransactionView from '../TransactionView/TransactionView';
+import TransactionView from '../TransactionView';
 import TransactionForm from '../TransactionForm/TransactionForm';
 import { useTransactions } from '../../../../services/apiService';
 import { deleteManualTransaction } from '../../../../services/apiService';
