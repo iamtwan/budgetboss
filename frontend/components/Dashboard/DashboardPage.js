@@ -35,28 +35,28 @@ const DashboardPage = () => {
         setShowEditModal(true);
     };
 
-    // const handleAccountUpdate = (formData) => {
-    //     setManualData((prevState) => {
-    //         const updatedAccounts = prevState.accounts.map((account) =>
-    //             account.id === formData.id ? formData : account
-    //         );
-    //         return {
-    //             ...prevState,
-    //             accounts: updatedAccounts,
-    //         };
-    //     });
-    // };
+    const handleAccountUpdate = (formData) => {
+        setManualData((prevState) => {
+            const updatedAccounts = prevState.accounts.map((account) =>
+                account.id === formData.id ? formData : account
+            );
+            return {
+                ...prevState,
+                accounts: updatedAccounts,
+            };
+        });
+    };
 
 
-    // const handleAccountDelete = (accountId) => {
-    //     setManualData((prevState) => {
-    //         const updatedAccounts = prevState.accounts.filter((account) => account.id !== accountId);
-    //         return {
-    //             ...prevState,
-    //             accounts: updatedAccounts,
-    //         };
-    //     });
-    // };
+    const handleAccountDelete = (accountId) => {
+        setManualData((prevState) => {
+            const updatedAccounts = prevState.accounts.filter((account) => account.id !== accountId);
+            return {
+                ...prevState,
+                accounts: updatedAccounts,
+            };
+        });
+    };
 
     const handleToggleAddAccountForm = (showModal, setShowModal) => {
         setShowModal(!showModal);
@@ -72,7 +72,7 @@ const DashboardPage = () => {
                                 <h3 className="me-2 text-uppercase fw-bold d-inline-flex">Accounts</h3>
                             </div>
                             <div>
-                                {data.linkToken && <LinkAccount linkToken={data.linkToken} />}  
+                                {data.linkToken && <LinkAccount linkToken={data.linkToken} />}
                                 <Button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
                                     Add Account
                                 </Button>
@@ -108,17 +108,17 @@ const DashboardPage = () => {
                 onClose={() => handleToggleAddAccountForm(showModal, setShowModal)}
             />
 
-            {/* // <EditAccountModal
-            //     show={showEditModal}
-            //     account={selectedAccount}
-            //     onClose={() => setShowEditModal(false)}
-            //     onAccountUpdate={handleAccountUpdate}
-            //     onAccountDelete={handleAccountDelete}
-            //     onSubmitSuccess={() => {
-            //         fetchManualAccountsData();
-            //         fetchLinkedAccountsData();
-            //     }}
-            // /> */}
+            <EditAccountModal
+                show={showEditModal}
+                account={selectedAccount}
+                onClose={() => setShowEditModal(false)}
+                onAccountUpdate={handleAccountUpdate}
+                onAccountDelete={handleAccountDelete}
+                onSubmitSuccess={() => {
+                    fetchManualAccountsData();
+                    fetchLinkedAccountsData();
+                }}
+            />
         </div>
     );
 };

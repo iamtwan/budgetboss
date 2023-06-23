@@ -52,7 +52,7 @@ export const userLogout = async () => {
     return response;
 }
 
-export const createLinkToken = async (tokenData) => {
+export const exchangeLinkToken = async (tokenData) => {
     const response = await fetch(`${API_BASE_URL}/tokens/exchange`, {
         method: 'POST',
         credentials: 'include',
@@ -62,7 +62,7 @@ export const createLinkToken = async (tokenData) => {
         body: JSON.stringify(tokenData)
     });
 
-    return await response.json();
+    return response;
 }
 
 export const fetchLinkToken = async url => {
@@ -137,7 +137,7 @@ export const deleteManualTransaction = async (transactionId) => {
         credentials: 'include'
     });
 
-    return await response.json();
+    return response;
 }
 
 export const updateManualTransaction = async (transactionId, formData) => {
