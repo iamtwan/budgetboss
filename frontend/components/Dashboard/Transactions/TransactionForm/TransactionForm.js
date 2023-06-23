@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { createManualTransaction, updateManualTransaction } from '../../../../services/apiService';
+import { useSWRConfig } from 'swr';
 
-const TransactionForm = ({ show, account, onClose, onSubmit, transaction, isEditing }) => {
+const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => {
 	const [transactionName, setTransactionName] = useState('');
 	const [transactionDate, setTransactionDate] = useState(new Date().toISOString().substring(0, 10));
 	const [amount, setAmount] = useState('');
@@ -9,12 +11,16 @@ const TransactionForm = ({ show, account, onClose, onSubmit, transaction, isEdit
 	const [transactionType, setTransactionType] = useState('');
 	const [error, setError] = useState('');
 
+	const { mutate } = useSWRConfig();
+
+	console.log(transaction);
+
 	useEffect(() => {
 		if (transaction) {
 			setTransactionName(transaction.name);
 			setTransactionDate(transaction.date);
 			setAmount(Math.abs(transaction.amount));
-			setTransactionCategory(transaction.category ? transaction.category[0] : '');
+			setTransactionCategory(transaction.category);
 			setTransactionType(transaction.type);
 		}
 	}, [transaction]);
@@ -32,14 +38,41 @@ const TransactionForm = ({ show, account, onClose, onSubmit, transaction, isEdit
 	};
 
 	const handleTransactionCategoryChange = (e) => {
-		const inputValue = e.target.value;
-		const cleanedValue = inputValue.trim().split(' ')[0];
+		// const inputValue = e.target.value;
+		const cleanedValue = e.target.value;
 		setTransactionCategory(cleanedValue);
 	};
 
-
 	const handleTransactionTypeChange = (e) => {
 		setTransactionType(e.target.value);
+	};
+
+	const handleUpdateTransaction = async (formData) => {
+		try {
+			await updateManualTransaction(transaction.id, formData);
+
+			mutate(`http://localhost:8080/api/manual-transactions/${account.id}`);
+		} catch (error) {
+			console.error('Error updating transaction:', error);
+		}
+	};
+
+	const handleAddTransactionSubmit = async (formData) => {
+		if (isEditing) {
+			handleUpdateTransaction(formData);
+			return;
+		}
+
+		// formData.amount = (formData.type === "Deposit") === (type === "cash") ? -formData.amount : formData.amount;
+
+		try {
+			await createManualTransaction(account.id, formData);
+
+			mutate(`http://localhost:8080/api/manual-transactions/${account.id}`);
+			mutate(`http://localhost:8080/api/manual-institutions`);
+		} catch (error) {
+			console.error('Error adding transaction:', error);
+		}
 	};
 
 	const handleSubmit = (e) => {
@@ -55,14 +88,14 @@ const TransactionForm = ({ show, account, onClose, onSubmit, transaction, isEdit
 			name: transactionName,
 			date: transactionDate,
 			amount: transactionType === 'Expense' && account.type === 'cash' ? -amount : amount,
-			category: transactionCategory
+			category: transactionCategory,
 		};
 
 		if (isEditing) {
-			onSubmit({ ...formData, id: transaction.id });
-		} else {
-			onSubmit(formData);
+			handleUpdateTransaction({ ...formData, id: transaction.id });
 		}
+
+		handleAddTransactionSubmit(formData);
 		onClose();
 	};
 

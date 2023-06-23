@@ -1,36 +1,29 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import TransactionView from '../TransactionView/TransactionView';
-import TransactionModal from './TransactionModal';
-// import useTransactions from '../../../../hooks/useTransactions';
+import TransactionForm from '../TransactionForm/TransactionForm';
 import { useTransactions } from '../../../../services/apiService';
-import {
-    createManualTransaction,
-    deleteManualTransaction,
-    updateManualTransaction
-} from '../../../../services/apiService';
+import { deleteManualTransaction } from '../../../../services/apiService';
 
-const TransactionListModal = ({ account, onClose, type }) => {
+const TransactionListModal = ({ account, onClose }) => {
     const [showModal, setShowModal] = useState(true);
     const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
     const [selectedTransactionId, setSelectedTransactionId] = useState(null);
     const [selectedTransactions, setSelectedTransactions] = useState([]);
-    const [isAddingTransaction, setIsAddingTransaction] = useState(false);
     const [isEditingTransaction, setIsEditingTransaction] = useState(false);
     const [showTransactionList, setShowTransactionList] = useState(true);
 
-    const { data: transactions  , error, isLoading } = useTransactions(account.type, account.id);
+    const { data: transactions, error, isLoading, mutate } = useTransactions(account.type, account.id);
 
     if (error) {
-        return <div>ERROR: {error}</div>
+        return <div>ERROR</div>
     }
 
     if (isLoading) {
         return <div>Loading...</div>
     }
 
-    console.log(transactions);
-
+    console.log("Transactions: ", transactions, "for account: ", account);
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -40,14 +33,12 @@ const TransactionListModal = ({ account, onClose, type }) => {
     const handleShowAddTransactionForm = () => {
         setShowTransactionList(false);
         setShowAddTransactionForm(true);
-        setIsAddingTransaction(true);
         setIsEditingTransaction(false);
     };
 
     const handleShowEditTransactionForm = () => {
         setShowTransactionList(false);
         setShowAddTransactionForm(true);
-        setIsAddingTransaction(false);
         setIsEditingTransaction(true);
     };
 
@@ -57,25 +48,11 @@ const TransactionListModal = ({ account, onClose, type }) => {
         setSelectedTransactionId(null);
     };
 
-    const handleAddTransaction = async (formData) => {
-        if (selectedTransactionId) {
-            handleUpdateTransaction(formData);
-            return;
-        }
-
-        formData.amount = (formData.type === "Deposit") === (type === "cash") ? -formData.amount : formData.amount;
-
-        try {
-            await createManualTransaction(account.id, formData);
-        } catch (error) {
-            console.error('Error adding transaction:', error);
-        }
-    };
-
     const isLinkedAccount = account.type === "linked";
 
     const handleTransactionClick = (transactionId) => {
         if (isLinkedAccount) return;
+
         setSelectedTransactionId(transactionId);
         handleShowEditTransactionForm();
     };
@@ -84,9 +61,11 @@ const TransactionListModal = ({ account, onClose, type }) => {
         try {
             selectedTransactions.forEach(async (transactionId) => {
                 await deleteManualTransaction(transactionId);
+
+                mutate();
             });
 
-            setTransactions(transactions.filter(t => !selectedTransactions.includes(t.id)));
+            // setTransactions(transactions.filter(t => !selectedTransactions.includes(t.id)));
             setSelectedTransactions([]);
         } catch (error) {
             console.error('Error deleting transaction:', error)
@@ -98,20 +77,6 @@ const TransactionListModal = ({ account, onClose, type }) => {
             setSelectedTransactions(selectedTransactions.filter(id => id !== transactionId));
         } else {
             setSelectedTransactions([...selectedTransactions, transactionId]);
-        }
-    };
-
-    const handleUpdateTransaction = async (formData) => {
-        try {
-            const response = await updateManualTransaction(selectedTransactionId, formData);
-
-            setTransactions(transactions.map(transaction =>
-                transaction.id === selectedTransactionId ? response.data : transaction
-            ));
-
-            setSelectedTransactionId(null);
-        } catch (error) {
-            console.error('Error updating transaction:', error);
         }
     };
 
@@ -128,22 +93,22 @@ const TransactionListModal = ({ account, onClose, type }) => {
                             <Button variant="danger" onClick={handleDeleteSelected}>Delete Selected</Button>
                         </div>
                     )}
-                    <TransactionView
-                        transactions={transactions}
-                        onTransactionClick={handleTransactionClick}
-                        selectedTransactions={selectedTransactions}
-                        handleSelectTransaction={handleSelectTransaction}
-                    />
+                        <TransactionView
+                            transactions={transactions}
+                            onTransactionClick={handleTransactionClick}
+                            selectedTransactions={selectedTransactions}
+                            handleSelectTransaction={handleSelectTransaction}
+                        />
+                    {/* {Array.isArray(transactions) && transactions.length > 0 &&
+                    } */}
                 </Modal.Body>
             </Modal>
             {showAddTransactionForm && (
-                <TransactionModal
+                <TransactionForm
                     account={account}
                     transaction={selectedTransactionId ? transactions.find(t => t.id === selectedTransactionId) : null}
                     onClose={handleHideAddTransactionForm}
-                    onSubmit={handleAddTransaction}
                     show={showAddTransactionForm}
-                    isAdding={isAddingTransaction}
                     isEditing={isEditingTransaction}
                 />
             )}
