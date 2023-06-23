@@ -35,29 +35,6 @@ const DashboardPage = () => {
         setShowEditModal(true);
     };
 
-    const handleAccountUpdate = (formData) => {
-        setManualData((prevState) => {
-            const updatedAccounts = prevState.accounts.map((account) =>
-                account.id === formData.id ? formData : account
-            );
-            return {
-                ...prevState,
-                accounts: updatedAccounts,
-            };
-        });
-    };
-
-
-    const handleAccountDelete = (accountId) => {
-        setManualData((prevState) => {
-            const updatedAccounts = prevState.accounts.filter((account) => account.id !== accountId);
-            return {
-                ...prevState,
-                accounts: updatedAccounts,
-            };
-        });
-    };
-
     const handleToggleAddAccountForm = (showModal, setShowModal) => {
         setShowModal(!showModal);
     };
@@ -112,12 +89,6 @@ const DashboardPage = () => {
                 show={showEditModal}
                 account={selectedAccount}
                 onClose={() => setShowEditModal(false)}
-                onAccountUpdate={handleAccountUpdate}
-                onAccountDelete={handleAccountDelete}
-                onSubmitSuccess={() => {
-                    fetchManualAccountsData();
-                    fetchLinkedAccountsData();
-                }}
             />
         </div>
     );

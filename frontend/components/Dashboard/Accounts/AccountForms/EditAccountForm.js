@@ -1,11 +1,16 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { updateManualAccount, deleteManualAccount } from '../../../../services/apiService';
+import { useSWRConfig } from 'swr';
 
-const EditAccountModal = ({ show, account, onClose, onAccountUpdate, onAccountDelete, onSubmitSuccess }) => {
+const EditAccountModal = ({ show, account, onClose }) => {
     const [accountName, setAccountName] = useState('');
     const [balance, setBalance] = useState('');
     const [error, setError] = useState('');
+
+    const { mutate } = useSWRConfig();
 
     useEffect(() => {
         if (account) {
@@ -16,42 +21,37 @@ const EditAccountModal = ({ show, account, onClose, onAccountUpdate, onAccountDe
 
     const handleAccountNameChange = (e) => {
         setAccountName(e.target.value);
-    };
+    }
 
     const handleBalanceChange = (e) => {
         setBalance(e.target.value);
-    };
+    }
 
-    const handleUpdate = async () => {
+    const updateManualAccounts = async (accountUpdate) => {
         try {
-            const formData = {
-                id: account.id,
-                name: accountName,
-                balance: parseFloat(balance),
-            };
+            await accountUpdate();
 
-            await updateManualAccount(account.id, formData);
-
-            onAccountUpdate({ id: account.id, ...formData });
+            mutate('http://localhost:8080/api/manual-institutions');
             onClose();
-            onSubmitSuccess();
-        } catch (err) {
-            console.log(err);
-            setError(err.message);
+        } catch (error) {
+            console.log(error);
+            setError(error.message);
         }
-    };
+    }
 
-    const handleDelete = async () => {
-        try {
-            await deleteManualAccount(account.id);
+    const handleEdit = () => {
+        const formData = {
+            id: account.id,
+            name: accountName,
+            balance: parseFloat(balance),
+        };
 
-            onAccountDelete(account.id);
-            onClose();
-            onSubmitSuccess();
-        } catch (err) {
-            setError(err.message);
-        }
-    };
+        updateManualAccounts(() => updateManualAccount(account.id, formData));
+    }
+
+    const handleDelete = () => {
+        updateManualAccounts(() => deleteManualAccount(account.id));
+    }
 
     return (
         <Modal show={show} onHide={onClose}>
@@ -87,12 +87,12 @@ const EditAccountModal = ({ show, account, onClose, onAccountUpdate, onAccountDe
                 <Button variant="danger" onClick={handleDelete}>
                     Delete
                 </Button>
-                <Button variant="primary" onClick={handleUpdate}>
+                <Button variant="primary" onClick={handleEdit}>
                     Update
                 </Button>
             </Modal.Footer>
         </Modal>
     );
-};
+}
 
 export default EditAccountModal;
