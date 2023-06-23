@@ -1,12 +1,7 @@
 package com.backend.budgetboss.account.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class AccountRequestException extends RuntimeException {
-
-  public AccountRequestException(String message) {
-    super(message);
-  }
+    public AccountRequestException(String message) {
+        super(message);
+    }
 }

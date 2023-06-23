@@ -17,8 +17,6 @@ RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.zip
 RUN unzip ngrok-v3-stable-linux-amd64.zip
 RUN mv ngrok /usr/local/bin
 
-RUN apt-get install -y rabbitmq-server
-
 COPY entrypoint.sh .
 
 # Grant execute permissions to the entrypoint script
