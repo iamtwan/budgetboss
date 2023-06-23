@@ -4,79 +4,80 @@ import com.backend.budgetboss.account.Account;
 import com.plaid.client.model.AccountType;
 
 public class AccountResponseDTO {
-    private Long id;
-    private String mask;
-    private String name;
-    private String officialName;
-    private AccountType type;
-    private BalanceResponseDTO balances;
 
-    public AccountResponseDTO(Account account) {
-        this.id = account.getId();
-        this.mask = account.getMask();
-        this.name = account.getName();
-        this.officialName = account.getOfficialName();
-        this.type = account.getType();
-        this.balances = new BalanceResponseDTO(account.getBalances());
-    }
+  private Long id;
+  private String mask;
+  private String name;
+  private String officialName;
+  private AccountType type;
+  private BalanceResponseDTO balances;
 
-    public Long getId() {
-        return id;
-    }
+  public AccountResponseDTO(Account account) {
+    this.id = account.getId();
+    this.mask = account.getMask();
+    this.name = account.getName();
+    this.officialName = account.getOfficialName();
+    this.type = account.getType();
+    this.balances = new BalanceResponseDTO(account.getBalances());
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getMask() {
-        return mask;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setMask(String mask) {
-        this.mask = mask;
-    }
+  public String getMask() {
+    return mask;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setMask(String mask) {
+    this.mask = mask;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getOfficialName() {
-        return officialName;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setOfficialName(String officialName) {
-        this.officialName = officialName;
-    }
+  public String getOfficialName() {
+    return officialName;
+  }
 
-    public AccountType getType() {
-        return type;
-    }
+  public void setOfficialName(String officialName) {
+    this.officialName = officialName;
+  }
 
-    public void setType(AccountType type) {
-        this.type = type;
-    }
+  public AccountType getType() {
+    return type;
+  }
 
-    public BalanceResponseDTO getBalances() {
-        return balances;
-    }
+  public void setType(AccountType type) {
+    this.type = type;
+  }
 
-    public void setBalances(BalanceResponseDTO balances) {
-        this.balances = balances;
-    }
+  public BalanceResponseDTO getBalances() {
+    return balances;
+  }
 
-    @Override
-    public String toString() {
-        return "AccountResponseDTO{" +
-                "id=" + id +
-                ", mask='" + mask + '\'' +
-                ", name='" + name + '\'' +
-                ", officialName='" + officialName + '\'' +
-                ", type=" + type +
-                ", balances=" + balances +
-                '}';
-    }
+  public void setBalances(BalanceResponseDTO balances) {
+    this.balances = balances;
+  }
+
+  @Override
+  public String toString() {
+    return "AccountResponseDTO{" +
+        "id=" + id +
+        ", mask='" + mask + '\'' +
+        ", name='" + name + '\'' +
+        ", officialName='" + officialName + '\'' +
+        ", type=" + type +
+        ", balances=" + balances +
+        '}';
+  }
 }

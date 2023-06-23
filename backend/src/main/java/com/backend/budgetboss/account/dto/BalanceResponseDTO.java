@@ -1,70 +1,72 @@
 package com.backend.budgetboss.account.dto;
 
 import com.backend.budgetboss.account.Balance;
+import java.math.BigDecimal;
 
 public class BalanceResponseDTO {
-    private Double available;
-    private Double current;
-    private String isoCurrencyCode;
-    private Double balanceLimit;
-    private String unofficialCurrencyCode;
 
-    public BalanceResponseDTO(Balance balances) {
-        this.available = balances.getAvailable();
-        this.current = balances.getCurrent();
-        this.isoCurrencyCode = balances.getIsoCurrencyCode();
-        this.balanceLimit = balances.getBalanceLimit();
-        this.unofficialCurrencyCode = balances.getUnofficialCurrencyCode();
-    }
+  private BigDecimal available;
+  private BigDecimal current;
+  private String isoCurrencyCode;
+  private BigDecimal balanceLimit;
+  private String unofficialCurrencyCode;
 
-    public Double getAvailable() {
-        return available;
-    }
+  public BalanceResponseDTO(Balance balances) {
+    this.available = balances.getAvailable();
+    this.current = balances.getCurrent();
+    this.isoCurrencyCode = balances.getIsoCurrencyCode();
+    this.balanceLimit = balances.getBalanceLimit();
+    this.unofficialCurrencyCode = balances.getUnofficialCurrencyCode();
+  }
 
-    public void setAvailable(Double available) {
-        this.available = available;
-    }
+  public BigDecimal getAvailable() {
+    return available;
+  }
 
-    public Double getCurrent() {
-        return current;
-    }
+  public void setAvailable(BigDecimal available) {
+    this.available = available;
+  }
 
-    public void setCurrent(Double current) {
-        this.current = current;
-    }
+  public BigDecimal getCurrent() {
+    return current;
+  }
 
-    public String getIsoCurrencyCode() {
-        return isoCurrencyCode;
-    }
+  public void setCurrent(BigDecimal current) {
+    this.current = current;
+  }
 
-    public void setIsoCurrencyCode(String isoCurrencyCode) {
-        this.isoCurrencyCode = isoCurrencyCode;
-    }
+  public String getIsoCurrencyCode() {
+    return isoCurrencyCode;
+  }
 
-    public Double getBalanceLimit() {
-        return balanceLimit;
-    }
+  public void setIsoCurrencyCode(String isoCurrencyCode) {
+    this.isoCurrencyCode = isoCurrencyCode;
+  }
 
-    public void setBalanceLimit(Double balanceLimit) {
-        this.balanceLimit = balanceLimit;
-    }
+  public BigDecimal getBalanceLimit() {
+    return balanceLimit;
+  }
 
-    public String getUnofficialCurrencyCode() {
-        return unofficialCurrencyCode;
-    }
+  public void setBalanceLimit(BigDecimal balanceLimit) {
+    this.balanceLimit = balanceLimit;
+  }
 
-    public void setUnofficialCurrencyCode(String unofficialCurrencyCode) {
-        this.unofficialCurrencyCode = unofficialCurrencyCode;
-    }
+  public String getUnofficialCurrencyCode() {
+    return unofficialCurrencyCode;
+  }
 
-    @Override
-    public String toString() {
-        return "BalanceResponseDTO{" +
-                "available=" + available +
-                ", current=" + current +
-                ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
-                ", balanceLimit=" + balanceLimit +
-                ", unofficialCurrencyCode='" + unofficialCurrencyCode + '\'' +
-                '}';
-    }
+  public void setUnofficialCurrencyCode(String unofficialCurrencyCode) {
+    this.unofficialCurrencyCode = unofficialCurrencyCode;
+  }
+
+  @Override
+  public String toString() {
+    return "BalanceResponseDTO{" +
+        "available=" + available +
+        ", current=" + current +
+        ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
+        ", balanceLimit=" + balanceLimit +
+        ", unofficialCurrencyCode='" + unofficialCurrencyCode + '\'' +
+        '}';
+  }
 }

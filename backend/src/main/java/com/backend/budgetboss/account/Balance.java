@@ -1,116 +1,135 @@
 package com.backend.budgetboss.account;
 
 import com.plaid.client.model.AccountBalance;
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @Table(name = "balances")
 public class Balance {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Double available;
-    private Double current;
-    private String isoCurrencyCode;
-    private Double balanceLimit;
-    private String unofficialCurrencyCode;
 
-    @OneToOne(mappedBy = "balances")
-    private Account account;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private BigDecimal available;
+  private BigDecimal current;
+  private String isoCurrencyCode;
+  private BigDecimal balanceLimit;
+  private String unofficialCurrencyCode;
 
-    public Balance() {
+  @OneToOne(mappedBy = "balances")
+  private Account account;
 
+  public Balance() {
+  }
+
+  public Balance(AccountBalance accountBalance) {
+    if (accountBalance.getAvailable() != null) {
+      this.available = BigDecimal.valueOf(accountBalance.getAvailable());
     }
 
-    public Balance(AccountBalance accountBalance) {
-        this.available = accountBalance.getAvailable();
-        this.current = accountBalance.getCurrent();
-        this.isoCurrencyCode = accountBalance.getIsoCurrencyCode();
-        this.balanceLimit = accountBalance.getLimit();
-        this.unofficialCurrencyCode = accountBalance.getUnofficialCurrencyCode();
+    if (accountBalance.getCurrent() != null) {
+      this.current = BigDecimal.valueOf(accountBalance.getCurrent());
     }
 
-    public Long getId() {
-        return id;
+    if (accountBalance.getLimit() != null) {
+      this.balanceLimit = BigDecimal.valueOf(accountBalance.getLimit());
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    this.isoCurrencyCode = accountBalance.getIsoCurrencyCode();
+    this.unofficialCurrencyCode = accountBalance.getUnofficialCurrencyCode();
+  }
 
-    public Double getAvailable() {
-        return available;
-    }
 
-    public void setAvailable(Double available) {
-        this.available = available;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public Double getCurrent() {
-        return current;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setCurrent(Double current) {
-        this.current = current;
-    }
+  public BigDecimal getAvailable() {
+    return available;
+  }
 
-    public String getIsoCurrencyCode() {
-        return isoCurrencyCode;
-    }
+  public void setAvailable(BigDecimal available) {
+    this.available = available;
+  }
 
-    public void setIsoCurrencyCode(String isoCurrencyCode) {
-        this.isoCurrencyCode = isoCurrencyCode;
-    }
+  public BigDecimal getCurrent() {
+    return current;
+  }
 
-    public Double getBalanceLimit() {
-        return balanceLimit;
-    }
+  public void setCurrent(BigDecimal current) {
+    this.current = current;
+  }
 
-    public void setBalanceLimit(Double balanceLimit) {
-        this.balanceLimit = balanceLimit;
-    }
+  public String getIsoCurrencyCode() {
+    return isoCurrencyCode;
+  }
 
-    public String getUnofficialCurrencyCode() {
-        return unofficialCurrencyCode;
-    }
+  public void setIsoCurrencyCode(String isoCurrencyCode) {
+    this.isoCurrencyCode = isoCurrencyCode;
+  }
 
-    public void setUnofficialCurrencyCode(String unofficialCurrencyCode) {
-        this.unofficialCurrencyCode = unofficialCurrencyCode;
-    }
+  public BigDecimal getBalanceLimit() {
+    return balanceLimit;
+  }
 
-    public Account getAccount() {
-        return account;
-    }
+  public void setBalanceLimit(BigDecimal balanceLimit) {
+    this.balanceLimit = balanceLimit;
+  }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+  public String getUnofficialCurrencyCode() {
+    return unofficialCurrencyCode;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Balance balance = (Balance) o;
-        return Objects.equals(id, balance.id);
-    }
+  public void setUnofficialCurrencyCode(String unofficialCurrencyCode) {
+    this.unofficialCurrencyCode = unofficialCurrencyCode;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+  public Account getAccount() {
+    return account;
+  }
 
-    @Override
-    public String toString() {
-        return "Balance{" +
-                "id=" + id +
-                ", available='" + available + '\'' +
-                ", current='" + current + '\'' +
-                ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
-                ", balanceLimit='" + balanceLimit + '\'' +
-                ", unofficialCurrencyCode='" + unofficialCurrencyCode + '\'' +
-                ", account=" + account.getName() +
-                '}';
+  public void setAccount(Account account) {
+    this.account = account;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Balance balance = (Balance) o;
+    return Objects.equals(id, balance.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
+  public String toString() {
+    return "Balance{" +
+        "id=" + id +
+        ", available='" + available + '\'' +
+        ", current='" + current + '\'' +
+        ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
+        ", balanceLimit='" + balanceLimit + '\'' +
+        ", unofficialCurrencyCode='" + unofficialCurrencyCode + '\'' +
+        ", account=" + account.getName() +
+        '}';
+  }
 }

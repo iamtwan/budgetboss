@@ -6,60 +6,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManualTransactionResponseDTO {
-    private Long id;
-    private String name;
-    private LocalDate date;
-    private BigDecimal amount;
-    private List<String> category = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
+  private Long id;
+  private String name;
+  private LocalDate date;
+  private BigDecimal amount;
+  private String category;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public LocalDate getDate() {
-        return date;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+  public LocalDate getDate() {
+    return date;
+  }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-    public List<String> getCategory() {
-        return category;
-    }
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
+  }
 
-    public void setCategory(List<String> category) {
-        this.category = category;
-    }
+  public String getCategory() {
+    return category;
+  }
 
-    @Override
-    public String toString() {
-        return "ManualTransactionResponseDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", date=" + date +
-                ", amount=" + amount +
-                ", category=" + category.size() +
-                '}';
-    }
+  public void setCategory(String category) {
+    this.category = category;
+  }
+
+  @Override
+  public String toString() {
+    return "ManualTransactionResponseDTO{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", date=" + date +
+        ", amount=" + amount +
+        ", category=" + category +
+        '}';
+  }
 }
