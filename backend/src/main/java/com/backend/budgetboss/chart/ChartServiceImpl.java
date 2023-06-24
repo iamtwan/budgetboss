@@ -136,39 +136,6 @@ public class ChartServiceImpl implements ChartService {
     return response;
   }
 
-//  @Override
-//  public Map<String, BarChartMonthlyResponse> getBarChartMonthlyData(User user, Month month) {
-//    LocalDate startDate = getStartDate(month);
-//    LocalDate endDate = startDate.plusMonths(1);
-//
-//    List<TransactionEntity> transactions = transactionRepository
-//        .findByAccount_Item_UserAndDateBetween(user, startDate, endDate);
-//
-//    List<ManualTransaction> manualTransactions = manualTransactionRepository
-//        .findByManualAccount_ManualInstitution_UserAndDateBetween(user, startDate, endDate);
-//
-//    Map<String, BarChartMonthlyResponse> response = new HashMap<>();
-//
-//    for (TransactionEntity transaction : transactions) {
-//      String type = transaction.getAccount().getType().toString();
-//      TransactionResponseDTO dto = modelMapper.map(transaction, TransactionResponseDTO.class);
-//
-//      response.putIfAbsent(type, new BarChartMonthlyResponse());
-//      response.get(type).getTransactions().add(dto);
-//    }
-//
-//    for (ManualTransaction transaction : manualTransactions) {
-//      String type = transaction.getManualAccount().getType().toString();
-//      ManualTransactionResponseDTO dto = modelMapper
-//          .map(transaction, ManualTransactionResponseDTO.class);
-//
-//      response.putIfAbsent(type, new BarChartMonthlyResponse());
-//      response.get(type).getManualTransactions().add(dto);
-//    }
-//
-//    return response;
-//  }
-
   private LocalDate getStartDate(Month month) {
     LocalDate today = LocalDate.now();
     LocalDate startDate = LocalDate.of(today.getYear(), month, 1);
