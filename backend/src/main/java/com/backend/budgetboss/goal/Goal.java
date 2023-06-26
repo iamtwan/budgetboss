@@ -1,9 +1,12 @@
 package com.backend.budgetboss.goal;
 
+import com.backend.budgetboss.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,6 +24,18 @@ public class Goal {
   private BigDecimal targetAmount;
   private LocalDate targetDate;
   private GoalStatus status;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getName() {
     return name;
@@ -62,6 +77,14 @@ public class Goal {
     this.status = status;
   }
 
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -81,13 +104,14 @@ public class Goal {
 
   @Override
   public String toString() {
-    return "Goals{" +
+    return "Goal{" +
         "id=" + id +
         ", name='" + name + '\'' +
         ", currentAmount=" + currentAmount +
         ", targetAmount=" + targetAmount +
         ", targetDate=" + targetDate +
         ", status=" + status +
+        ", user=" + user.getEmail() +
         '}';
   }
 }

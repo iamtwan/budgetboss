@@ -1,5 +1,6 @@
 package com.backend.budgetboss.user;
 
+import com.backend.budgetboss.goal.Goal;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.manualinstitution.ManualInstitution;
 import jakarta.persistence.CascadeType;
@@ -33,6 +34,9 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ManualInstitution> manualInstitutions = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Goal> goals = new ArrayList<>();
 
   public User() {}
 
@@ -84,6 +88,14 @@ public class User {
     this.manualInstitutions = manualInstitutions;
   }
 
+  public List<Goal> getGoals() {
+    return goals;
+  }
+
+  public void setGoals(List<Goal> goals) {
+    this.goals = goals;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -107,8 +119,9 @@ public class User {
         "id=" + id +
         ", email='" + email + '\'' +
         ", password='" + password + '\'' +
-        ", items=" + items +
+        ", items=" + items.size() +
         ", manualInstitutions=" + manualInstitutions.size() +
+        ", goals=" + goals.size() +
         '}';
   }
 }

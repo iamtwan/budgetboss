@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +57,7 @@ public class ManualTransactionController {
         user, accountId, manualTransactionDTO);
     logger.info("/api/manual-transactions/{} created manual transaction: {}", manualTransaction,
         accountId);
-    return ResponseEntity.ok(manualTransaction);
+    return new ResponseEntity<>(manualTransaction, HttpStatus.CREATED);
   }
 
   @PutMapping("/{transactionId}")
