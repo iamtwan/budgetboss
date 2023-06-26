@@ -1,4 +1,4 @@
-package com.backend.budgetboss.goals;
+package com.backend.budgetboss.goal;
 
 public enum GoalStatus {
   ACTIVE,
