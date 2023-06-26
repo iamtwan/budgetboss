@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsPage';
-import CashAccountsPage from './Accounts/AccountPages/CashAccountsPage';
-import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsPage';
+import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsSection';
+import CashAccountsPage from './Accounts/AccountPages/CashAccountsSection';
+import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsSection';
 import BudgetPage from './Budget/BudgetSection';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
