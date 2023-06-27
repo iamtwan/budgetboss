@@ -11,8 +11,8 @@ public class CreateGoalDTO {
   private String name;
 
   @Column(precision = 19, scale = 2)
-  @NotNull(message = "Current amount is required")
-  private BigDecimal currentAmount;
+  @NotNull(message = "Saved amount is required")
+  private BigDecimal savedAmount;
 
   @Column(precision = 19, scale = 2)
   @NotNull(message = "Target amount is required")
@@ -30,12 +30,12 @@ public class CreateGoalDTO {
     this.name = name;
   }
 
-  public BigDecimal getCurrentAmount() {
-    return currentAmount;
+  public BigDecimal getSavedAmount() {
+    return savedAmount;
   }
 
-  public void setCurrentAmount(BigDecimal currentAmount) {
-    this.currentAmount = currentAmount;
+  public void setSavedAmount(BigDecimal savedAmount) {
+    this.savedAmount = savedAmount;
   }
 
   public BigDecimal getTargetAmount() {
@@ -58,7 +58,7 @@ public class CreateGoalDTO {
   public String toString() {
     return "CreateGoalDTO{" +
         "name='" + name + '\'' +
-        ", currentAmount=" + currentAmount +
+        ", savedAmount=" + savedAmount +
         ", targetAmount=" + targetAmount +
         ", targetDate=" + targetDate +
         '}';

@@ -4,6 +4,7 @@ import com.backend.budgetboss.goal.dto.CreateGoalDTO;
 import com.backend.budgetboss.goal.dto.GoalResponseDTO;
 import com.backend.budgetboss.goal.exception.GoalNotFoundException;
 import com.backend.budgetboss.user.User;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,14 @@ public class GoalServiceImpl implements GoalService {
   public GoalServiceImpl(GoalRepository goalRepository, ModelMapper modelMapper) {
     this.goalRepository = goalRepository;
     this.modelMapper = modelMapper;
+  }
+
+  @Override
+  public List<GoalResponseDTO> getGoals(User user) {
+    return goalRepository.findAllByUser(user)
+        .stream()
+        .map(GoalResponseDTO::new)
+        .toList();
   }
 
   @Override

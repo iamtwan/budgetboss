@@ -25,8 +25,8 @@ public class Goal {
   @NotBlank(message = "Name is required")
   private String name;
 
-  @NotNull(message = "Current amount is required")
-  private BigDecimal currentAmount;
+  @NotNull(message = "Saved amount is required")
+  private BigDecimal savedAmount;
 
   @NotNull(message = "Target amount is required")
   private BigDecimal targetAmount;
@@ -54,12 +54,12 @@ public class Goal {
     this.name = name;
   }
 
-  public BigDecimal getCurrentAmount() {
-    return currentAmount;
+  public BigDecimal getSavedAmount() {
+    return savedAmount;
   }
 
-  public void setCurrentAmount(BigDecimal currentAmount) {
-    this.currentAmount = currentAmount;
+  public void setSavedAmount(BigDecimal savedAmount) {
+    this.savedAmount = savedAmount;
   }
 
   public BigDecimal getTargetAmount() {
@@ -108,7 +108,7 @@ public class Goal {
     return "Goal{" +
         "id=" + id +
         ", name='" + name + '\'' +
-        ", currentAmount=" + currentAmount +
+        ", savedAmount=" + savedAmount +
         ", targetAmount=" + targetAmount +
         ", targetDate=" + targetDate +
         ", user=" + user +

@@ -11,7 +11,7 @@ public class GoalResponseDTO {
 
   private Long id;
   private String name;
-  private BigDecimal currentAmount;
+  private BigDecimal savedAmount;
   private BigDecimal targetAmount;
   private LocalDate targetDate;
   private GoalStatus status;
@@ -24,18 +24,18 @@ public class GoalResponseDTO {
   public GoalResponseDTO(Goal goal) {
     id = goal.getId();
     name = goal.getName();
-    currentAmount = goal.getCurrentAmount();
+    savedAmount = goal.getSavedAmount();
     targetAmount = goal.getTargetAmount();
     targetDate = goal.getTargetDate();
-    status = currentAmount.compareTo(targetAmount) >= 0 ? GoalStatus.COMPLETED : GoalStatus.ACTIVE;
+    status = savedAmount.compareTo(targetAmount) >= 0 ? GoalStatus.COMPLETED : GoalStatus.ACTIVE;
 
     GoalCalculation calculation = new GoalCalculation();
 
-    int percent = currentAmount.divide(targetAmount).multiply(BigDecimal.valueOf(100)).intValue();
-    int daysRemaining = (int) Math.max(ChronoUnit.DAYS.between(LocalDate.now(), targetDate), 0);
+    int percent = savedAmount.divide(targetAmount).multiply(BigDecimal.valueOf(100)).intValue();
+    int daysRemaining = (int) ChronoUnit.DAYS.between(LocalDate.now(), targetDate);
 
-    calculation.setPercent(percent);
-    calculation.setDaysRemaining(daysRemaining);
+    calculation.setPercent(Math.min(percent, 100));
+    calculation.setDaysRemaining(Math.max(daysRemaining, 0));
 
     this.calculation = calculation;
   }
@@ -56,12 +56,12 @@ public class GoalResponseDTO {
     this.name = name;
   }
 
-  public BigDecimal getCurrentAmount() {
-    return currentAmount;
+  public BigDecimal getSavedAmount() {
+    return savedAmount;
   }
 
-  public void setCurrentAmount(BigDecimal currentAmount) {
-    this.currentAmount = currentAmount;
+  public void setSavedAmount(BigDecimal savedAmount) {
+    this.savedAmount = savedAmount;
   }
 
   public BigDecimal getTargetAmount() {
@@ -101,7 +101,7 @@ public class GoalResponseDTO {
     return "GoalResponseDTO{" +
         "id=" + id +
         ", name='" + name + '\'' +
-        ", currentAmount=" + currentAmount +
+        ", savedAmount=" + savedAmount +
         ", targetAmount=" + targetAmount +
         ", targetDate=" + targetDate +
         ", status=" + status +
