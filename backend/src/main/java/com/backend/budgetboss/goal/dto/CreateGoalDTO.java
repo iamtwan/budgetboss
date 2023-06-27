@@ -7,19 +7,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CreateGoalDTO {
-  @NotBlank
+  @NotBlank(message = "Name is required")
   private String name;
 
   @Column(precision = 19, scale = 2)
-  @NotNull
+  @NotNull(message = "Current amount is required")
   private BigDecimal currentAmount;
 
   @Column(precision = 19, scale = 2)
-  @NotNull
+  @NotNull(message = "Target amount is required")
   private BigDecimal targetAmount;
 
   @Column(precision = 19, scale = 2)
-  @NotNull
+  @NotNull(message = "Target date is required")
   private LocalDate targetDate;
 
   public String getName() {

@@ -111,7 +111,7 @@ public class Goal {
         ", targetAmount=" + targetAmount +
         ", targetDate=" + targetDate +
         ", status=" + status +
-        ", user=" + user.getEmail() +
+        ", user=" + user +
         '}';
   }
 }

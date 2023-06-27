@@ -1,7 +1,10 @@
 package com.backend.budgetboss.goal;
 
 import com.backend.budgetboss.goal.dto.CreateGoalDTO;
+import com.backend.budgetboss.goal.dto.GoalResponseDTO;
 import com.backend.budgetboss.user.User;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,14 @@ public class GoalServiceImpl implements GoalService {
   }
 
   @Override
-  public Goal createGoal(User user, CreateGoalDTO createGoalDTO) {
-    return null;
+  public GoalResponseDTO createGoal(User user, CreateGoalDTO createGoalDTO) {
+    Goal goal = modelMapper.map(createGoalDTO, Goal.class);
+    goal.setUser(user);
+
+    long diff = ChronoUnit.DAYS.between(LocalDate.now(), goal.getTargetDate());
+    goal.setStatus(diff <= 0 ? GoalStatus.COMPLETED : GoalStatus.ACTIVE);
+
+    goalRepository.save(goal);
+    return new GoalResponseDTO(goal);
   }
 }

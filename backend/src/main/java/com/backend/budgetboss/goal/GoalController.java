@@ -1,6 +1,7 @@
 package com.backend.budgetboss.goal;
 
 import com.backend.budgetboss.goal.dto.CreateGoalDTO;
+import com.backend.budgetboss.goal.dto.GoalResponseDTO;
 import com.backend.budgetboss.user.CurrentUser;
 import com.backend.budgetboss.user.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,10 +30,10 @@ public class GoalController {
 
   @PostMapping
   @Operation(summary = "Create a goal", description = "Create a goal for the current user")
-  public ResponseEntity<Goal> createGoal(@CurrentUser User user,
+  public ResponseEntity<GoalResponseDTO> createGoal(@CurrentUser User user,
       @Valid @RequestBody CreateGoalDTO createGoalDTO) {
     logger.info("/api/goals POST request received: {}", createGoalDTO);
-    Goal goal = goalService.createGoal(user, createGoalDTO);
+    GoalResponseDTO goal = goalService.createGoal(user, createGoalDTO);
     logger.info("/api/goals goal created: {}", goal);
     return new ResponseEntity<>(goal, HttpStatus.CREATED);
   }
