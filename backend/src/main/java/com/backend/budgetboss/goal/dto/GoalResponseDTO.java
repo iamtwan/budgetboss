@@ -22,12 +22,12 @@ public class GoalResponseDTO {
   }
 
   public GoalResponseDTO(Goal goal) {
-    this.id = goal.getId();
-    this.name = goal.getName();
-    this.currentAmount = goal.getCurrentAmount();
-    this.targetAmount = goal.getTargetAmount();
-    this.targetDate = goal.getTargetDate();
-    this.status = goal.getStatus();
+    id = goal.getId();
+    name = goal.getName();
+    currentAmount = goal.getCurrentAmount();
+    targetAmount = goal.getTargetAmount();
+    targetDate = goal.getTargetDate();
+    status = currentAmount.compareTo(targetAmount) >= 0 ? GoalStatus.COMPLETED : GoalStatus.ACTIVE;
 
     GoalCalculation calculation = new GoalCalculation();
 

@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,11 +21,18 @@ public class Goal {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @NotBlank(message = "Name is required")
   private String name;
+
+  @NotNull(message = "Current amount is required")
   private BigDecimal currentAmount;
+
+  @NotNull(message = "Target amount is required")
   private BigDecimal targetAmount;
+
+  @NotNull(message = "Target date is required")
   private LocalDate targetDate;
-  private GoalStatus status;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -69,14 +78,6 @@ public class Goal {
     this.targetDate = targetDate;
   }
 
-  public GoalStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(GoalStatus status) {
-    this.status = status;
-  }
-
   public User getUser() {
     return user;
   }
@@ -110,7 +111,6 @@ public class Goal {
         ", currentAmount=" + currentAmount +
         ", targetAmount=" + targetAmount +
         ", targetDate=" + targetDate +
-        ", status=" + status +
         ", user=" + user +
         '}';
   }

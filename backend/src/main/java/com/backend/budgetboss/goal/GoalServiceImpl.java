@@ -23,10 +23,6 @@ public class GoalServiceImpl implements GoalService {
   public GoalResponseDTO createGoal(User user, CreateGoalDTO createGoalDTO) {
     Goal goal = modelMapper.map(createGoalDTO, Goal.class);
     goal.setUser(user);
-
-    long diff = ChronoUnit.DAYS.between(LocalDate.now(), goal.getTargetDate());
-    goal.setStatus(diff <= 0 ? GoalStatus.COMPLETED : GoalStatus.ACTIVE);
-
     goalRepository.save(goal);
     return new GoalResponseDTO(goal);
   }
