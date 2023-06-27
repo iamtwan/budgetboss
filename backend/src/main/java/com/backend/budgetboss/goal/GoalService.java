@@ -7,4 +7,8 @@ import com.backend.budgetboss.user.User;
 public interface GoalService {
 
   GoalResponseDTO createGoal(User user, CreateGoalDTO createGoalDTO);
+
+  GoalResponseDTO updateGoal(User user, Long id, CreateGoalDTO createGoalDTO);
+
+  void deleteGoal(User user, Long id);
 }
