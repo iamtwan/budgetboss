@@ -5,6 +5,7 @@ import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsSe
 import CashAccountsPage from './Accounts/AccountPages/CashAccountsSection';
 import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsSection';
 import BudgetPage from './Budget/BudgetSection';
+import GoalsPage from './Goals/GoalsSection';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import { LinkAccount } from './Accounts/Link/LinkAccount';
@@ -77,6 +78,9 @@ const DashboardPage = () => {
                     </div>
                     <div className="container border m-2">
                         <h3 className="text-center text-uppercase fw-bold">Goals</h3>
+                        <div className="h-100">
+                            <GoalsPage />
+                        </div>
                     </div>
                 </div>
             </div>
