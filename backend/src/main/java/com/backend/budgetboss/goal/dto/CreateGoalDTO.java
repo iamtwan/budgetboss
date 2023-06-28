@@ -1,12 +1,14 @@
 package com.backend.budgetboss.goal.dto;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CreateGoalDTO {
+
   @NotBlank(message = "Name is required")
   private String name;
 
@@ -14,11 +16,12 @@ public class CreateGoalDTO {
   @NotNull(message = "Saved amount is required")
   private BigDecimal savedAmount;
 
+
   @Column(precision = 19, scale = 2)
+  @DecimalMin(value = "10", message = "Target amount must be greater than or equal to 10")
   @NotNull(message = "Target amount is required")
   private BigDecimal targetAmount;
 
-  @Column(precision = 19, scale = 2)
   @NotNull(message = "Target date is required")
   private LocalDate targetDate;
 

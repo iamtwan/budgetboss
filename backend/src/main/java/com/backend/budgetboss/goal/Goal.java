@@ -1,6 +1,7 @@
 package com.backend.budgetboss.goal;
 
 import com.backend.budgetboss.user.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -25,9 +27,12 @@ public class Goal {
   @NotBlank(message = "Name is required")
   private String name;
 
+  @Column(precision = 19, scale = 2)
   @NotNull(message = "Saved amount is required")
   private BigDecimal savedAmount;
 
+  @Column(precision = 19, scale = 2)
+  @DecimalMin(value = "10", message = "Target amount must be greater than or equal to 10")
   @NotNull(message = "Target amount is required")
   private BigDecimal targetAmount;
 

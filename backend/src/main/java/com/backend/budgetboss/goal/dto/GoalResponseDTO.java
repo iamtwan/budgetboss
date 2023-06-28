@@ -36,7 +36,6 @@ public class GoalResponseDTO {
 
     calculation.setPercent(Math.min(percent, 100));
     calculation.setDaysRemaining(Math.max(daysRemaining, 0));
-
     this.calculation = calculation;
   }
 
