@@ -4,6 +4,7 @@ import com.backend.budgetboss.goal.Goal;
 import com.backend.budgetboss.goal.GoalCalculation;
 import com.backend.budgetboss.goal.GoalStatus;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -31,7 +32,8 @@ public class GoalResponseDTO {
 
     GoalCalculation calculation = new GoalCalculation();
 
-    int percent = savedAmount.divide(targetAmount).multiply(BigDecimal.valueOf(100)).intValue();
+    int percent = savedAmount.divide(targetAmount, 2, RoundingMode.HALF_UP)
+        .multiply(BigDecimal.valueOf(100)).intValue();
     int daysRemaining = (int) ChronoUnit.DAYS.between(LocalDate.now(), targetDate);
 
     calculation.setPercent(Math.min(percent, 100));
