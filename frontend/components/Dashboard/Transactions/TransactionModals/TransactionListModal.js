@@ -26,25 +26,25 @@ const TransactionListModal = ({ account, onClose }) => {
     const handleCloseModal = () => {
         setShowModal(false);
         onClose();
-    };
+    }
 
     const handleShowAddTransactionForm = () => {
         setShowTransactionList(false);
         setShowAddTransactionForm(true);
         setIsEditingTransaction(false);
-    };
+    }
 
     const handleShowEditTransactionForm = () => {
         setShowTransactionList(false);
         setShowAddTransactionForm(true);
         setIsEditingTransaction(true);
-    };
+    }
 
     const handleHideAddTransactionForm = () => {
         setShowTransactionList(true);
         setShowAddTransactionForm(false);
         setSelectedTransactionId(null);
-    };
+    }
 
     const isLinkedAccount = account.type === "linked";
 
@@ -53,7 +53,7 @@ const TransactionListModal = ({ account, onClose }) => {
 
         setSelectedTransactionId(transactionId);
         handleShowEditTransactionForm();
-    };
+    }
 
     const handleDeleteSelected = async () => {
         try {
@@ -67,7 +67,7 @@ const TransactionListModal = ({ account, onClose }) => {
         } catch (error) {
             console.error('Error deleting transaction:', error)
         }
-    };
+    }
 
     const handleSelectTransaction = (transactionId) => {
         if (selectedTransactions.includes(transactionId)) {
@@ -75,7 +75,7 @@ const TransactionListModal = ({ account, onClose }) => {
         } else {
             setSelectedTransactions([...selectedTransactions, transactionId]);
         }
-    };
+    }
 
     return (
         <>
@@ -96,8 +96,6 @@ const TransactionListModal = ({ account, onClose }) => {
                         selectedTransactions={selectedTransactions}
                         handleSelectTransaction={handleSelectTransaction}
                     />
-                    {/* {Array.isArray(transactions) && transactions.length > 0 &&
-                    } */}
                 </Modal.Body>
             </Modal>
             {showAddTransactionForm && (
@@ -111,6 +109,6 @@ const TransactionListModal = ({ account, onClose }) => {
             )}
         </>
     );
-};
+}
 
 export default TransactionListModal;

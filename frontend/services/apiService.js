@@ -218,6 +218,7 @@ export const useTransactions = (accountType, id) => {
     };
 }
 
+// protected route
 export const useUser = () => {
     const { error, isLoading } = useSWR(`${API_BASE_URL}/users`, fetcher);
 
@@ -225,4 +226,49 @@ export const useUser = () => {
         error,
         isLoading,
     };
+}
+
+export const fetchGoals = () => {
+    const { data, error, isLoading } = useSWR(`${API_BASE_URL}/goals`, fetcher);
+
+    return {
+        data,
+        error,
+        isLoading
+    };
+}
+
+export const createGoal = async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/goals`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    });
+
+    return await response.json();
+}
+
+export const deleteGoal = async (goalId) => {
+    const response = await fetch(`${API_BASE_URL}/goals/${goalId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+
+    return response;
+}
+
+export const updateGoal = async (goalId, formData) => {
+    const response = await fetch(`${API_BASE_URL}/goals/${goalId}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    });
+
+    return await response.json();
 }
