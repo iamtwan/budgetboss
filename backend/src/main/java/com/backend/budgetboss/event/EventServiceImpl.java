@@ -1,14 +1,15 @@
 package com.backend.budgetboss.event;
 
+import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.user.User;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
 @Service
 public class EventServiceImpl implements EventService {
+
   private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
   public SseEmitter subscribe(User user) {
@@ -22,12 +23,22 @@ public class EventServiceImpl implements EventService {
     return emitter;
   }
 
-  public void sendEvent(Long id, String eventData) {
+  public void sendEvent(Item item, String eventType) {
+    sendEvent(item, eventType, "");
+  }
+
+  public void sendEvent(Item item, String eventType, String message) {
+    long id = item.getUser().getId();
     SseEmitter emitter = emitters.get(id);
+
+    Event event = new Event();
+    event.setItemId(item.getId());
+    event.setType(eventType);
+    event.setMessage(message);
 
     if (emitter != null) {
       try {
-        emitter.send(eventData);
+        emitter.send(event);
       } catch (Exception e) {
         emitter.completeWithError(e);
         emitters.remove(id);

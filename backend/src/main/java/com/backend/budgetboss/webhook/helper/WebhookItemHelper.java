@@ -5,21 +5,20 @@ import com.backend.budgetboss.item.ItemRepository;
 import com.backend.budgetboss.item.Status;
 import com.backend.budgetboss.item.helper.ItemHelper;
 import com.plaid.client.model.ItemErrorWebhook;
+import com.plaid.client.model.PlaidError;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WebhookItemHelper {
 
   private final ItemRepository itemRepository;
-  private final ItemHelper itemHelper;
 
-  public WebhookItemHelper(ItemRepository itemRepository, ItemHelper itemHelper) {
+  public WebhookItemHelper(ItemRepository itemRepository) {
     this.itemRepository = itemRepository;
-    this.itemHelper = itemHelper;
   }
 
-  public void handleError(ItemErrorWebhook error, Item item) {
-    String errorCode = error.getError().getErrorCode();
+  public void handleError(PlaidError error, Item item) {
+    String errorCode = error.getErrorCode();
 
     if (errorCode.equals("ITEM_LOGIN_REQUIRED")) {
       handlePendingExpiration(item);

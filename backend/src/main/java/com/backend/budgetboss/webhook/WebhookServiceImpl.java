@@ -10,6 +10,7 @@ import com.backend.budgetboss.webhook.exception.ResetLoginException;
 import com.backend.budgetboss.webhook.helper.WebhookItemHelper;
 import com.google.gson.Gson;
 import com.plaid.client.model.ItemErrorWebhook;
+import com.plaid.client.model.PlaidError;
 import com.plaid.client.model.SandboxItemFireWebhookRequest;
 import com.plaid.client.model.SandboxItemFireWebhookResponse;
 import com.plaid.client.model.SandboxItemResetLoginRequest;
@@ -88,17 +89,17 @@ public class WebhookServiceImpl implements WebhookService {
 
     switch (code) {
       case "ERROR":
-        ItemErrorWebhook error = gson.fromJson(gson.toJson(event), ItemErrorWebhook.class);
+        PlaidError error = gson.fromJson(gson.toJson(event), ItemErrorWebhook.class).getError();
         webhookItemHelper.handleError(error, item);
-        eventService.sendEvent(item.getUser().getId(), "ERROR");
+        eventService.sendEvent(item, "ERROR", error.getErrorMessage());
         break;
       case "PENDING_EXPIRATION":
         webhookItemHelper.handlePendingExpiration(item);
-        eventService.sendEvent(item.getUser().getId(), "PENDING_EXPIRATION");
+        eventService.sendEvent(item, "PENDING_EXPIRATION");
         break;
       case "USER_PERMISSION_REVOKED":
         webhookItemHelper.handleUserPermissionRevoked(item);
-        eventService.sendEvent(item.getUser().getId(), "USER_PERMISSION_REVOKED");
+        eventService.sendEvent(item, "USER_PERMISSION_REVOKED");
         break;
       case "NEW_ACCOUNTS_AVAILABLE":
       case "WEBHOOK_UPDATE_ACKNOWLEDGED":
@@ -119,7 +120,7 @@ public class WebhookServiceImpl implements WebhookService {
     switch (code) {
       case "SYNC_UPDATES_AVAILABLE":
         transactionService.syncTransactions(item);
-        eventService.sendEvent(item.getUser().getId(), "SYNC_UPDATES_AVAILABLE");
+        eventService.sendEvent(item, "SYNC_UPDATES_AVAILABLE");
         break;
       case "INITIAL_UPDATE":
       case "HISTORICAL_UPDATE":
