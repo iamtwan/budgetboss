@@ -15,6 +15,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "goals")
@@ -38,6 +39,9 @@ public class Goal {
 
   @NotNull(message = "Target date is required")
   private LocalDate targetDate;
+
+  private LocalDate createdAt = LocalDate.now();
+  private LocalDate completedAt;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -83,6 +87,22 @@ public class Goal {
     this.targetDate = targetDate;
   }
 
+  public LocalDate getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDate createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDate getCompletedAt() {
+    return completedAt;
+  }
+
+  public void setCompletedAt(LocalDate completedAt) {
+    this.completedAt = completedAt;
+  }
+
   public User getUser() {
     return user;
   }
@@ -116,6 +136,8 @@ public class Goal {
         ", savedAmount=" + savedAmount +
         ", targetAmount=" + targetAmount +
         ", targetDate=" + targetDate +
+        ", createdAt=" + createdAt +
+        ", completedAt=" + completedAt +
         ", user=" + user +
         '}';
   }

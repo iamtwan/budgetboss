@@ -16,7 +16,6 @@ public class CreateGoalDTO {
   @NotNull(message = "Saved amount is required")
   private BigDecimal savedAmount;
 
-
   @Column(precision = 19, scale = 2)
   @DecimalMin(value = "10", message = "Target amount must be greater than or equal to 10")
   @NotNull(message = "Target amount is required")

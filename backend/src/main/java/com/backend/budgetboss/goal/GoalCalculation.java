@@ -1,8 +1,5 @@
 package com.backend.budgetboss.goal;
 
-import jakarta.persistence.Embeddable;
-import java.time.LocalDate;
-
 public class GoalCalculation {
   private int percent;
   private int daysRemaining;

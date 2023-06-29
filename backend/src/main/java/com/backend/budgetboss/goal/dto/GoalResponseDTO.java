@@ -16,6 +16,8 @@ public class GoalResponseDTO {
   private BigDecimal targetAmount;
   private LocalDate targetDate;
   private GoalStatus status;
+  private LocalDate createdAt;
+  private LocalDate completedAt;
   private GoalCalculation calculation;
 
   public GoalResponseDTO() {
@@ -29,10 +31,12 @@ public class GoalResponseDTO {
     targetAmount = goal.getTargetAmount();
     targetDate = goal.getTargetDate();
     status = savedAmount.compareTo(targetAmount) >= 0 ? GoalStatus.COMPLETED : GoalStatus.ACTIVE;
+    createdAt = goal.getCreatedAt();
+    completedAt = goal.getCompletedAt();
 
     GoalCalculation calculation = new GoalCalculation();
 
-    int percent = savedAmount.divide(targetAmount, 2, RoundingMode.HALF_UP)
+    int percent = savedAmount.divide(targetAmount, 2, RoundingMode.HALF_DOWN)
         .multiply(BigDecimal.valueOf(100)).intValue();
     int daysRemaining = (int) ChronoUnit.DAYS.between(LocalDate.now(), targetDate);
 
@@ -97,6 +101,22 @@ public class GoalResponseDTO {
     this.calculation = calculation;
   }
 
+  public LocalDate getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDate createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDate getCompletedAt() {
+    return completedAt;
+  }
+
+  public void setCompletedAt(LocalDate completedAt) {
+    this.completedAt = completedAt;
+  }
+
   @Override
   public String toString() {
     return "GoalResponseDTO{" +
@@ -107,6 +127,8 @@ public class GoalResponseDTO {
         ", targetDate=" + targetDate +
         ", status=" + status +
         ", calculation=" + calculation +
+        ", createdAt=" + createdAt +
+        ", completedAt=" + completedAt +
         '}';
   }
 }

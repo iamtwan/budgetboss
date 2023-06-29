@@ -4,6 +4,7 @@ import com.backend.budgetboss.goal.dto.CreateGoalDTO;
 import com.backend.budgetboss.goal.dto.GoalResponseDTO;
 import com.backend.budgetboss.goal.exception.GoalNotFoundException;
 import com.backend.budgetboss.user.User;
+import java.time.LocalDate;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class GoalServiceImpl implements GoalService {
   public GoalResponseDTO createGoal(User user, CreateGoalDTO createGoalDTO) {
     Goal goal = modelMapper.map(createGoalDTO, Goal.class);
     goal.setUser(user);
+    updateCompletedAt(goal);
     return new GoalResponseDTO(goalRepository.save(goal));
   }
 
@@ -39,6 +41,7 @@ public class GoalServiceImpl implements GoalService {
     Goal goal = goalRepository.findByUserAndId(user, id)
         .orElseThrow(() -> new GoalNotFoundException(id));
     modelMapper.map(createGoalDTO, goal);
+    updateCompletedAt(goal);
     return new GoalResponseDTO(goalRepository.save(goal));
   }
 
@@ -47,5 +50,10 @@ public class GoalServiceImpl implements GoalService {
     Goal goal = goalRepository.findByUserAndId(user, id)
         .orElseThrow(() -> new GoalNotFoundException(id));
     goalRepository.delete(goal);
+  }
+
+  private void updateCompletedAt(Goal goal) {
+    boolean completed = goal.getSavedAmount().compareTo(goal.getTargetAmount()) >= 0;
+    goal.setCompletedAt(completed ? LocalDate.now() : null);
   }
 }
