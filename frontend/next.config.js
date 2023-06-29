@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    webpack: (config, { dev }) => {
-        if (dev) {
-            config.devtool = 'source-map';
-        }
+const nextConfig = {}
 
-        return config;
-    },
-}
-
-module.exports = nextConfig;
+module.exports = nextConfig
+// module.exports = {
+//     webpack: (config, options) => {
+//         if (!options.dev) {
+//             config.devtool = options.isServer ? false : 'your-custom-devtool'
+//         }
+//         return config
+//     },
+// }
