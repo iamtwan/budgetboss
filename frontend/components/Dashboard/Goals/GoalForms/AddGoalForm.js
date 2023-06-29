@@ -1,13 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const AddGoalForm = ({ show, onClose, onSubmit }) => {
+const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
     const [goalName, setGoalName] = useState('');
     const [savedAmount, setSavedAmount] = useState('');
     const [targetAmount, setTargetAmount] = useState('');
     const [targetDate, setTargetDate] = useState('');
+
+    useEffect(() => {
+        if (goal) {
+            setGoalName(goal.name);
+            setSavedAmount(goal.savedAmount);
+            setTargetAmount(goal.targetAmount);
+            setTargetDate(goal.targetDate);
+        }
+    }, [goal]);
 
     const resetForm = () => {
         setGoalName('');
@@ -45,7 +54,7 @@ const AddGoalForm = ({ show, onClose, onSubmit }) => {
         onSubmit(formData);
         resetForm();
         onClose();
-    };
+    }
 
     return (
         <Modal show={show} onHide={() => { resetForm(); onClose(); }}>

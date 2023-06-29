@@ -4,12 +4,14 @@ import GoalItem from './GoalItem';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import AddGoalForm from './GoalForms/AddGoalForm';
+import CompletedGoals from './CompletedGoalsModal';
 import { useSWRConfig } from 'swr';
 
 import { fetchGoals, deleteGoal, updateGoal, createGoal } from '../../../services/apiService';
 
 const GoalsList = () => {
     const [showModal, setShowModal] = useState(false);
+    const [showCompletedModal, setShowCompletedModal] = useState(false);
     const [editedGoal, setEditedGoal] = useState(null);
 
     const { data, error, isLoading } = fetchGoals();
@@ -26,6 +28,7 @@ const GoalsList = () => {
     const handleEditGoal = (goal) => {
         setEditedGoal(goal);
         setShowModal(true);
+        setShowCompletedModal(false);
     }
 
     const handleDeleteGoal = async (goal) => {
@@ -58,27 +61,48 @@ const GoalsList = () => {
         setShowModal(!showModal);
     }
 
+    const handleToggleCompleted = () => {
+        setShowCompletedModal(!showCompletedModal);
+    }
+
     return (
         <div>
-            <div className='text-center'>
-                <Button className="btn btn-primary btn-sm mb-2" onClick={handleToggleAddGoalForm}>
-                    Add Goal
-                </Button>
-            </div>
-            {data.map(goal =>
-                <div className='mb-2' key={goal.id}>
-                    <GoalItem
-                        goal={goal}
-                        onEdit={handleEditGoal}
-                        onDelete={handleDeleteGoal}
-                    />
+            <div className='d-flex justify-content-between'>
+                <div className=''>
+                    <Button className="btn btn-primary btn-sm mb-2" onClick={handleToggleAddGoalForm}>
+                        Add Goal
+                    </Button>
                 </div>
-            )}
+                <div className=''>
+                    <Button className="btn btn-success btn-sm mb-2" onClick={handleToggleCompleted}>
+                        Completed
+                    </Button>
+                </div>
+
+            </div>
+            {data
+                .filter(goal => goal.status === 'ACTIVE')
+                .map(goal =>
+                    <div className='mb-2' key={goal.id}>
+                        <GoalItem
+                            goal={goal}
+                            onEdit={handleEditGoal}
+                            onDelete={handleDeleteGoal}
+                        />
+                    </div>
+                )}
             <AddGoalForm
+                goal={editedGoal}
                 show={showModal}
                 onClose={handleToggleAddGoalForm}
                 onSubmit={handleSubmitGoalForm}
-                goal={editedGoal}
+            />
+            <CompletedGoals
+                goals={data}
+                show={showCompletedModal}
+                onClose={() => setShowCompletedModal(false)}
+                onEdit={handleEditGoal}
+                onDelete={handleDeleteGoal}
             />
         </div>
     );

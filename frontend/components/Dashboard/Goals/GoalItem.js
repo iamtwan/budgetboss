@@ -15,9 +15,24 @@ const GoalItem = ({ goal, onDelete, onEdit }) => {
                 </ButtonGroup>
             </div>
             <ProgressBar style={{ height: '30px' }}>
-                <ProgressBar striped variant="success" now={calculation.percent} key={1} label={`$${savedAmount}`} className='fw-bold' />
-                <ProgressBar variant="warning" now={100 - calculation.percent} key={2} label={`$${remainingAmount} remaining in ${calculation.daysRemaining} Days`} className='fw-bold text-uppercase text-black' />
+                <ProgressBar
+                    striped variant="success"
+                    now={calculation.percent}
+                    key={1}
+                    label={`$${savedAmount}`}
+                    className='fw-bold'
+                />
+                <ProgressBar
+                    variant="warning"
+                    now={100 - calculation.percent}
+                    key={2}
+                    label={calculation.percent < 75 ? `$${remainingAmount}` : ''}
+                    className='fw-bold text-uppercase text-black'
+                />
             </ProgressBar>
+            <p className='fst-italic fw-light text-center fs-6 lh-1' style={{ whiteSpace: 'nowrap' }}>
+                You've currently saved {calculation.percent}% of your goal target (${targetAmount})!
+            </p>
         </div >
     );
 }
