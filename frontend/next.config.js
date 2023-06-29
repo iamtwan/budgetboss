@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+    webpack: (config, { dev }) => {
+        if (dev) {
+            config.devtool = 'source-map';
+        }
 
-module.exports = nextConfig
+        return config;
+    },
+}
+
+module.exports = nextConfig;
