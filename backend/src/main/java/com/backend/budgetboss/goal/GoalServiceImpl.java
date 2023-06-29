@@ -6,6 +6,7 @@ import com.backend.budgetboss.goal.exception.GoalNotFoundException;
 import com.backend.budgetboss.user.User;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,7 @@ public class GoalServiceImpl implements GoalService {
 
   private void updateCompletedAt(Goal goal) {
     boolean completed = goal.getSavedAmount().compareTo(goal.getTargetAmount()) >= 0;
-    goal.setCompletedAt(completed ? LocalDate.now() : null);
+    LocalDate date = Optional.ofNullable(goal.getCompletedAt()).orElse(LocalDate.now());
+    goal.setCompletedAt(completed ? date : null);
   }
 }
