@@ -1,16 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsPage';
-import CashAccountsPage from './Accounts/AccountPages/CashAccountsPage';
-import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsPage';
+import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsSection';
+import CashAccountsPage from './Accounts/AccountPages/CashAccountsSection';
+import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsSection';
 import BudgetPage from './Budget/BudgetSection';
+import GoalsPage from './Goals/GoalsSection';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import { LinkAccount } from './Accounts/Link/LinkAccount';
 import { Button } from 'react-bootstrap';
 import { fetchLinkToken } from '../../services/apiService';
 import useSWR from 'swr';
+import PlaidWebhooks from '../../hooks/PlaidWebhooks';
 
 const DashboardPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -23,6 +25,7 @@ const DashboardPage = () => {
     });
 
     if (error) {
+        console.log(error.info);
         return <div>Error occurred</div>;
     }
 
@@ -77,6 +80,9 @@ const DashboardPage = () => {
                     </div>
                     <div className="container border m-2">
                         <h3 className="text-center text-uppercase fw-bold">Goals</h3>
+                        <div className="h-100">
+                            <GoalsPage />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,6 +96,7 @@ const DashboardPage = () => {
                 account={selectedAccount}
                 onClose={() => setShowEditModal(false)}
             />
+            <PlaidWebhooks />
         </div>
     );
 };

@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { updateItem } from '../../../services/apiService';
+import { updateItem, deleteItem } from '../../../services/apiService';
 import Link from './Link/LinkTokenExchange';
+import { resetItem, fireEvent } from '../../../services/apiWebhooks';
+import { useSWRConfig } from 'swr';
 
 const Institution = ({
     institution,
@@ -14,12 +16,25 @@ const Institution = ({
 }) => {
     const [token, setToken] = useState(null);
 
+    const { mutate } = useSWRConfig();
+
     const getUpdateToken = async (id) => {
         try {
             const response = await updateItem(id);
-            setToken(response.data.linkToken);
+            setToken(response.linkToken);
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const removeLinkedItem = async (id) => {
+        try {
+            await deleteItem(id);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            mutate('http://localhost:8080/api/items');
+            mutate('http://localhost:8080/api/charts');
         }
     }
 
@@ -27,13 +42,24 @@ const Institution = ({
 
     return (
         <ul className="list-group list-group-flush">
-            <h5
-                className='fw-bolder text-uppercase'
-                style={hasLinkedAccount ? { cursor: 'pointer' } : {}}
-                onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
-            >
-                {institution.name}
-            </h5>
+            <div className='d-flex justify-content-between'>
+                <h5
+                    className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'text-secondary' : ''}`}
+                    style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
+                    onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
+                >
+                    {institution.name}
+                </h5>
+                <div className='btn-group' role='group' aria-label='linked institution buttons'>
+                    {hasLinkedAccount && (
+                        <>
+                            <button className='btn btn-danger btn-sm mb-2' onClick={() => removeLinkedItem(institution.linkedId)}>X</button>
+                            <button className='btn btn-secondary btn-sm mb-2' onClick={() => resetItem(institution.linkedId)}>Reset</button>
+                            <button className='btn btn-secondary btn-sm mb-2' onClick={() => fireEvent(institution.linkedId)}>Fire</button>
+                        </>
+                    )}
+                </div>
+            </div>
             {token && <Link linkToken={token} itemId={institution.id} />}
             {institution.accounts.map((account) => (
                 <li className="d-flex flex-column mb-2" key={account.key}>

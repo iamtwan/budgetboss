@@ -37,6 +37,7 @@ const AccountsList = ({
                     type={type}
                 />
             )}
+
         </div>
     );
 };

@@ -17,8 +17,8 @@ export const LinkAccount = ({
             };
 
             await exchangeLinkToken(tokenData);
-
-            mutate("http://localhost:8080/api/items");
+            mutate('http://localhost:8080/api/items');
+            mutate('http://localhost:8080/api/charts');
         } catch (err) {
             console.log(err);
         }

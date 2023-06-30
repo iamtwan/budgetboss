@@ -1,24 +1,26 @@
-import axios from 'axios';
-
 export const resetItem = async (itemId) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/webhooks/item/${itemId}/reset`, { withCredentials: true });
-        const data = response.json();
+      const response = await fetch(`http://localhost:8080/api/webhooks/item/${itemId}/reset`, {
+        method: 'GET',
+        credentials: 'include'
+      });
 
-        return data;
+      console.log(response);
     } catch (error) {
-        console.error('Failed to reset item', error)
+      console.error('Failed to reset item', error);
     }
-};
+  };
 
-export const fireEvent = async (itemId) => {
+  export const fireEvent = async (itemId) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/webhooks/item/${itemId}/fire`, { withCredentials: true });
-        const data = response.json();
+      const response = await fetch(`http://localhost:8080/api/webhooks/item/${itemId}/fire`, {
+        method: 'GET',
+        credentials: 'include'
+      });
 
-        return data;
+      console.log(response);
     } catch (error) {
-        console.error('Failed to fire webhook event', error);
-        throw error;
+      console.error('Failed to fire webhook event', error);
+      throw error;
     }
-};
+  };

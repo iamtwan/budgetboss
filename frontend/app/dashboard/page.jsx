@@ -5,8 +5,6 @@ import 'bootstrap/dist/css/bootstrap.css'; // development
 import withAuth from '../../components/Authentication/ProtectedRoute';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Logout from '../../components/Authentication/Logout';
-// import PlaidWebhooks from '../../hooks/plaidWebhooks';
-
 
 const Dashboard = () => {
     return (
@@ -17,11 +15,9 @@ const Dashboard = () => {
                     <Logout />
                 </div>
             </div>
-            {/* <PlaidWebhooks /> */}
             <DashboardPage />
         </main>
     );
 };
-
 
 export default withAuth(Dashboard);
