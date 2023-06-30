@@ -44,17 +44,67 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (goalName.length < 3 || goalName.length > 18) {
+            alert('Goal Name should be between 3 and 18 characters');
+            return;
+        }
+
+        const currentDate = new Date();
+        const inputDate = new Date(targetDate);
+
+        if (inputDate < currentDate) {
+            const proceed = window.confirm('The Deadline date is in the past. Do you wish to proceed?');
+            if (!proceed) {
+                return;
+            }
+        }
+
+        if (!savedAmount) {
+            setSavedAmount('0');
+        }
+
+        if (Number(savedAmount) < 0 || Number(targetAmount) < 0) {
+            alert('Amounts cannot be negative');
+            return;
+        }
+
+        if (Number(savedAmount) > Number(targetAmount)) {
+            alert('Saved Amount cannot be greater than Goal Amount');
+            return;
+        }
+
+        if (savedAmount.length < 4 || savedAmount.length > 12 || targetAmount.length < 4 || targetAmount.length > 12) {
+            alert('Please enter an amount between 2 and 10 digits');
+            return;
+        }
+
         const formData = {
             name: goalName,
-            savedAmount: savedAmount,
-            targetAmount: targetAmount,
+            savedAmount: Number(savedAmount).toFixed(2),
+            targetAmount: Number(targetAmount).toFixed(2),
             targetDate: targetDate
         }
+
+        console.log(formData);
 
         onSubmit(formData);
         resetForm();
         onClose();
     }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+
+    //     const formData = {
+    //         name: goalName,
+    //         savedAmount: savedAmount,
+    //         targetAmount: targetAmount,
+    //         targetDate: targetDate
+    //     }
+
+    //     onSubmit(formData);
+    //     resetForm();
+    //     onClose();
+    // }
 
     return (
         <Modal show={show} onHide={() => { resetForm(); onClose(); }}>
@@ -77,10 +127,9 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                         <Form.Label>Starting Amount</Form.Label>
                         <Form.Control
                             type='number'
-                            placeholder='If none enter 0'
+                            placeholder='Enter your starting amount'
                             value={savedAmount}
                             onChange={handleSavedAmountChange}
-                            required
                         />
                     </Form.Group>
                     <Form.Group controlId='targetAmount'>

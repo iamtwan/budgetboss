@@ -1,9 +1,11 @@
 import { ProgressBar } from 'react-bootstrap';
 import { Button, ButtonGroup } from 'react-bootstrap';
 
+const toCurrency = (number) => Number(number).toFixed(2);
+
 const GoalItem = ({ goal, onDelete, onEdit }) => {
     const { targetAmount, savedAmount, calculation } = goal;
-    const remainingAmount = targetAmount - savedAmount;
+    const remainingAmount = toCurrency(targetAmount - savedAmount);
 
     return (
         <div>
@@ -31,7 +33,7 @@ const GoalItem = ({ goal, onDelete, onEdit }) => {
                 />
             </ProgressBar>
             <p className='fst-italic fw-light text-center fs-6 lh-1' style={{ whiteSpace: 'nowrap' }}>
-                You've currently saved {calculation.percent}% of your goal target (${targetAmount})!
+                You've currently saved {calculation.percent}% of the goal target (${targetAmount})!
             </p>
         </div >
     );
