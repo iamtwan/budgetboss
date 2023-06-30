@@ -59,7 +59,6 @@ const TransactionListModal = ({ account, onClose }) => {
         try {
             selectedTransactions.forEach(async (transactionId) => {
                 await deleteManualTransaction(transactionId);
-
                 mutate();
             });
 

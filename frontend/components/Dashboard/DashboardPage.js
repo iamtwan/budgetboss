@@ -12,6 +12,7 @@ import { LinkAccount } from './Accounts/Link/LinkAccount';
 import { Button } from 'react-bootstrap';
 import { fetchLinkToken } from '../../services/apiService';
 import useSWR from 'swr';
+import PlaidWebhooks from '../../hooks/PlaidWebhooks';
 
 const DashboardPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -24,6 +25,7 @@ const DashboardPage = () => {
     });
 
     if (error) {
+        console.log(error.info);
         return <div>Error occurred</div>;
     }
 
@@ -94,6 +96,7 @@ const DashboardPage = () => {
                 account={selectedAccount}
                 onClose={() => setShowEditModal(false)}
             />
+            <PlaidWebhooks />
         </div>
     );
 };

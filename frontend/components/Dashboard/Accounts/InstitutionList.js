@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { updateItem } from '../../../services/apiService';
 import Link from './Link/LinkTokenExchange';
+import { resetItem, fireEvent } from '../../../services/apiWebhooks';
 
 const Institution = ({
     institution,
@@ -17,7 +18,7 @@ const Institution = ({
     const getUpdateToken = async (id) => {
         try {
             const response = await updateItem(id);
-            setToken(response.data.linkToken);
+            setToken(response.linkToken);
         } catch (error) {
             console.log(error);
         }
@@ -25,15 +26,23 @@ const Institution = ({
 
     const hasLinkedAccount = institution.accounts.some(account => account.key.match(/linked\d+$/));
 
+    console.log(institution.id, institution.status);
+
     return (
         <ul className="list-group list-group-flush">
-            <h5
-                className='fw-bolder text-uppercase'
-                style={hasLinkedAccount ? { cursor: 'pointer' } : {}}
-                onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
-            >
-                {institution.name}
-            </h5>
+            <div className='d-flex justify-content-between'>
+                <h5
+                    className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'text-secondary' : ''}`}
+                    style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
+                    onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
+                >
+                    {institution.name}
+                </h5>
+                <div>
+                    <button onClick={() => resetItem(institution.id)}>Reset</button>
+                    <button onClick={() => fireEvent(institution.id)}>Fire</button>
+                </div>
+            </div>
             {token && <Link linkToken={token} itemId={institution.id} />}
             {institution.accounts.map((account) => (
                 <li className="d-flex flex-column mb-2" key={account.key}>

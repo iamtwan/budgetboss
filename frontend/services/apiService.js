@@ -71,6 +71,13 @@ export const fetchLinkToken = async url => {
         credentials: 'include'
     });
 
+    if (!response.ok) {
+        const error = new Error();
+        error.status = response.status;
+        error.info = await response.json();
+        throw error;
+    }
+
     return await response.json();
 }
 
@@ -92,6 +99,10 @@ export const createManualAccount = async (formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
 
     return await response.json();
 }
