@@ -23,15 +23,16 @@ public class Item {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private User user;
   private String accessToken;
   private String itemId;
   private String institutionId;
   private String institutionName;
   private String cursor;
   private Status status = Status.GOOD;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
   @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Account> accounts = new ArrayList<>();

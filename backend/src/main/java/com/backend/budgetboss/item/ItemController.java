@@ -38,6 +38,8 @@ public class ItemController {
     return ResponseEntity.ok(items);
   }
 
+
+
   @DeleteMapping({"/{itemId}"})
   @Operation(summary = "Delete an item", description = "Delete an item for the current user with the given id")
   public ResponseEntity<Void> deleteItem(@CurrentUser User user, @PathVariable Long itemId)
