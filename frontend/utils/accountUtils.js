@@ -8,7 +8,8 @@ export const mergeAccounts = (linkedAccounts, manualAccountsData) => {
             name: institution.name,
             accounts: [],
             id: institution.id,
-            status: institution.status
+            status: institution.status,
+            linkedId: institution.id
         };
 
         institution.accounts.forEach(account => {
@@ -32,6 +33,7 @@ export const mergeAccounts = (linkedAccounts, manualAccountsData) => {
             status: institution.status
         };
 
+        mergedAccounts[key].linkedId = mergedAccounts[key].linkedId || null;
         mergedAccounts[key].id = institution.name;
 
         institution.accounts.forEach(account => {

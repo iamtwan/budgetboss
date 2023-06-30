@@ -210,6 +210,20 @@ export const useLinkedData = () => {
     };
 }
 
+// remove linked plaid (institution) item
+export const deleteItem = async (itemId) => {
+    const response = await fetch(`${API_BASE_URL}/items/${itemId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}
+
 export const useTransactions = (accountType, id) => {
     let url;
 
@@ -229,7 +243,7 @@ export const useTransactions = (accountType, id) => {
     };
 }
 
-// protected route
+// for protected route use
 export const useUser = () => {
     const { error, isLoading } = useSWR(`${API_BASE_URL}/users`, fetcher);
 

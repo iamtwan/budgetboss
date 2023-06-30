@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { updateItem } from '../../../services/apiService';
+import { updateItem, deleteItem } from '../../../services/apiService';
 import Link from './Link/LinkTokenExchange';
 import { resetItem, fireEvent } from '../../../services/apiWebhooks';
+import { useSWRConfig } from 'swr';
 
 const Institution = ({
     institution,
@@ -15,6 +16,8 @@ const Institution = ({
 }) => {
     const [token, setToken] = useState(null);
 
+    const { mutate } = useSWRConfig();
+
     const getUpdateToken = async (id) => {
         try {
             const response = await updateItem(id);
@@ -24,9 +27,18 @@ const Institution = ({
         }
     }
 
-    const hasLinkedAccount = institution.accounts.some(account => account.key.match(/linked\d+$/));
+    const removeLinkedItem = async (id) => {
+        try {
+            await deleteItem(id);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            mutate('http://localhost:8080/api/items');
+            mutate('http://localhost:8080/api/charts');
+        }
+    }
 
-    console.log(institution.id, institution.status);
+    const hasLinkedAccount = institution.accounts.some(account => account.key.match(/linked\d+$/));
 
     return (
         <ul className="list-group list-group-flush">
@@ -38,9 +50,14 @@ const Institution = ({
                 >
                     {institution.name}
                 </h5>
-                <div>
-                    <button onClick={() => resetItem(institution.id)}>Reset</button>
-                    <button onClick={() => fireEvent(institution.id)}>Fire</button>
+                <div className='btn-group' role='group' aria-label='linked institution buttons'>
+                    {hasLinkedAccount && (
+                        <>
+                            <button className='btn btn-danger btn-sm mb-2' onClick={() => removeLinkedItem(institution.linkedId)}>X</button>
+                            <button className='btn btn-secondary btn-sm mb-2' onClick={() => resetItem(institution.linkedId)}>Reset</button>
+                            <button className='btn btn-secondary btn-sm mb-2' onClick={() => fireEvent(institution.linkedId)}>Fire</button>
+                        </>
+                    )}
                 </div>
             </div>
             {token && <Link linkToken={token} itemId={institution.id} />}
