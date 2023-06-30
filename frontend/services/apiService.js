@@ -2,7 +2,11 @@ import useSWR from 'swr';
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
-const fetcher = (url) => fetch(url, { credentials: 'include' }).then((response) => response.json());
+const fetcher = (url) => {
+    return (
+        fetch(url, { credentials: 'include' }).then((response) => response.json())
+    );
+}
 
 export const createSignUp = async (formData) => {
     const response = await fetch(`${API_BASE_URL}/users/register`, {

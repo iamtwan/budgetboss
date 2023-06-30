@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useUser } from '../../services/apiService';
 import { Spinner } from 'react-bootstrap';
+import { SWRConfig } from 'swr';
 
 const withAuth = (WrappedComponent) => {
     return () => {
@@ -19,7 +20,11 @@ const withAuth = (WrappedComponent) => {
             return <div>Loading...</div>
         }
 
-        return <WrappedComponent />;
+        return (
+            <SWRConfig value={{ revalidateOnFocus: false }}>
+                <WrappedComponent />
+            </SWRConfig>
+        );
     };
 }
 
