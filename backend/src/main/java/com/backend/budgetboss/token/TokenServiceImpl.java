@@ -103,6 +103,7 @@ public class TokenServiceImpl implements TokenService {
         .execute();
 
     if (!response.isSuccessful()) {
+      System.out.println(response.errorBody());
       throw new TokenCreationException("Unable to create link token for user: " + user.getEmail());
     }
 

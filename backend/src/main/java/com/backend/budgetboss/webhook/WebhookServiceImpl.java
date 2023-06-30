@@ -102,6 +102,8 @@ public class WebhookServiceImpl implements WebhookService {
         eventService.sendEvent(item, "USER_PERMISSION_REVOKED");
         break;
       case "NEW_ACCOUNTS_AVAILABLE":
+        eventService.sendEvent(item, "NEW_ACCOUNTS_AVAILABLE");
+        break;
       case "WEBHOOK_UPDATE_ACKNOWLEDGED":
         break;
       default:

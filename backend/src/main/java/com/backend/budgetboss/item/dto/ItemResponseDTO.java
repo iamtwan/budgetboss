@@ -2,6 +2,7 @@ package com.backend.budgetboss.item.dto;
 
 import com.backend.budgetboss.account.Account;
 import com.backend.budgetboss.account.dto.AccountResponseDTO;
+import com.backend.budgetboss.item.Status;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class ItemResponseDTO {
 
   private Long id;
   private String name;
+  private Status status;
   private List<AccountResponseDTO> accounts;
 
   public Long getId() {
@@ -25,6 +27,14 @@ public class ItemResponseDTO {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 
   public List<AccountResponseDTO> getAccounts() {
@@ -46,7 +56,8 @@ public class ItemResponseDTO {
     return "ItemResponseDTO{" +
         "id=" + id +
         ", name='" + name + '\'' +
-        ", accounts=" + accounts.size() +
+        ", status=" + status +
+        ", accounts=" + accounts +
         '}';
   }
 }

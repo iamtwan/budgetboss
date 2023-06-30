@@ -10,6 +10,7 @@ import com.plaid.client.request.PlaidApi;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
@@ -20,13 +21,16 @@ public class ItemServiceImpl implements ItemService {
   private final ItemRepository itemRepository;
   private final ItemHelper itemHelper;
   private final PlaidApi plaidApi;
+  private final ModelMapper modelMapper;
 
   public ItemServiceImpl(ItemRepository itemRepository,
       ItemHelper itemHelper,
-      PlaidApi plaidApi) {
+      PlaidApi plaidApi,
+      ModelMapper modelMapper) {
     this.itemRepository = itemRepository;
     this.itemHelper = itemHelper;
     this.plaidApi = plaidApi;
+    this.modelMapper = modelMapper;
   }
 
   @Override
@@ -35,10 +39,7 @@ public class ItemServiceImpl implements ItemService {
     List<ItemResponseDTO> itemResponseDTOs = new ArrayList<>();
 
     for (Item item : items) {
-      ItemResponseDTO itemResponseDTO = new ItemResponseDTO();
-      itemResponseDTO.setName(item.getInstitutionName());
-      itemResponseDTO.setId(item.getId());
-      itemResponseDTO.setAccounts(item.getAccounts());
+      ItemResponseDTO itemResponseDTO = modelMapper.map(item, ItemResponseDTO.class);
       itemResponseDTOs.add(itemResponseDTO);
     }
 
