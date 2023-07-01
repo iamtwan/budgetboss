@@ -32,8 +32,10 @@ public class ManualTransactionServiceImpl implements ManualTransactionService {
   }
 
   @Override
-  public List<ManualTransactionResponseDTO> getManualTransactions(User user, Long id) {
-    return manualTransactionRepository.findByManualAccount_ManualInstitution_User(user)
+  public List<ManualTransactionResponseDTO> getManualTransactionsById(User user, Long id) {
+    ManualAccount account = accountHelper.getAccountByUserAndId(user, id);
+
+    return account.getManualTransactions()
         .stream()
         .map(manualTransaction -> modelMapper
             .map(manualTransaction, ManualTransactionResponseDTO.class))

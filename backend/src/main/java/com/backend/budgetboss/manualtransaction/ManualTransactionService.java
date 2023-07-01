@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ManualTransactionService {
 
-  List<ManualTransactionResponseDTO> getManualTransactions(User user, Long id);
+  List<ManualTransactionResponseDTO> getManualTransactionsById(User user, Long id);
 
   ManualTransactionResponseDTO createManualTransaction(User user, Long id,
       CreateManualTransactionDTO manualTransactionDTO);

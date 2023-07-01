@@ -15,7 +15,5 @@ public interface ManualTransactionRepository extends JpaRepository<ManualTransac
   List<ManualTransaction> findByManualAccount_ManualInstitution_UserAndDateBetween(User user,
       LocalDate start, LocalDate end);
 
-  List<ManualTransaction> findByManualAccount_ManualInstitution_User(User user);
-
   Optional<ManualTransaction> findByManualAccount_ManualInstitution_UserAndId(User user, Long id);
 }
