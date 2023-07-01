@@ -46,6 +46,7 @@ public class User {
     this.password = user.password;
     this.items = user.items;
     this.manualInstitutions = user.manualInstitutions;
+    this.goals = user.goals;
   }
 
   public Long getId() {

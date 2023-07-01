@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,8 +38,6 @@ public class ItemController {
     logger.info("/api/items got all items: {}", items.size());
     return ResponseEntity.ok(items);
   }
-
-
 
   @DeleteMapping({"/{itemId}"})
   @Operation(summary = "Delete an item", description = "Delete an item for the current user with the given id")
