@@ -47,12 +47,6 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<ItemResponseDTO> getItemsByCash(User user, int pageNo, int pageSize) {
-
-    return null;
-  }
-
-  @Override
   @Transactional
   public void deleteItem(User user, Long itemId) throws IOException {
     Item item = itemHelper.getItem(user, itemId);
