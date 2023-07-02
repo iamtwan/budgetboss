@@ -1,8 +1,11 @@
 package com.backend.budgetboss.account;
 
+import com.backend.budgetboss.account.dto.AccountResponseDTO;
 import com.backend.budgetboss.account.exception.AccountRequestException;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
+import com.backend.budgetboss.manualaccount.ManualAccountType;
+import com.backend.budgetboss.user.User;
 import com.plaid.client.model.AccountBase;
 import com.plaid.client.model.AccountsGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
@@ -56,5 +59,10 @@ public class AccountServiceImpl implements AccountService {
     item.getAccounts().clear();
     item.getAccounts().addAll(accounts);
     itemRepository.save(item);
+  }
+
+  @Override
+  public List<AccountResponseDTO> getAccountsByType(User user, ManualAccountType type) {
+    return null;
   }
 }
