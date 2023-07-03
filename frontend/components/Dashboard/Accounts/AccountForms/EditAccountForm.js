@@ -29,9 +29,18 @@ const EditAccountModal = ({ show, account, onClose }) => {
 
     const updateManualAccounts = async (accountUpdate) => {
         try {
-            await accountUpdate();
+            mutate('http://localhost:8080/api/manual-institutions', accountUpdate, {
+                populateCache: (account, institutions) => {
+                    const updatedInstitutions = institutions.map(institution => {
+                        const updatedManualAccounts = institution.manualAccounts.map(acc => acc.id === account.id ? account : acc);
+                        return { ...institution, manualAccounts: updatedManualAccounts };
+                    });
 
-            mutate('http://localhost:8080/api/manual-institutions');
+                    return updatedInstitutions;
+                },
+                revalidate: false,
+            });
+
             onClose();
         } catch (error) {
             console.log(error);
