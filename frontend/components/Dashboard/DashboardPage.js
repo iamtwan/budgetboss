@@ -79,7 +79,6 @@ const DashboardPage = () => {
                         </div>
                     </div>
                     <div className="container border m-2">
-                        <h3 className="text-center text-uppercase fw-bold">Goals</h3>
                         <div className="h-100">
                             <GoalsPage />
                         </div>

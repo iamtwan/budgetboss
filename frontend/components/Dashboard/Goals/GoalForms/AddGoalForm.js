@@ -73,7 +73,7 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
             return;
         }
 
-        if (savedAmount.length < 4 || savedAmount.length > 12 || targetAmount.length < 4 || targetAmount.length > 12) {
+        if (savedAmount.length > 12 || targetAmount.length < 2 || targetAmount.length > 12) {
             alert('Please enter an amount between 2 and 10 digits');
             return;
         }
@@ -91,30 +91,18 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
         resetForm();
         onClose();
     }
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-
-    //     const formData = {
-    //         name: goalName,
-    //         savedAmount: savedAmount,
-    //         targetAmount: targetAmount,
-    //         targetDate: targetDate
-    //     }
-
-    //     onSubmit(formData);
-    //     resetForm();
-    //     onClose();
-    // }
 
     return (
         <Modal show={show} onHide={() => { resetForm(); onClose(); }}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Goal</Modal.Title>
+                <Modal.Title className='text-uppercase fw-bold fs-3'>
+                    {goal ? 'Edit Goal' : 'Add Goal'}
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId='goalName'>
-                        <Form.Label>Goal Name</Form.Label>
+                    <Form.Group controlId='goalName' className='mb-3'>
+                        <Form.Label className='fw-bold fs-6 text-uppercase'>Goal Name</Form.Label>
                         <Form.Control
                             type='text'
                             placeholder='Enter a name for your goal'
@@ -123,37 +111,48 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                             required
                         />
                     </Form.Group>
-                    <Form.Group controlId='savedAmount'>
-                        <Form.Label>Starting Amount</Form.Label>
-                        <Form.Control
-                            type='number'
-                            placeholder='Enter your starting amount'
-                            value={savedAmount}
-                            onChange={handleSavedAmountChange}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId='targetAmount'>
-                        <Form.Label>Goal Amount</Form.Label>
-                        <Form.Control
-                            type='number'
-                            placeholder='Enter your goal amount'
-                            value={targetAmount}
-                            onChange={handleTargetAmountChange}
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId='targetDate'>
-                        <Form.Label>Goal Deadline</Form.Label>
+                    <div className='d-flex mt-2'>
+                        <Form.Group controlId='savedAmount' className='me-2'>
+                            <Form.Label className='fw-bold fs-6 text-uppercase'>
+                                {goal ? 'Saved Amount' : 'Starting Amount'}
+                            </Form.Label>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text">$</span>
+                                <Form.Control
+                                    type='number'
+                                    placeholder='Optional'
+                                    value={savedAmount}
+                                    onChange={handleSavedAmountChange}
+                                />
+                            </div>
+                        </Form.Group>
+                        <Form.Group controlId='targetAmount' className='ms-2'>
+                            <Form.Label className='fw-bold fs-6 text-uppercase'>Goal Amount</Form.Label>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text">$</span>
+                                <Form.Control
+                                    type='number'
+                                    placeholder='Goal target amount'
+                                    value={targetAmount}
+                                    onChange={handleTargetAmountChange}
+                                    required
+                                />
+                            </div>
+                        </Form.Group>
+                    </div>
+                    <Form.Group controlId='targetDate' className='me-3'>
+                        <Form.Label className='fw-bold d-flex align-items-start fw-bold fs-6 text-uppercase'>Goal Deadline</Form.Label>
                         <Form.Control
                             type='date'
                             value={targetDate}
                             onChange={handleTargetDateChange}
                             required
+                            className='w-50'
                         />
                     </Form.Group>
-                    <div className="d-flex justify-content-center">
-                        <Button className="btn btn-primary btn-md mt-2" type="submit">
-                            Add
+                    <div className='d-flex justify-content-end'>
+                        <Button className='btn btn-primary btn-md mt-2 fw-bold fs-6' type='submit'>
+                            {goal ? 'Edit' : 'Add'}
                         </Button>
                     </div>
                 </Form>
