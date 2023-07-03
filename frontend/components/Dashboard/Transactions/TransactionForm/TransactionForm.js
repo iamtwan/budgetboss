@@ -50,6 +50,8 @@ const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => 
 			await updateManualTransaction(transaction.id, formData);
 
 			mutate(`http://localhost:8080/api/manual-transactions/${account.id}`);
+			mutate('http://localhost:8080/api/manual-institutions');
+			mutate('http://localhost:8080/api/charts');
 		} catch (error) {
 			console.error('Error updating transaction:', error);
 		}
@@ -65,7 +67,8 @@ const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => 
 			await createManualTransaction(account.id, formData);
 
 			mutate(`http://localhost:8080/api/manual-transactions/${account.id}`);
-			mutate(`http://localhost:8080/api/manual-institutions`);
+			mutate('http://localhost:8080/api/manual-institutions');
+			mutate('http://localhost:8080/api/charts');
 		} catch (error) {
 			console.error('Error adding transaction:', error);
 		}
