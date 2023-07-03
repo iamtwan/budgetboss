@@ -54,7 +54,6 @@ const GoalsList = () => {
             console.log(error);
         } finally {
             setEditedGoal(null);
-            setShowCompletedModal(true);
         }
     }
 
@@ -93,17 +92,23 @@ const GoalsList = () => {
                 </div>
             </div>
             {
-                data
-                    .filter(goal => goal.status === 'ACTIVE')
-                    .map(goal =>
-                        <div className='mb-2' key={goal.id}>
-                            <GoalItem
-                                goal={goal}
-                                onEdit={handleEditGoal}
-                                onDelete={handleDeleteGoal}
-                            />
+                data && data.filter(goal => goal.status === 'ACTIVE').length > 0
+                    ? data
+                        .filter(goal => goal.status === 'ACTIVE')
+                        .map(goal =>
+                            <div className='mb-2' key={goal.id}>
+                                <GoalItem
+                                    goal={goal}
+                                    onEdit={handleEditGoal}
+                                    onDelete={handleDeleteGoal}
+                                />
+                            </div>
+                        )
+                    : <div className='d-flex justify-content-center align-items-center text-center mt-3'>
+                        <div class="alert alert-info" role="alert">
+                            No active goals! Click the '+' button to add a new goal.
                         </div>
-                    )
+                    </div>
             }
             <AddGoalForm
                 goal={editedGoal}
