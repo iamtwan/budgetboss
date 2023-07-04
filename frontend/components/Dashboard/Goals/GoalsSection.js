@@ -72,10 +72,10 @@ const GoalsList = () => {
                 <div className='row mt-3'>
                     <div className='col text-start'>
                         <Button
-                            className='btn btn-primary btn-sm mt-1 fw-bold fs-6'
+                            className='btn btn-primary btn-sm mt-1 fs-6'
                             onClick={handleToggleAddGoalForm}
                         >
-                            +
+                            <i className='bi bi-plus-lg'></i>
                         </Button>
                     </div>
                     <div className='col text-center'>
@@ -105,7 +105,7 @@ const GoalsList = () => {
                             </div>
                         )
                     : <div className='d-flex justify-content-center align-items-center text-center mt-3'>
-                        <div class="alert alert-info" role="alert">
+                        <div className='alert alert-info' role='alert'>
                             No active goals! Click the '+' button to add a new goal.
                         </div>
                     </div>

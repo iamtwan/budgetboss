@@ -2,10 +2,14 @@ import useSWR from 'swr';
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
-const fetcher = (url) => {
-    return (
-        fetch(url, { credentials: 'include' }).then((response) => response.json())
-    );
+const fetcher = async (url) => {
+    const response = await fetch(url, { credentials: 'include' });
+
+    if (!response.ok) {
+        throw new Error("Error: ", await response.json());
+    }
+
+    return await response.json();
 }
 
 export const createSignUp = async (formData) => {
@@ -66,6 +70,10 @@ export const exchangeLinkToken = async (tokenData) => {
         body: JSON.stringify(tokenData)
     });
 
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
     return response;
 }
 
@@ -90,6 +98,10 @@ export const updateItem = async (id) => {
         method: 'POST',
         credentials: 'include'
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
 
     return await response.json();
 }
@@ -134,6 +146,10 @@ export const updateManualAccount = async (accountId, formData) => {
         body: JSON.stringify(formData)
     });
 
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
     return await response.json();
 }
 
@@ -147,6 +163,10 @@ export const createManualTransaction = async (accountId, formData) => {
         body: JSON.stringify(formData)
     });
 
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
     return await response.json();
 }
 
@@ -155,6 +175,10 @@ export const deleteManualTransaction = async (transactionId) => {
         method: 'DELETE',
         credentials: 'include'
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
 
     return response;
 }
@@ -168,6 +192,10 @@ export const updateManualTransaction = async (transactionId, formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
 
     return await response.json();
 }
@@ -277,6 +305,10 @@ export const createGoal = async (formData) => {
         body: JSON.stringify(formData)
     });
 
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
     return await response.json();
 }
 
@@ -285,6 +317,10 @@ export const deleteGoal = async (goalId) => {
         method: 'DELETE',
         credentials: 'include'
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
 
     return response;
 }
@@ -298,6 +334,10 @@ export const updateGoal = async (goalId, formData) => {
         },
         body: JSON.stringify(formData)
     });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
 
     return await response.json();
 }

@@ -16,7 +16,7 @@ const CompletedGoals = ({ goals, show, onClose, onDelete, onEdit }) => {
                     <thead>
                         <tr className='d-flex-inline'>
                             <th className='text-uppercase fs-5 flex-grow-1 text-nowrap'>Goal</th>
-                            <th className='text-center text-uppercase fs-5 flex-grow-2 text-nowrap'>Amount Saved</th>
+                            <th className='text-center text-uppercase fs-5 flex-grow-1 text-nowrap'>Amount Saved</th>
                             <th className='text-center text-uppercase fs-5 text-nowrap'>Created Date</th>
                             <th className='text-center text-uppercase fs-5 text-nowrap'>Completed Date</th>
                             <th className='text-center text-uppercase fs-5 text-nowrap'>Edit/Delete</th>
@@ -33,8 +33,8 @@ const CompletedGoals = ({ goals, show, onClose, onDelete, onEdit }) => {
                                     <td className='text-center'>{formatDate(goal.completedAt)}</td>
                                     <td className='text-center'>
                                         <ButtonGroup size='sm' aria-label='edit delete goal buttons' className='pb-2 ms-1'>
-                                            <Button className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i class="bi bi-pencil-square"></i></Button>
-                                            <Button className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}><i class="bi bi-trash-fill"></i></Button>
+                                            <Button className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i className='bi bi-pencil-square'></i></Button>
+                                            <Button className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}><i className='bi bi-trash-fill'></i></Button>
                                         </ButtonGroup>
                                     </td>
                                 </tr>

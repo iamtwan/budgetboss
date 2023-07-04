@@ -15,20 +15,20 @@ const GoalItem = ({ goal, onDelete, onEdit }) => {
             <div className='d-flex justify-content-between mt-3'>
                 <h4 className='fw-semibold fs-4 ms-1'>{goal.name}</h4>
                 <ButtonGroup size='sm' aria-label='edit delete goal buttons' className='pb-2 me-1'>
-                    <Button className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i class="bi bi-pencil-square"></i></Button>
-                    <Button className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}><i class="bi bi-trash-fill"></i></Button>
+                    <Button className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i className='bi bi-pencil-square'></i></Button>
+                    <Button className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}><i className='bi bi-trash-fill'></i></Button>
                 </ButtonGroup>
             </div>
             <ProgressBar style={{ height: '30px' }}>
                 <ProgressBar
-                    striped variant="success"
+                    striped variant='success'
                     now={calculation.percent}
                     key={1}
                     label={calculation.percent < 20 ? '' : `$${roundedSavedAmount}`}
                     className='fw-bold fs-6'
                 />
                 <ProgressBar
-                    variant="warning"
+                    variant='warning'
                     now={100 - calculation.percent}
                     key={2}
                     label={calculation.percent < 80 ? `$${roundedRemainingAmount}` : ''}

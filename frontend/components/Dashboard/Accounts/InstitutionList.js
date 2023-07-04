@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { updateItem, deleteItem } from '../../../services/apiService';
 import Link from './Link/LinkTokenExchange';
-// import { resetItem, fireEvent } from '../../../services/apiWebhooks';
 import { useSWRConfig } from 'swr';
 
 const Institution = ({
@@ -42,18 +41,20 @@ const Institution = ({
 
     return (
         <ul className="list-group list-group-flush">
-            <div className='d-flex justify-content-between'>
-                <h5
-                    className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'text-secondary' : ''}`}
-                    style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
-                    onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
-                >
-                    {institution.name}
-                </h5>
-                <div className='btn-group' role='group' aria-label='linked institution buttons'>
+            <div className='d-flex justify-content-between align-items-center'>
+                <div>
+                    <h5
+                        className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'text-secondary' : ''}`}
+                        style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
+                        onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
+                    >
+                        {institution.name}
+                    </h5>
+                </div>
+                <div>
                     {hasLinkedAccount && (
                         <>
-                            <button className='btn btn-danger btn-sm mb-2' onClick={() => removeLinkedItem(institution.linkedId)}>X</button>
+                            <button className='btn btn-danger btn-sm p-1 mb-2' onClick={() => removeLinkedItem(institution.linkedId)}><i className='bi bi-trash-fill'></i></button>
                         </>
                     )}
                 </div>
