@@ -1,5 +1,6 @@
 package com.backend.budgetboss.account;
 
+import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.user.User;
 import com.plaid.client.model.AccountType;
 import java.util.Collection;
@@ -13,5 +14,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
   Optional<Account> findByItem_UserAndId(User user, Long id);
 
-  List<Account> findByItem_UserAndItem_IdAndType(User user, Long id, AccountType type);
+  List<Account> findByItemAndType(Item item, AccountType type);
 }
