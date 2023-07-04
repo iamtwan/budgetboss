@@ -9,7 +9,7 @@ import GoalsPage from './Goals/GoalsSection';
 import AddAccountForm from './Accounts/AccountForms/AddAccountForm';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import { LinkAccount } from './Accounts/Link/LinkAccount';
-import { Button } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import { fetchLinkToken } from '../../services/apiService';
 import useSWR from 'swr';
 import PlaidWebhooks from '../../hooks/PlaidWebhooks';
@@ -18,6 +18,7 @@ const DashboardPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState(null);
+    const [linkAccountOpen, setLinkAccountOpen] = useState(false);
 
     const { data, error, isLoading } = useSWR("http://localhost:8080/api/tokens", fetchLinkToken, {
         refreshInterval: 60 * 25 * 1000,
@@ -36,11 +37,11 @@ const DashboardPage = () => {
     const handleOpenEditModal = (account) => {
         setSelectedAccount(account);
         setShowEditModal(true);
-    };
+    }
 
     const handleToggleAddAccountForm = (showModal, setShowModal) => {
         setShowModal(!showModal);
-    };
+    }
 
     return (
         <div className="d-flex justify-content-center h-100">
@@ -51,12 +52,17 @@ const DashboardPage = () => {
                             <div className="mt-2">
                                 <h3 className="me-2 text-uppercase fw-bold d-inline-flex">Accounts</h3>
                             </div>
-                            <div>
-                                {data.linkToken && <LinkAccount linkToken={data.linkToken} />}
-                                <Button className="btn btn-primary btn-sm" onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic" className='btn-sm'>
                                     Add Account
-                                </Button>
-                            </div>
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={() => setLinkAccountOpen(true)}>Link Account</Dropdown.Item>
+                                    {linkAccountOpen && <LinkAccount linkToken={data.linkToken} openImmediately />}
+                                    <Dropdown.Item onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>Manual Account</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </div>
                         <div className="row h-100">
                             <CashAccountsPage
@@ -98,6 +104,6 @@ const DashboardPage = () => {
             <PlaidWebhooks />
         </div>
     );
-};
+}
 
 export default DashboardPage;

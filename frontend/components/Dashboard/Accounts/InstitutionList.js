@@ -54,8 +54,6 @@ const Institution = ({
                     {hasLinkedAccount && (
                         <>
                             <button className='btn btn-danger btn-sm mb-2' onClick={() => removeLinkedItem(institution.linkedId)}>X</button>
-                            {/* <button className='btn btn-secondary btn-sm mb-2' onClick={() => resetItem(institution.linkedId)}>Reset</button>
-                            <button className='btn btn-secondary btn-sm mb-2' onClick={() => fireEvent(institution.linkedId)}>Fire</button> */}
                         </>
                     )}
                 </div>

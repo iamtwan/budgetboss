@@ -33,8 +33,8 @@ const CompletedGoals = ({ goals, show, onClose, onDelete, onEdit }) => {
                                     <td className='text-center'>{formatDate(goal.completedAt)}</td>
                                     <td className='text-center'>
                                         <ButtonGroup size='sm' aria-label='edit delete goal buttons' className='pb-2 ms-1'>
-                                            <Button className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}>Edit</Button>
-                                            <Button className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}>X</Button>
+                                            <Button className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i class="bi bi-pencil-square"></i></Button>
+                                            <Button className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}><i class="bi bi-trash-fill"></i></Button>
                                         </ButtonGroup>
                                     </td>
                                 </tr>
