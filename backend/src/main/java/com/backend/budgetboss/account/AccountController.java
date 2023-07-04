@@ -27,13 +27,14 @@ public class AccountController {
     this.accountService = accountService;
   }
 
-  @GetMapping("/{type}")
+  @GetMapping("/{id}/{type}")
   @Operation(summary = "Get accounts by account type", description = "Get accounts by account type")
-  public ResponseEntity<List<AccountResponseDTO>> getAccountsByType(@CurrentUser User user,
+  public ResponseEntity<List<AccountResponseDTO>> getAccountsByItemIdAndType(@CurrentUser User user,
+      @PathVariable Long id,
       @PathVariable AccountType type) {
-    logger.info("/api/accounts/{} GET request received", type);
-    List<AccountResponseDTO> accounts = accountService.getAccountsByType(user, type);
-    logger.info("/api/accounts/{} got accounts: {}", type, accounts.size());
+    logger.info("/api/accounts/{}/{} GET request received", id, type);
+    List<AccountResponseDTO> accounts = accountService.getAccountsByItemIdAndType(user, id, type);
+    logger.info("/api/accounts/{}/{} got accounts: {}", id, type, accounts.size());
     return ResponseEntity.ok(accounts);
   }
 }

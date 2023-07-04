@@ -52,8 +52,7 @@ public class ManualAccountServiceImpl implements ManualAccountService {
 
   @Override
   @Transactional
-  public ManualAccountResponseDTO updateManualAccount(User user,
-      Long id,
+  public ManualAccountResponseDTO updateManualAccount(User user, Long id,
       UpdateManualAccountDTO manualAccountDTO) {
     ManualAccount manualAccount = manualAccountHelper.getAccountByUserAndId(user, id);
 
