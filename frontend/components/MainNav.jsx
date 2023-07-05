@@ -18,14 +18,14 @@ const MainNav = () => {
     const pathname = usePathname();
 
     return (
-        <Navbar expand='lg' className='p-0'>
+        <Navbar expand='lg' className='p-0 nav-height'>
             <Container className=''>
                 <Navbar.Brand className={bungee.className}>
                     <p className='m-0 fs-1 logo-spacing'>
-                        <span className='text-primary nav-logo'>B</span>
-                        <span className='fs-1'>udget</span>
-                        <span className='text-primary nav-logo'>B</span>
-                        <span className='fs-1'>oss</span>
+                        <span className='nav-logo nav-logo-bb'>B</span>
+                        <span className='fs-1 nav-text'>udget</span>
+                        <span className='nav-logo nav-logo-bb'>B</span>
+                        <span className='fs-1 nav-text'>oss</span>
                     </p>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />

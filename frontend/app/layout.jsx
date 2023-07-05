@@ -11,11 +11,11 @@ const lato = Lato({
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body>
+            <body className='vh-100 background'>
                 <MainNav />
-                <div className={lato.className}>
+                <main className={`main-content ${lato.className}`}>
                     {children}
-                </div>
+                </main>
             </body>
         </html>
     );

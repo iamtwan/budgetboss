@@ -14,8 +14,7 @@ const AccountsList = ({
     showTransactions = true,
 }) => {
     return (
-        // <div className='col border m-2'>
-        <div className='d-flex flex-column h-100 col border m-2'>
+        <div className='col m-2'>
             <h2 className='text-uppercase text-center text-nowrap fw-bold mt-2 fs-2'>{title}</h2>
             {
                 institutions.map(institution => {
