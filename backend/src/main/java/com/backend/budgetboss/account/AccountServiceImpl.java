@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
@@ -66,10 +67,11 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<AccountResponseDTO> getAccountsByItemIdAndType(User user, Long id, AccountType type) {
+  public List<AccountResponseDTO> getAccountsByItemIdAndType(User user, Long id, AccountType type,
+      int page) {
     Item item = itemHelper.getItem(user, id);
 
-    return accountRepository.findByItemAndType(item, type)
+    return accountRepository.findByItemAndType(item, type, PageRequest.of(page, 10))
         .stream()
         .map(account -> modelMapper.map(account, AccountResponseDTO.class))
         .toList();

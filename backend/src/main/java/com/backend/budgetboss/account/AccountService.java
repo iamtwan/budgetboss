@@ -11,5 +11,6 @@ public interface AccountService {
 
   void createAccounts(Item item) throws IOException;
 
-  List<AccountResponseDTO> getAccountsByItemIdAndType(User user, Long id, AccountType type);
+  List<AccountResponseDTO> getAccountsByItemIdAndType(User user, Long id, AccountType type,
+      int page);
 }
