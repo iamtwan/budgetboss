@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import BudgetChart from './BudgetCharts/BudgetBarChart';
 import MonthlyModal from './BudgetModals/MonthlyModal';
 
-const BudgetPage = () => {
+const BudgetSection = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(null);
 
@@ -20,6 +20,7 @@ const BudgetPage = () => {
 
     return (
         <>
+            <h2 className='text-uppercase fw-bold fs-2 text-center mt-3'>Budget</h2>
             <BudgetChart onMonthClick={handleMonthClick} />
             {selectedMonth && (
                 <MonthlyModal
@@ -32,4 +33,4 @@ const BudgetPage = () => {
     );
 };
 
-export default BudgetPage;
+export default BudgetSection;

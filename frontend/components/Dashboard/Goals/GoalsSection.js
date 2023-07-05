@@ -9,7 +9,7 @@ import { useSWRConfig } from 'swr';
 
 import { fetchGoals, deleteGoal, updateGoal, createGoal } from '../../../services/apiService';
 
-const GoalsList = () => {
+const GoalsSection = () => {
     const [showModal, setShowModal] = useState(false);
     const [showCompletedModal, setShowCompletedModal] = useState(false);
     const [editedGoal, setEditedGoal] = useState(null);
@@ -67,7 +67,7 @@ const GoalsList = () => {
     }
 
     return (
-        <div>
+        <>
             <div className='container'>
                 <div className='row mt-3'>
                     <div className='col text-start'>
@@ -123,8 +123,8 @@ const GoalsList = () => {
                 onEdit={handleEditGoal}
                 onDelete={handleDeleteGoal}
             />
-        </div >
+        </>
     );
 }
 
-export default GoalsList;
+export default GoalsSection;

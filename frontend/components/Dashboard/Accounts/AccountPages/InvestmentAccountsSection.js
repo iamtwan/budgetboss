@@ -37,7 +37,7 @@ const InvestmentAccountsPage = ({ onOpenEditModal }) => {
             formatCurrency={formatCurrency}
             manualData={manualData}
             type='investment'
-            title='Investment Accounts'
+            title='Investment'
             showTransactions={false}
         />
     );

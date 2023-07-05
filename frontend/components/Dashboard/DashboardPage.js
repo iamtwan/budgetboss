@@ -4,8 +4,8 @@ import { useState } from 'react';
 import InvestmentAccountsPage from './Accounts/AccountPages/InvestmentAccountsSection';
 import CashAccountsPage from './Accounts/AccountPages/CashAccountsSection';
 import CreditAccountsPage from './Accounts/AccountPages/CreditAccountsSection';
-import BudgetPage from './Budget/BudgetSection';
-import GoalsPage from './Goals/GoalsSection';
+import BudgetSection from './Budget/BudgetSection';
+import GoalsSection from './Goals/GoalsSection';
 import EditAccountModal from './Accounts/AccountForms/EditAccountForm';
 import PlaidWebhooks from '../../hooks/PlaidWebhooks';
 
@@ -36,14 +36,13 @@ const DashboardPage = () => {
                 </div>
                 <div className='d-flex justify-content-evenly p-0 m-2 h-50'>
                     <div className='container border m-2 h-100'>
-                        <h3 className='text-center text-uppercase fw-bold'>Budget</h3>
                         <div className='h-100'>
-                            <BudgetPage />
+                            <BudgetSection />
                         </div>
                     </div>
                     <div className='container border m-2'>
                         <div className='h-100'>
-                            <GoalsPage />
+                            <GoalsSection />
                         </div>
                     </div>
                 </div>
