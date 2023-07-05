@@ -55,7 +55,7 @@ const CashAccountsPage = ({ onOpenEditModal }) => {
             formatCurrency={formatCurrency}
             handleCloseModal={handleCloseModal}
             type='cash'
-            title='Cash Accounts'
+            title='Cash'
         />
     );
 };

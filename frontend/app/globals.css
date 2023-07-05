@@ -1,0 +1,42 @@
+.background {
+    background-color: #EFF6E0;
+}
+
+.logo-spacing {
+    letter-spacing: -3px;
+}
+
+.nav-logo {
+    font-size: 52px;
+}
+
+.nav-logo-bb {
+    color: #124559;
+}
+
+.nav-text {
+    color: #598392;
+}
+
+.nav-height {
+    height: 8vh;
+}
+
+.main-content {
+    height: calc(100vh - 12vh);
+}
+
+.container-row-top {
+    height: 60%;
+}
+
+.container-row-bot {
+    height: 40%;
+}
+
+.container-shadow {
+    border-radius: 8px;
+    box-shadow: rgba(174, 195, 176, 0.4) 0px 0px 0px 4px,
+        rgba(96, 103, 111, 0.65) 0px 4px 6px -1px,
+        rgba(174, 195, 176, 0.4) 0px 1px 0px inset;
+}

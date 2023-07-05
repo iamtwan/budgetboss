@@ -34,19 +34,19 @@ const AddAccountForm = ({ show, onClose }) => {
     const handleInstitutionChange = (e) => {
         const value = e.target.value;
         setSelectedInstitution(value);
-    };
+    }
 
     const handleAccountNameChange = (e) => {
         setAccountName(e.target.value);
-    };
+    }
 
     const handleBalanceChange = (e) => {
         setBalance(e.target.value);
-    };
+    }
 
     const handleAccountTypeChange = (e) => {
         setSelectedAccountType(e.target.value);
-    };
+    }
 
     const handleAddAccountSubmit = async (formData) => {
         try {
@@ -55,7 +55,7 @@ const AddAccountForm = ({ show, onClose }) => {
         } catch (e) {
             console.log(e);
         }
-    };
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -77,7 +77,7 @@ const AddAccountForm = ({ show, onClose }) => {
         handleAddAccountSubmit(formData);
         resetForm();
         onClose();
-    };
+    }
 
     return (
         <Modal show={show} onHide={onClose}>
@@ -145,6 +145,6 @@ const AddAccountForm = ({ show, onClose }) => {
             </Modal.Body>
         </Modal>
     );
-};
+}
 
 export default AddAccountForm;

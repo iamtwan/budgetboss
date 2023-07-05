@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from 'react-bootstrap';
 import { userLogout } from '../../services/apiService';
 import { useRouter } from 'next/navigation';
@@ -20,7 +22,7 @@ const Logout = () => {
     };
 
     return (
-        <Button className='btn btn-warning' onClick={handleLogout}>Logout</Button>
+        <Button className='btn btn-sm p-2 fw-semibold ms-2 btn-secondary' onClick={handleLogout}>Logout</Button>
     );
 };
 

@@ -54,7 +54,7 @@ const CreditAccountsPage = ({ onOpenEditModal }) => {
             manualData={manualData}
             handleCloseModal={handleCloseModal}
             type='credit'
-            title='Credit Accounts'
+            title='Credit'
         />
     );
 };

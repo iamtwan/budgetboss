@@ -1,10 +1,12 @@
-import React from 'react';
+'use client'
+
+import { useEffect } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
 import { exchangeLinkToken } from '../../../../services/apiService';
 import { useSWRConfig } from 'swr';
 
 export const LinkAccount = ({
-    linkToken
+    linkToken, openImmediately = false
 }) => {
     const { mutate } = useSWRConfig();
 
@@ -31,14 +33,11 @@ export const LinkAccount = ({
 
     const { open, ready } = usePlaidLink(config);
 
-    return (
-        <button
-            type='button'
-            className='btn btn-secondary btn-sm'
-            onClick={() => open()}
-            disabled={!ready}
-        >
-            Link Account
-        </button>
-    );
+    useEffect(() => {
+        if (openImmediately && ready) {
+            open();
+        }
+    }, [open, ready, openImmediately]);
+
+    return null;
 };

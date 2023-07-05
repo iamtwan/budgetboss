@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { updateItem, deleteItem } from '../../../services/apiService';
 import Link from './Link/LinkTokenExchange';
-import { resetItem, fireEvent } from '../../../services/apiWebhooks';
 import { useSWRConfig } from 'swr';
 
 const Institution = ({
@@ -41,35 +40,35 @@ const Institution = ({
     const hasLinkedAccount = institution.accounts.some(account => account.key.match(/linked\d+$/));
 
     return (
-        <ul className="list-group list-group-flush">
-            <div className='d-flex justify-content-between'>
-                <h5
-                    className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'text-secondary' : ''}`}
-                    style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
-                    onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
-                >
-                    {institution.name}
-                </h5>
-                <div className='btn-group' role='group' aria-label='linked institution buttons'>
+        <ul className='list-group list-group-flush'>
+            <div className='d-flex justify-content-between align-items-center'>
+                <div>
+                    <h5
+                        className={`fw-semibold text-uppercase ${institution.status === 'BAD' ? 'text-secondary' : ''}`}
+                        style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
+                        onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
+                    >
+                        {institution.name}
+                    </h5>
+                </div>
+                <div>
                     {hasLinkedAccount && (
                         <>
-                            <button className='btn btn-danger btn-sm mb-2' onClick={() => removeLinkedItem(institution.linkedId)}>X</button>
-                            <button className='btn btn-secondary btn-sm mb-2' onClick={() => resetItem(institution.linkedId)}>Reset</button>
-                            <button className='btn btn-secondary btn-sm mb-2' onClick={() => fireEvent(institution.linkedId)}>Fire</button>
+                            <button className='btn btn-danger btn-sm p-1 mb-2' onClick={() => removeLinkedItem(institution.linkedId)}><i className='bi bi-trash-fill'></i></button>
                         </>
                     )}
                 </div>
             </div>
             {token && <Link linkToken={token} itemId={institution.id} />}
             {institution.accounts.map((account) => (
-                <li className="d-flex flex-column mb-2" key={account.key}>
+                <li className='d-flex flex-column mb-2' key={account.key}>
                     <div
-                        style={{ cursor: "pointer" }}
-                        className="d-shrink-1"
+                        style={{ cursor: 'pointer' }}
+                        className='d-shrink-1'
                         onClick={() => handleAccountClick(account)}
                     >
-                        <div className="d-flex justify-content-between w-100">
-                            <p className="fw-bolder m-0 p-0 text-primary">{account.name}</p>
+                        <div className='d-flex justify-content-between w-100'>
+                            <p className='fw-bolder m-0 p-0 text-primary'>{account.name}</p>
                             <p
                                 className={`m-0 p-0 ${account.balance < 0
                                     ? (type === 'credit' ? 'text-success' : 'text-danger')
@@ -81,11 +80,11 @@ const Institution = ({
                             </p>
                         </div>
                     </div>
-                    <div className="ms-3">
+                    <div className='ms-3'>
                         {showTransactions && (
                             <a
-                                className="text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0"
-                                href="#"
+                                className='text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0'
+                                href='#'
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleAccountTransactionsClick(institution.id, account, account.accountType);
