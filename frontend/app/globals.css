@@ -1,5 +1,10 @@
 .background {
-    background-color: #AEC3B0;
+    /* background-color: #AEC3B0; */
+    --s: 100px;
+    background:
+        linear-gradient(135deg, #0000 18.75%, #AEC3B0 0 31.25%, #0000 0),
+        repeating-linear-gradient(45deg, #AEC3B0 -6.25% 6.25%, #EFF6E0 0 18.75%);
+    background-size: var(--s) var(--s);
 }
 
 .logo-spacing {
@@ -10,14 +15,14 @@
     font-size: 52px;
 }
 
-.nav-logo-bb {
+.dark-text {
     color: #01161E;
 }
 
 .nav-text {
-    color: #EFF6E0;
-    text-decoration: underline;
-    text-decoration-color: #01161E;
+    color: #01161E;
+    /* text-decoration: underline;
+    text-decoration-color: #01161E; */
 }
 
 .nav-height {
@@ -38,16 +43,91 @@
 
 .container-shadow {
     border-radius: 5px;
-    box-shadow: rgba(174, 195, 176, 0.4) 0px 0px 0px 4px,
+    /* box-shadow: rgba(174, 195, 176, 0.4) 0px 0px 0px 4px,
         rgba(96, 103, 111, 0.65) 0px 4px 6px -1px,
-        rgba(174, 195, 176, 0.4) 0px 1px 0px inset;
+        rgba(174, 195, 176, 0.4) 0px 1px 0px inset; */
+    box-shadow: rgba(110, 147, 114, 0.4) 0px 0px 0px 4px,
+        rgba(73, 87, 97, 0.65) 0px 4px 6px -1px,
+        rgba(110, 147, 114, 0.4) 0px 1px 0px inset;
+
 }
 
 .container-background {
     background-color: #EFF6E0;
 }
 
-#dropdown-basic {
+#dropdown-basic,
+#btn-add,
+#btn-completed-goals,
+#btn-edit {
+    background-color: #124559;
+    border-color: #124559;
+    color: #EFF6E0;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+#dropdown-basic:hover,
+#btn-add:hover,
+#btn-completed-goals:hover,
+#btn-edit:hover {
     background-color: #598392;
     border-color: #598392;
+    color: #EFF6E0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+#goal-msg-bg {
+    background-color: #EFF6E0;
+    border-color: #AEC3B0;
+    color: #01161E;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+#logout-btn,
+#btn-delete {
+    background-color: #598392;
+    border-color: #598392;
+    color: #EFF6E0;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+#logout-btn:hover,
+#btn-delete:hover {
+    background-color: #b74040;
+    border-color: #b74040 !important;
+}
+
+.custom-success {
+    background-color: #EFF6E0 !important;
+    color: #124559 !important;
+}
+
+.custom-warning {
+    background-color: #AEC3B0 !important;
+    color: #124559 !important;
+}
+
+.progressbar-main {
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    height: 30px !important;
+}
+
+.barchart-main {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+}
+
+.institution-text {
+    color: #598392 !important;
+}
+
+.institution-text-stale {
+    color: #b74040;
+}
+
+.account-text {
+    color: #124559;
+}
+
+.transaction-text {
+    color: #90a892
 }

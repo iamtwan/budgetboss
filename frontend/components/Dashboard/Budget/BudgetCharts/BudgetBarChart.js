@@ -21,9 +21,12 @@ const BudgetChart = ({ onMonthClick }) => {
                 datasets: [{
                     label: 'Net balance',
                     data: datasetCount.map(d => d.netBalance),
-                    backgroundColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(0, 163, 35, 0.86)' : 'rgba(206, 0, 0, 0.86)'),
-                    borderColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(0, 100, 0, 1)' : 'rgba(100, 0, 0, 1)'),
+                    // backgroundColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(0, 163, 35, 0.86)' : 'rgba(206, 0, 0, 0.86)'),
+                    // borderColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(0, 100, 0, 1)' : 'rgba(100, 0, 0, 1)'),
+                    backgroundColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(174, 195, 176, 0.86)' : 'rgba(183, 64, 64, 0.86)'),
+                    borderColor: datasetCount.map(d => d.netBalance >= 0 ? 'rgba(89, 131, 146, 1)' : 'rgba(177, 25, 25, 1)'),
                     borderWidth: 2.5,
+                    borderRadius: 3.5,
                 }]
             };
 
@@ -37,11 +40,11 @@ const BudgetChart = ({ onMonthClick }) => {
                             beginAtZero: true,
                             grid: {
                                 // for zero index
-                                color: (context) => context.tick.value === 0 ? 'rgba(0, 0, 0, 1)' : 'rgba(0, 0, 0, 0.1)',
+                                color: (context) => context.tick.value === 0 ? 'rgba(18, 69, 89, 1)' : 'rgba(18, 69, 89, 0.1)',
                                 lineWidth: (context) => context.tick.value === 0 ? 2 : 1,
                             },
                             ticks: {
-                                color: '#000',
+                                color: '#124559',
                                 callback: function (value) {
                                     return '$' + value;
                                 }
@@ -54,7 +57,7 @@ const BudgetChart = ({ onMonthClick }) => {
                                 display: false,
                             },
                             ticks: {
-                                color: '#000',
+                                color: '#124559',
                             }
                         }
                     },

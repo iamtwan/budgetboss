@@ -23,9 +23,9 @@ const BudgetSection = () => {
             <div className='container m-2'>
                 <div className='col'>
                     <div className='mt-3 row'>
-                        <h2 className='fw-bold text-center text-uppercase fs-2'>Budget</h2>
+                        <h2 className='fw-bold text-center text-uppercase fs-2 dark-text'><i class="bi bi-dash-lg"></i>Budget<i class="bi bi-dash-lg"></i></h2>
                     </div>
-                    <div className='row mt-4'>
+                    <div className='row mt-4 p-3 barchart-main rounded'>
                         <BudgetChart onMonthClick={handleMonthClick} />
                         {selectedMonth && (
                             <MonthlyModal
