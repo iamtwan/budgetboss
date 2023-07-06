@@ -51,33 +51,3 @@
     background-color: #598392;
     border-color: #598392;
 }
-
-
-
-
-
-
-/* moving pagination to backend */
-.pagination {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.pagination__link {
-    margin: 0 1px;
-    padding: 8px 16px;
-    color: #01161E;
-}
-
-.pagination__link--disabled {
-    color: #01161E;
-}
-
-.pagination__link--active {
-    text-decoration: underline;
-    color: #01161E;
-    margin-left: 2px;
-    margin-right: 2px;
-}
