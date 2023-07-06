@@ -12,6 +12,10 @@ public class AccountResponseDTO {
   private AccountType type;
   private BalanceResponseDTO balances;
 
+  public AccountResponseDTO() {
+
+  }
+
   public AccountResponseDTO(Account account) {
     this.id = account.getId();
     this.mask = account.getMask();
