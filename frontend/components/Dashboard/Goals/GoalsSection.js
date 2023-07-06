@@ -1,3 +1,4 @@
+// Moving pagination to backend
 'use client';
 
 import GoalItem from './GoalItem';
@@ -6,16 +7,20 @@ import { Button } from 'react-bootstrap';
 import AddGoalForm from './GoalForms/AddGoalForm';
 import CompletedGoals from './CompletedGoalsModal';
 import { useSWRConfig } from 'swr';
-
+import ReactPaginate from 'react-paginate';
 import { fetchGoals, deleteGoal, updateGoal, createGoal } from '../../../services/apiService';
 
 const GoalsSection = () => {
     const [showModal, setShowModal] = useState(false);
     const [showCompletedModal, setShowCompletedModal] = useState(false);
     const [editedGoal, setEditedGoal] = useState(null);
+    const [currentPage, setCurrentPage] = useState(0);
 
     const { data, error, isLoading } = fetchGoals();
     const { mutate } = useSWRConfig();
+
+    const PER_PAGE = 3;
+    const offset = currentPage * PER_PAGE;
 
     if (error) {
         return <div>Failed to load chart data</div>;
@@ -66,6 +71,25 @@ const GoalsSection = () => {
         setShowCompletedModal(!showCompletedModal);
     }
 
+    const pageCount = Math.ceil(data.filter(goal => goal.status === 'ACTIVE').length / PER_PAGE);
+
+    const currentPageData = data
+        .filter(goal => goal.status === 'ACTIVE')
+        .slice(offset, offset + PER_PAGE)
+        .map(goal =>
+            <div key={goal.id}>
+                <GoalItem
+                    goal={goal}
+                    onEdit={handleEditGoal}
+                    onDelete={handleDeleteGoal}
+                />
+            </div>
+        );
+
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    }
+
     return (
         <div className='col'>
             <div className='container m-2'>
@@ -94,23 +118,24 @@ const GoalsSection = () => {
 
                     {
                         data && data.filter(goal => goal.status === 'ACTIVE').length > 0
-                            ? data
-                                .filter(goal => goal.status === 'ACTIVE')
-                                .map(goal =>
-                                    <div key={goal.id}>
-                                        <GoalItem
-                                            goal={goal}
-                                            onEdit={handleEditGoal}
-                                            onDelete={handleDeleteGoal}
-                                        />
-                                    </div>
-                                )
+                            ? currentPageData
                             : <div className='d-flex justify-content-center align-items-center text-center mt-3'>
                                 <div className='alert alert-info' role='alert'>
                                     No active goals! Click the '+' button to add a new goal.
                                 </div>
                             </div>
                     }
+                    <ReactPaginate
+                        previousLabel={<i class='bi bi-arrow-left'></i>}
+                        nextLabel={<i class='bi bi-arrow-right'></i>}
+                        pageCount={pageCount}
+                        onPageChange={handlePageClick}
+                        containerClassName={'pagination'}
+                        previousLinkClassName={'pagination__link'}
+                        nextLinkClassName={'pagination__link'}
+                        disabledClassName={'pagination__link--disabled'}
+                        activeClassName={'pagination__link--active'}
+                    />
                     <AddGoalForm
                         goal={editedGoal}
                         show={showModal}
@@ -126,7 +151,7 @@ const GoalsSection = () => {
                     />
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

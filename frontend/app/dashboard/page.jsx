@@ -25,7 +25,7 @@ const Dashboard = () => {
 
     return (
         <div className='container-lg h-100'>
-            <div className='row container-shadow container-row-top p-2 mb-3'>
+            <div className='row container-shadow container-row-top p-2 mb-3 container-background'>
                 <CashAccountsPage
                     onOpenEditModal={handleOpenEditModal}
                 />
@@ -36,7 +36,7 @@ const Dashboard = () => {
                     onOpenEditModal={handleOpenEditModal}
                 />
             </div>
-            <div className='row container-shadow container-row-bot p-2 mt-3'>
+            <div className='row container-shadow container-row-bot p-2 mt-3 container-background'>
                 <BudgetSection />
                 <GoalsSection />
             </div>
