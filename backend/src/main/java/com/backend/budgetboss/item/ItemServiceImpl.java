@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
 
   @Override
   public List<ItemResponseDTO> getAllItems(User user, int page) {
-    List<Item> items = itemRepository.findAllByUser(user, PageRequest.of(page, 3));
+    List<Item> items = itemRepository.findAllByUser(user, PageRequest.of(page, 10));
     List<ItemResponseDTO> itemResponseDTOs = new ArrayList<>();
 
     for (Item item : items) {

@@ -71,9 +71,9 @@ public class AccountServiceImpl implements AccountService {
       int page) {
     Item item = itemHelper.getItem(user, id);
 
-    return accountRepository.findByItemAndType(item, type, PageRequest.of(page, 3))
+    return accountRepository.findByItemAndType(item, type, PageRequest.of(page, 10))
         .stream()
-        .map(AccountResponseDTO::new)
+        .map(account -> modelMapper.map(account, AccountResponseDTO.class))
         .toList();
   }
 }
