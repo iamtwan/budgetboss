@@ -25,16 +25,22 @@ const Dashboard = () => {
 
     return (
         <div className='container-lg h-100'>
-            <div className='row container-shadow container-row-top p-2 mb-3 container-background'>
-                <CashAccountsPage
-                    onOpenEditModal={handleOpenEditModal}
-                />
-                <CreditAccountsPage
-                    onOpenEditModal={handleOpenEditModal}
-                />
-                <InvestmentAccountsPage
-                    onOpenEditModal={handleOpenEditModal}
-                />
+            <div className='row container-shadow container-row-top py-4 mb-3 container-background'>
+                <div className='col overflow-y-auto' style={{ maxHeight: '100%' }}>
+                    <CashAccountsPage
+                        onOpenEditModal={handleOpenEditModal}
+                    />
+                </div>
+                <div className='col overflow-y-auto' style={{ maxHeight: '100%' }}>
+                    <CreditAccountsPage
+                        onOpenEditModal={handleOpenEditModal}
+                    />
+                </div>
+                <div className='col overflow-y-auto' style={{ maxHeight: '100%' }}>
+                    <InvestmentAccountsPage
+                        onOpenEditModal={handleOpenEditModal}
+                    />
+                </div>
             </div>
             <div className='row container-shadow container-row-bot p-2 mt-3 container-background'>
                 <BudgetSection />

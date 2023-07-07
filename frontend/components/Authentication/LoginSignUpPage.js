@@ -15,7 +15,7 @@ const LoginSignUpPage = () => {
 
     return (
         <div className="d-flex justify-content-center mt-4">
-            <div className="w-50 border rounded p-4 shadow-sm">
+            <div className="w-50 border rounded p-4 shadow-lg container-background">
                 <h2>{showSignUp ? 'Sign Up' : 'Login'}</h2>
                 {showSignUp ?
                     <SignUpForm onToggleForm={handleToggleForm} />
