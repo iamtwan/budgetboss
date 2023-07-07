@@ -1,9 +1,8 @@
 .background {
-    /* background-color: #AEC3B0; */
     --s: 100px;
     background:
-        linear-gradient(135deg, #0000 18.75%, #AEC3B0 0 31.25%, #0000 0),
-        repeating-linear-gradient(45deg, #AEC3B0 -6.25% 6.25%, #EFF6E0 0 18.75%);
+        linear-gradient(135deg, #0000 18.75%, #598392 0 31.25%, #0000 0),
+        repeating-linear-gradient(45deg, #598392 -6.25% 6.25%, #EFF6E0 0 18.75%);
     background-size: var(--s) var(--s);
 }
 
@@ -16,13 +15,20 @@
 }
 
 .dark-text {
-    color: #01161E;
+    color: #01161ed4;
 }
 
 .nav-text {
-    color: #01161E;
-    /* text-decoration: underline;
-    text-decoration-color: #01161E; */
+    color: #124559dd;
+}
+
+.nav-b-text {
+    color: #598392
+}
+
+.navbar-container {
+    background-color: #EFF6E0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
 }
 
 .nav-height {
@@ -43,13 +49,7 @@
 
 .container-shadow {
     border-radius: 5px;
-    /* box-shadow: rgba(174, 195, 176, 0.4) 0px 0px 0px 4px,
-        rgba(96, 103, 111, 0.65) 0px 4px 6px -1px,
-        rgba(174, 195, 176, 0.4) 0px 1px 0px inset; */
-    box-shadow: rgba(110, 147, 114, 0.4) 0px 0px 0px 4px,
-        rgba(73, 87, 97, 0.65) 0px 4px 6px -1px,
-        rgba(110, 147, 114, 0.4) 0px 1px 0px inset;
-
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }
 
 .container-background {
@@ -98,8 +98,8 @@
 }
 
 .custom-success {
-    background-color: #EFF6E0 !important;
-    color: #124559 !important;
+    background-color: #598392 !important;
+    color: #EFF6E0 !important;
 }
 
 .custom-warning {
@@ -129,10 +129,16 @@
 }
 
 .transaction-text {
-    color: #90a892
+    color: #124559ab
 }
 
 #barchart-container {
     width: 100%;
     height: 100%;
+}
+
+.flip-horizontal {
+    transform: scaleX(-1);
+    display: inline-block;
+    margin-right: -3px;
 }

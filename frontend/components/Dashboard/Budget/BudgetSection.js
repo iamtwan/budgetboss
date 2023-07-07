@@ -19,26 +19,25 @@ const BudgetSection = () => {
     }
 
     return (
-        <div className='col'>
-            <div className='container m-2'>
-                <div className='col'>
-                    <div className='row'>
-                        <h2 className='fw-bold text-center text-uppercase fs-2 dark-text'><i class="bi bi-dash-lg"></i>Budget<i class="bi bi-dash-lg"></i></h2>
-                    </div>
-                    <div className='row rounded container'>
-                        <BudgetBarChart onMonthClick={handleMonthClick} />
-                        {selectedMonth && (
-                            <MonthlyModal
-                                month={selectedMonth}
-                                show={showModal}
-                                onHide={handleModalClose}
-                            />
-                        )}
-                    </div>
-                </div>
+        <div className='container d-flex flex-column h-100'>
+            <div className='p-4'>
+                <h2 className='fw-bold text-center text-uppercase fs-2 dark-text'>
+                    <i className="bi bi-dash-lg"></i>Budget<i className="bi bi-dash-lg"></i>
+                </h2>
             </div>
+            <div className='flex-grow-1 d-flex align-items-center justify-content-center'>
+                <BudgetBarChart onMonthClick={handleMonthClick} />
+            </div>
+            {selectedMonth && (
+                <MonthlyModal
+                    month={selectedMonth}
+                    show={showModal}
+                    onHide={handleModalClose}
+                />
+            )}
         </div>
     );
+
 }
 
 export default BudgetSection;

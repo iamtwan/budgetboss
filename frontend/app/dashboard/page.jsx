@@ -24,7 +24,7 @@ const Dashboard = () => {
     }
 
     return (
-        <div className='container-lg h-100'>
+        <div className='container h-100'>
             <div className='row container-shadow container-row-top py-4 mb-3 container-background'>
                 <div className='col overflow-y-auto' style={{ maxHeight: '100%' }}>
                     <CashAccountsSection
@@ -42,11 +42,11 @@ const Dashboard = () => {
                     />
                 </div>
             </div>
-            <div className='container-row-bot mt-3 row justify-content-between'>
-                <div className='col me-2 container container-shadow container-background'>
+            <div className='row container-row-bot mt-3 justify-content-between'>
+                <div className='col-sm-12 col-md-12 col-lg-5 col-xl-6 me-lg-2 mb-sm-2 mb-md-2 mb-lg-0 container container-shadow container-background'>
                     <BudgetSection />
                 </div>
-                <div className='col ms-2 container container-shadow container-background'>
+                <div className='col-sm-12 col-md-12 col-lg col-xl ms-lg-2 mt-sm-2 mt-md-2 mt-lg-0 container container-shadow container-background'>
                     <GoalsSection />
                 </div>
             </div>
