@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,13 +28,12 @@ public class AccountController {
   }
 
   @GetMapping("/{id}/{type}")
-  @Operation(summary = "Get accounts by item id and account type", description = "Get accounts by item id and account type")
+  @Operation(summary = "Get accounts by account type", description = "Get accounts by account type")
   public ResponseEntity<List<AccountResponseDTO>> getAccountsByItemIdAndType(@CurrentUser User user,
       @PathVariable Long id,
-      @PathVariable AccountType type,
-      @RequestParam(defaultValue = "0") int page) {
+      @PathVariable AccountType type) {
     logger.info("/api/accounts/{}/{} GET request received", id, type);
-    List<AccountResponseDTO> accounts = accountService.getAccountsByItemIdAndType(user, id, type, page);
+    List<AccountResponseDTO> accounts = accountService.getAccountsByItemIdAndType(user, id, type);
     logger.info("/api/accounts/{}/{} got accounts: {}", id, type, accounts.size());
     return ResponseEntity.ok(accounts);
   }
