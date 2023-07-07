@@ -1,9 +1,9 @@
 package com.backend.budgetboss.account;
 
 import com.backend.budgetboss.account.dto.AccountResponseDTO;
+import com.backend.budgetboss.manualaccount.ManualAccountType;
 import com.backend.budgetboss.user.CurrentUser;
 import com.backend.budgetboss.user.User;
-import com.plaid.client.model.AccountType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class AccountController {
 
   @GetMapping("/{type}")
   public ResponseEntity<List<AccountResponseDTO>> getAccountsByType(@CurrentUser User user,
-      @PathVariable AccountType type) {
+      @PathVariable ManualAccountType type) {
     logger.info("/api/accounts/{} GET request received", type);
     List<AccountResponseDTO> accounts = accountService.getAccountsByType(user, type);
     logger.info("/api/accounts/{} got accounts: {}", type, type);

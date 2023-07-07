@@ -4,9 +4,9 @@ import com.backend.budgetboss.account.dto.AccountResponseDTO;
 import com.backend.budgetboss.account.exception.AccountRequestException;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
+import com.backend.budgetboss.manualaccount.ManualAccountType;
 import com.backend.budgetboss.user.User;
 import com.plaid.client.model.AccountBase;
-import com.plaid.client.model.AccountType;
 import com.plaid.client.model.AccountsGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
 import com.plaid.client.request.PlaidApi;
@@ -62,8 +62,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<AccountResponseDTO> getAccountsByType(User user, AccountType type) {
-
+  public List<AccountResponseDTO> getAccountsByType(User user, ManualAccountType type) {
     return null;
   }
 }
