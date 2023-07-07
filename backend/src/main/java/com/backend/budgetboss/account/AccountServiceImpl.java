@@ -4,7 +4,6 @@ import com.backend.budgetboss.account.dto.AccountResponseDTO;
 import com.backend.budgetboss.account.exception.AccountRequestException;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
-import com.backend.budgetboss.item.helper.ItemHelper;
 import com.backend.budgetboss.user.User;
 import com.plaid.client.model.AccountBase;
 import com.plaid.client.model.AccountType;
@@ -24,18 +23,15 @@ public class AccountServiceImpl implements AccountService {
 
   private final AccountRepository accountRepository;
   private final ItemRepository itemRepository;
-  private final ItemHelper itemHelper;
   private final PlaidApi plaidApi;
   private final ModelMapper modelMapper;
 
   public AccountServiceImpl(AccountRepository accountRepository,
       ItemRepository itemRepository,
-      ItemHelper itemHelper,
       PlaidApi plaidApi,
       ModelMapper modelMapper) {
     this.accountRepository = accountRepository;
     this.itemRepository = itemRepository;
-    this.itemHelper = itemHelper;
     this.plaidApi = plaidApi;
     this.modelMapper = modelMapper;
   }
@@ -67,9 +63,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public List<AccountResponseDTO> getAccountsByItemIdAndType(User user, Long id, AccountType type) {
-    Item item = itemHelper.getItem(user, id);
-
-    return accountRepository.findByItemAndType(item, type)
+    return accountRepository.findByItem_UserAndItem_IdAndType(user, id, type)
         .stream()
         .map(account -> modelMapper.map(account, AccountResponseDTO.class))
         .toList();
