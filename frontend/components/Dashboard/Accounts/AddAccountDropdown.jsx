@@ -36,7 +36,7 @@ const AddAccountDropdown = () => {
                 <Dropdown.Toggle variant='primary' id='dropdown-basic' className='btn btn-sm p-2 fw-semibold'>
                     Add Account
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu style={{ backgroundColor: '#AEC3B0' }}>
                     <Dropdown.Item onClick={() => setLinkAccountOpen(true)}>Link Account</Dropdown.Item>
                     {linkAccountOpen && <LinkAccount linkToken={data.linkToken} openImmediately />}
                     <Dropdown.Item onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>Manual Account</Dropdown.Item>

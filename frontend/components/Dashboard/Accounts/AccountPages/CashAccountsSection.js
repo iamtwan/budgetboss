@@ -6,7 +6,7 @@ import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { mergeAccounts } from '../../../../utils/accountUtils';
 import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
 
-const CashAccountsPage = ({ onOpenEditModal }) => {
+const CashAccountsSection = ({ onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     const { data: manualData, error: manualError, isLoading: manualLoading } = useManualData();
@@ -60,4 +60,4 @@ const CashAccountsPage = ({ onOpenEditModal }) => {
     );
 };
 
-export default CashAccountsPage;
+export default CashAccountsSection;

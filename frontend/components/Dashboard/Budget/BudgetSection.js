@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import BudgetChart from './BudgetCharts/BudgetBarChart';
+import BudgetBarChart from './BudgetCharts/BudgetBarChart';
 import MonthlyModal from './BudgetModals/MonthlyModal';
 
 const BudgetSection = () => {
@@ -22,11 +22,11 @@ const BudgetSection = () => {
         <div className='col'>
             <div className='container m-2'>
                 <div className='col'>
-                    <div className='mt-3 row'>
-                        <h2 className='fw-bold text-center text-uppercase fs-2'>Budget</h2>
+                    <div className='row'>
+                        <h2 className='fw-bold text-center text-uppercase fs-2 dark-text'><i class="bi bi-dash-lg"></i>Budget<i class="bi bi-dash-lg"></i></h2>
                     </div>
-                    <div className='row mt-4'>
-                        <BudgetChart onMonthClick={handleMonthClick} />
+                    <div className='row rounded container'>
+                        <BudgetBarChart onMonthClick={handleMonthClick} />
                         {selectedMonth && (
                             <MonthlyModal
                                 month={selectedMonth}

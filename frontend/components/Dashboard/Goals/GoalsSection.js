@@ -73,22 +73,24 @@ const GoalsSection = () => {
                     <div className='row mt-3'>
                         <div className='col text-start ms-1'>
                             <Button
-                                className='btn btn-primary btn-sm mt-1 fs-6'
+                                id='btn-add'
+                                className='btn btn-sm mt-1 fs-6'
                                 onClick={handleToggleAddGoalForm}
                             >
                                 <i className='bi bi-plus-lg'></i>
                             </Button>
                         </div>
                         <div className='col text-center'>
-                            <h2 className='text-uppercase fw-bold fs-2'>Goals</h2>
+                            <h2 className='text-uppercase fw-bold fs-2 dark-text text-nowrap'><i class="bi bi-dash-lg"></i>Goals<i class="bi bi-dash-lg"></i></h2>
                         </div>
-                        <div className='col text-end'>
-                            <button
-                                className='btn btn-link link-offset-1 link-underline link-underline-opacity-0 fst-italic link-underline-opacity-75-hover text-nowrap'
+                        <div className='col text-end me-1'>
+                            <Button
+                                id='btn-completed-goals'
+                                className='btn btn-sm fs-6 mt-1'
                                 onClick={handleToggleCompleted}
                             >
-                                View Completed
-                            </button>
+                                <i class="bi bi-list-check"></i>
+                            </Button>
                         </div>
                     </div>
 
@@ -106,7 +108,7 @@ const GoalsSection = () => {
                                     </div>
                                 )
                             : <div className='d-flex justify-content-center align-items-center text-center mt-3'>
-                                <div className='alert alert-info' role='alert'>
+                                <div id='goal-msg-bg' className='alert alert-info' role='alert'>
                                     No active goals! Click the '+' button to add a new goal.
                                 </div>
                             </div>

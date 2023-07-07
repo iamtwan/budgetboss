@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { updateItem, deleteItem } from '../../../services/apiService';
 import Link from './Link/LinkTokenExchange';
 import { useSWRConfig } from 'swr';
+import { Button } from 'react-bootstrap';
 
 const Institution = ({
     institution,
@@ -44,7 +45,7 @@ const Institution = ({
             <div className='d-flex justify-content-between align-items-center'>
                 <div>
                     <h5
-                        className={`fw-semibold text-uppercase ${institution.status === 'BAD' ? 'text-secondary' : ''}`}
+                        className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'institution-text-stale' : 'institution-text'}`}
                         style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
                         onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
                     >
@@ -54,7 +55,7 @@ const Institution = ({
                 <div>
                     {hasLinkedAccount && (
                         <>
-                            <button className='btn btn-danger btn-sm p-1 mb-2' onClick={() => removeLinkedItem(institution.linkedId)}><i className='bi bi-trash-fill'></i></button>
+                            <Button id='btn-delete' className='btn btn-danger btn-sm p-1 mb-2' onClick={() => removeLinkedItem(institution.linkedId)}><i className='bi bi-trash-fill'></i></Button>
                         </>
                     )}
                 </div>
@@ -68,7 +69,7 @@ const Institution = ({
                         onClick={() => handleAccountClick(account)}
                     >
                         <div className='d-flex justify-content-between w-100'>
-                            <p className='fw-bolder m-0 p-0 text-primary'>{account.name}</p>
+                            <p className='fw-bold m-0 p-0 account-text'>{account.name}</p>
                             <p
                                 className={`m-0 p-0 ${account.balance < 0
                                     ? (type === 'credit' ? 'text-success' : 'text-danger')
@@ -83,7 +84,7 @@ const Institution = ({
                     <div className='ms-3'>
                         {showTransactions && (
                             <a
-                                className='text-secondary link-offset-2 link-underline link-underline-opacity-0 m-0 p-0'
+                                className='transaction-text fw-bolder link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-25-hover m-0 p-0'
                                 href='#'
                                 onClick={(e) => {
                                     e.preventDefault();
