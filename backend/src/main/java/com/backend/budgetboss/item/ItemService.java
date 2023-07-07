@@ -9,6 +9,8 @@ public interface ItemService {
 
   List<ItemResponseDTO> getAllItems(User user) throws IOException;
 
+  List<ItemResponseDTO> getItemsByCash(User user, int pageNo, int pageSize);
+
   void deleteItem(User user, Long itemId) throws IOException;
 
 }
