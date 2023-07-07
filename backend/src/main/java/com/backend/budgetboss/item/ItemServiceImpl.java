@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Response;
@@ -36,8 +34,8 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<ItemResponseDTO> getAllItems(User user, int page) {
-    List<Item> items = itemRepository.findAllByUser(user, PageRequest.of(page, 10));
+  public List<ItemResponseDTO> getAllItems(User user) {
+    List<Item> items = itemRepository.findAllByUser(user);
     List<ItemResponseDTO> itemResponseDTOs = new ArrayList<>();
 
     for (Item item : items) {

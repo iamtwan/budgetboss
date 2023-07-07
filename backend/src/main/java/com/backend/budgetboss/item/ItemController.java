@@ -31,11 +31,10 @@ public class ItemController {
 
   @GetMapping
   @Operation(summary = "Get all items", description = "Get all items for the current user")
-  public ResponseEntity<List<ItemResponseDTO>> getAllItems(@CurrentUser User user,
-      @RequestParam(defaultValue = "0") int page)
+  public ResponseEntity<List<ItemResponseDTO>> getAllItems(@CurrentUser User user)
       throws IOException {
     logger.info("/api/items GET request received");
-    List<ItemResponseDTO> items = itemService.getAllItems(user, page);
+    List<ItemResponseDTO> items = itemService.getAllItems(user);
     logger.info("/api/items got all items: {}", items.size());
     return ResponseEntity.ok(items);
   }
