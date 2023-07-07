@@ -63,9 +63,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public List<AccountResponseDTO> getAccountsByType(User user, AccountType type) {
-    return accountRepository.findAllByItem_UserAndType(user, type)
-        .stream()
-        .map(account -> modelMapper.map(account, AccountResponseDTO.class))
-        .toList();
+
+    return null;
   }
 }
