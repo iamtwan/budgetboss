@@ -131,3 +131,8 @@
 .transaction-text {
     color: #90a892
 }
+
+#barchart-container {
+    width: 100%;
+    height: 100%;
+}

@@ -4,7 +4,7 @@ import { mergeAccounts } from '../../../../utils/accountUtils';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
 
-const InvestmentAccountsPage = ({ onOpenEditModal }) => {
+const InvestmentAccountsSection = ({ onOpenEditModal }) => {
     const { data: manualData, error: manualError, isLoading: manualLoading } = useManualData();
     const { data: linkedData, error: linkedError, isLoading: linkedLoading } = useLinkedData();
 
@@ -43,4 +43,4 @@ const InvestmentAccountsPage = ({ onOpenEditModal }) => {
     );
 };
 
-export default InvestmentAccountsPage;
+export default InvestmentAccountsSection;

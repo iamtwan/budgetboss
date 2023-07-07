@@ -4,7 +4,7 @@ import { mergeAccounts } from '../../../../utils/accountUtils';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
 
-const CreditAccountsPage = ({ onOpenEditModal }) => {
+const CreditAccountsSection = ({ onOpenEditModal }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     const { data: manualData, error: manualError, isLoading: manualLoading } = useManualData();
@@ -59,4 +59,4 @@ const CreditAccountsPage = ({ onOpenEditModal }) => {
     );
 };
 
-export default CreditAccountsPage;
+export default CreditAccountsSection;
