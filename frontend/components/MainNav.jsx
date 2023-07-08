@@ -19,7 +19,7 @@ const MainNav = () => {
 
     return (
         <Navbar expand='lg' className='p-0 nav-height mb-2'>
-            <Container className='rounded navbar-container'>
+            <Container className='navbar-container'>
                 <Navbar.Brand className={bungee.className}>
                     <p className='m-0 fs-1 logo-spacing nav-text'>
                         <span className='nav-logo nav-b-text flip-horizontal'>B</span>

@@ -23,7 +23,11 @@ const AddAccountDropdown = () => {
     }
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        );
     }
 
     const handleToggleAddAccountForm = (showModal, setShowModal) => {
