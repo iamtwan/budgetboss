@@ -74,7 +74,7 @@ const SignUpForm = ({ onToggleForm }) => {
                                 </span>
                             </div>
                         </div>
-                        <label htmlFor="passwordConfirmation" className="col-form-label">Password</label>
+                        <label htmlFor="passwordConfirmation" className="col-form-label">Confirm Password</label>
                         <div className="row g-3 align-items-center">
                             <div className="col-auto">
                                 <input
