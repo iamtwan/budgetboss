@@ -218,3 +218,8 @@
         border-radius: 0 0 20px 20px;
     }
 }
+
+.dropdown-item-custom:hover {
+    background-color: #124559 !important;
+    color: #EFF6E0 !important;
+}

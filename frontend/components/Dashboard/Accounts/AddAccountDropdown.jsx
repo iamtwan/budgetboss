@@ -40,10 +40,10 @@ const AddAccountDropdown = () => {
                 <Dropdown.Toggle variant='primary' id='dropdown-basic' className='btn btn-sm p-2 fw-semibold'>
                     Add Account
                 </Dropdown.Toggle>
-                <Dropdown.Menu style={{ backgroundColor: '#AEC3B0' }}>
-                    <Dropdown.Item onClick={() => setLinkAccountOpen(true)}>Link Account</Dropdown.Item>
+                <Dropdown.Menu className='nav-text' style={{ backgroundColor: '#EFF6E0' }}>
+                    <Dropdown.Item className='dropdown-item-custom' onClick={() => setLinkAccountOpen(true)}>Link Account</Dropdown.Item>
                     {linkAccountOpen && <LinkAccount linkToken={data.linkToken} openImmediately />}
-                    <Dropdown.Item onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>Manual Account</Dropdown.Item>
+                    <Dropdown.Item className='dropdown-item-custom' onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>Manual Account</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
             <AddAccountForm
@@ -52,6 +52,7 @@ const AddAccountDropdown = () => {
             />
         </>
     );
+
 }
 
 export default AddAccountDropdown;
