@@ -66,6 +66,7 @@
 
 .container-row-bot {
     height: 40%;
+    max-height: 40%;
 }
 
 .bottom-left-container {
@@ -74,6 +75,7 @@
 
 .bottom-right-container {
     border-radius: 0 0 20px 0;
+    max-height: 100%;
 }
 
 
@@ -82,7 +84,8 @@
 #btn-completed-goals,
 #btn-edit,
 #auth-login-btn,
-#auth-signup-btn {
+#auth-signup-btn,
+#goal-add-btn {
     background-color: #124559;
     border-color: #124559;
     color: #EFF6E0;
@@ -135,13 +138,15 @@
 .progressbar-main {
     box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
     height: 30px !important;
+    position: relative;
+    z-index: 0;
 }
 
 .institution-text {
     color: #598392 !important;
 }
 
-.institution-text-stale {
+.red-text {
     color: #b74040;
 }
 
@@ -150,7 +155,9 @@
 }
 
 .transaction-text {
-    color: #124559ab
+    color: #124559ab;
+    position: relative;
+    z-index: 0;
 }
 
 #barchart-container {
@@ -174,6 +181,21 @@
     border-color: #EFF6E0;
     outline: 0;
     box-shadow: none !important;
+}
+
+.overflow-y-scroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.overflow-y-scroll::-webkit-scrollbar-track {
+    background-color: #AEC3B0;
+    border-radius: 5px;
+}
+
+.overflow-y-scroll::-webkit-scrollbar-thumb {
+    background-color: #EFF6E0 !important;
+    border-radius: 5px;
+    border: 3px solid #AEC3B0;
 }
 
 @media (max-height: 1150px) {

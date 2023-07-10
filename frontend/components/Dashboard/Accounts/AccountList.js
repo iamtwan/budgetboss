@@ -45,7 +45,7 @@ const AccountList = ({
             <div className='d-flex justify-content-between align-items-center'>
                 <div>
                     <h5
-                        className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'institution-text-stale' : 'institution-text'}`}
+                        className={`fw-bolder text-uppercase ${institution.status === 'BAD' ? 'red-text' : 'institution-text'}`}
                         style={hasLinkedAccount ? { cursor: 'pointer', fontStyle: institution.status === 'BAD' ? 'italic' : 'normal' } : {}}
                         onClick={hasLinkedAccount ? () => getUpdateToken(institution.id) : undefined}
                     >

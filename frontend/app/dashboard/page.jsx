@@ -46,7 +46,7 @@ const Dashboard = () => {
                 <div className='bottom-left-container col-sm-12 col-md-12 col-lg-5 col-xl-6 me-lg-2 mb-sm-2 mb-md-2 mb-lg-0 container container-background'>
                     <BudgetSection />
                 </div>
-                <div className='bottom-right-container col-sm-12 col-md-12 col-lg col-xl ms-lg-2 mt-sm-2 mt-md-2 mt-lg-0 container container-background'>
+                <div className='bottom-right-container col-sm-12 col-md-12 col-lg col-xl ms-lg-2 mt-sm-2 mt-md-2 mt-lg-0 container-background'>
                     <GoalsSection />
                 </div>
             </div>
