@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import AccountsList from '../AccountsList';
+import InstitutionList from '../InstitutionList';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { mergeAccounts } from '../../../../utils/accountUtils';
 import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
@@ -47,7 +47,7 @@ const CashAccountsSection = ({ onOpenEditModal }) => {
     };
 
     return (
-        <AccountsList
+        <InstitutionList
             institutions={institutions}
             selectedAccount={selectedAccount}
             handleAccountClick={handleAccountClick}
