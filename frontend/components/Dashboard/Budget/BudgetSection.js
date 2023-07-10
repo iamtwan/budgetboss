@@ -19,7 +19,7 @@ const BudgetSection = () => {
     }
 
     return (
-        <div className='container d-flex flex-column h-100'>
+        <div className='container d-flex flex-column h-100 pb-3'>
             <div className='p-4'>
                 <h2 className='fw-bold text-center text-uppercase fs-2 dark-text'>
                     <i className="bi bi-dash-lg"></i>Budget<i className="bi bi-dash-lg"></i>

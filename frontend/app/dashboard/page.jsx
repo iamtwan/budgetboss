@@ -24,19 +24,19 @@ const Dashboard = () => {
     }
 
     return (
-        <div className='container h-100 dashboard-borders'>
-            <div className='row container-row-top py-4 mb-3 container-background dash-container-rows'>
-                <div className='col overflow-y-auto' style={{ maxHeight: '100%' }}>
+        <div className='container main-dashboard'>
+            <div className='row justify-content-around overflow-y-auto container-row-top py-4 mb-3 container-background dash-container-rows'>
+                <div className='col-12 col-md-6 col-lg-4 overflow-y-auto h-100'>
                     <CashAccountsSection
                         onOpenEditModal={handleOpenEditModal}
                     />
                 </div>
-                <div className='col overflow-y-auto' style={{ maxHeight: '100%' }}>
+                <div className='col-12 col-md-6 col-lg-4 overflow-y-auto h-100'>
                     <CreditAccountsSection
                         onOpenEditModal={handleOpenEditModal}
                     />
                 </div>
-                <div className='col overflow-y-auto' style={{ maxHeight: '100%' }}>
+                <div className='col-12 col-md-6 col-lg-4 overflow-y-auto h-100'>
                     <InvestmentAccountsSection
                         onOpenEditModal={handleOpenEditModal}
                     />

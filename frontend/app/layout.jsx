@@ -10,10 +10,10 @@ const lato = Lato({
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
-            <body className='vh-100 background'>
+        <html className='h-100' lang="en">
+            <body className='h-100 container background d-flex flex-column justify-content-center'>
                 <MainNav />
-                <main className={`main-content ${lato.className}`}>
+                <main className={`${lato.className}`}>
                     {children}
                 </main>
             </body>

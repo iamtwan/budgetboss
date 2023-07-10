@@ -2,13 +2,8 @@
     --s: 100px;
     background:
         linear-gradient(135deg, #0000 18.75%, #598392 0 31.25%, #0000 0),
-        repeating-linear-gradient(45deg, #598392 -6.25% 6.25%, #EFF6E0 0 18.75%);
+        repeating-linear-gradient(45deg, #598392 -6.25% 6.25%, #AEC3B0 0 18.75%);
     background-size: var(--s) var(--s);
-}
-
-.dashboard-borders {
-    border: #AEC3B0;
-    border-width: 5px;
 }
 
 .logo-spacing {
@@ -16,7 +11,7 @@
 }
 
 .nav-logo {
-    font-size: 52px;
+    font-size: 62px;
 }
 
 .dark-text {
@@ -31,12 +26,9 @@
     color: #598392
 }
 
-.nav-height {
-    height: 8vh;
-}
-
-.main-content {
-    height: calc(100vh - 12vh);
+.main-dashboard {
+    height: 100%;
+    max-height: 90vh;
 }
 
 .auth-container,
@@ -44,13 +36,12 @@
 .container-row-top,
 .bottom-left-container,
 .bottom-right-container {
-    /* border: 0.45rem solid #124559; */
     box-shadow: rgba(0, 0, 0, 0.56) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }
 
 .auth-container {
     border-radius: 0 0 20px 20px;
-    border-top: 0;
+    z-index: 0;
 }
 
 .container-background {
@@ -59,7 +50,6 @@
 
 .navbar-container {
     border-radius: 20px 20px 0 0;
-    border-bottom: 0;
     background-color: #EFF6E0;
 }
 
@@ -69,10 +59,10 @@
 }
 
 .container-row-top {
-    height: 60%;
-    border-bottom: 0;
-    border-top: 0;
+    height: 720px;
+    max-height: 55%;
 }
+
 
 .container-row-bot {
     height: 40%;
@@ -80,20 +70,19 @@
 
 .bottom-left-container {
     border-radius: 0 0 0 20px;
-    border-top: 0;
-    border-right: 0;
 }
 
 .bottom-right-container {
     border-radius: 0 0 20px 0;
-    border-top: 0;
-    border-left: 0;
 }
+
 
 #dropdown-basic,
 #btn-add,
 #btn-completed-goals,
-#btn-edit {
+#btn-edit,
+#auth-login-btn,
+#auth-signup-btn {
     background-color: #124559;
     border-color: #124559;
     color: #EFF6E0;
@@ -103,7 +92,9 @@
 #dropdown-basic:hover,
 #btn-add:hover,
 #btn-completed-goals:hover,
-#btn-edit:hover {
+#btn-edit:hover,
+#auth-login-btn:hover,
+#auth-signup-btn:hover {
     background-color: #598392;
     border-color: #598392;
     color: #EFF6E0;
@@ -146,10 +137,6 @@
     height: 30px !important;
 }
 
-.barchart-main {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
-}
-
 .institution-text {
     color: #598392 !important;
 }
@@ -175,4 +162,37 @@
     transform: scaleX(-1);
     display: inline-block;
     margin-right: -3px;
+}
+
+.my-accordion-body,
+.accordion-button {
+    background-color: #EFF6E0 !important;
+}
+
+.accordion-button:focus {
+    z-index: 3;
+    border-color: #EFF6E0;
+    outline: 0;
+    box-shadow: none !important;
+}
+
+@media (max-height: 1150px) {
+    .container-row-top {
+        height: 550px;
+    }
+}
+
+@media (max-width: 991px) {
+
+    .container-row-top {
+        height: auto;
+    }
+
+    .bottom-left-container {
+        border-radius: 0;
+    }
+
+    .bottom-right-container {
+        border-radius: 0 0 20px 20px;
+    }
 }

@@ -18,7 +18,7 @@ const MainNav = () => {
     const pathname = usePathname();
 
     return (
-        <Navbar expand='lg' className='p-0 nav-height mb-2'>
+        <Navbar expand='lg' className='mb-2'>
             <Container className='navbar-container'>
                 <Navbar.Brand className={bungee.className}>
                     <p className='m-0 fs-1 logo-spacing nav-text'>

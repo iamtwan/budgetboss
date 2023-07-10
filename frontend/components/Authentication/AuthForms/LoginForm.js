@@ -1,15 +1,11 @@
 'use client';
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchUserLogin } from '../../../services/apiService';
+import { Button, Form } from 'react-bootstrap';
 
-const LoginForm = ({ onToggleForm }) => {
+const LoginForm = () => {
     const router = useRouter();
-
-    const handleToggleClick = () => {
-        onToggleForm();
-    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -27,53 +23,44 @@ const LoginForm = ({ onToggleForm }) => {
         } catch (error) {
             console.error(error.response.data);
         }
-    };
+    }
 
     return (
-        <div>
-            <div className="d-flex justify-content-center">
-                <button type="button" className="btn btn-secondary btn-sm" onClick={handleToggleClick}>Switch to Sign Up</button>
-            </div>
-            <div className="d-flex justify-content-center mt-3">
-                <form className="d-flex flex-column" onSubmit={handleLogin}>
-                    <div className="mb-3">
-                        <label htmlFor="email" className="form-label">Email Address</label>
-                        <input
+        <div className='container row'>
+            <Form onSubmit={handleLogin} className='container row'>
+                <div className='row d-flex justify-content-around'>
+                    <Form.Group controlId='email' className='col-sm-12 col-md-5 col-lg-4 mb-3'>
+                        <Form.Label className='fw-bold fs-6 text-uppercase nav-text text-nowrap'>Account Email</Form.Label>
+                        <Form.Control
+                            type='email'
+                            placeholder='Email Address'
+                            aria-describedby='email'
                             required
-                            type="email"
-                            name="email"
-                            className="form-control"
-                            id="email"
-                            aria-describedby="email"
                         />
-                    </div>
-                    <div className="col-auto">
-                        <label htmlFor="inputPassword" className="col-form-label">Password</label>
-                        <div className="row g-3 align-items-center mb-1">
-                            <div className="col-auto">
-                                <input
-                                    required
-                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$"
-                                    title="Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number."
-                                    name="password"
-                                    minLength="8"
-                                    maxLength="20"
-                                    type="password"
-                                    id="inputPassword"
-                                    className="form-control"
-                                    aria-labelledby="password"
-                                    placeholder="Password"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" className="btn btn-primary mt-3 btn-shrink">Login</button>
-                </form>
-            </div>
+                    </Form.Group>
+                    <Form.Group controlId='password' className='col-sm-12 col-md-5 col-lg-4 mb-3'>
+                        <Form.Label className='fw-bold fs-6 text-uppercase nav-text text-nowrap'>Account Password</Form.Label>
+                        <Form.Control
+                            type='password'
+                            pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$'
+                            title='Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number.'
+                            minLength='8'
+                            maxLength='20'
+                            aria-labelledby='password'
+                            placeholder='Password'
+                            required
+                        />
+                    </Form.Group>
+                </div>
+                <div className='d-flex justify-content-end'>
+                    <Button id='auth-login-btn' className='btn btn-md mt-2 fw-bold fs-6' type='submit'>
+                        Login
+                    </Button>
+                </div>
+            </Form>
         </div>
-
     );
-};
+}
 
 
 export default LoginForm;
