@@ -5,10 +5,27 @@ import { Chart, DoughnutController, ArcElement, CategoryScale, LinearScale, Tool
 
 Chart.register(DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
+const themeColors = [
+    [1, 22, 30],
+    [174, 195, 176],
+    [18, 69, 89],
+    [1, 22, 30]
+];
+
 const generateRandomColor = () => {
-    const o = Math.round, r = Math.random, s = 255;
-    return `rgba(${o(r() * s)}, ${o(r() * s)}, ${o(r() * s)}, 0.8)`;
-};
+    const o = Math.floor, r = Math.random, s = 255;
+    const randomThemeColor = themeColors[o(r() * themeColors.length)];
+    const colorDistance = 15;
+
+    const getRandomColor = (color) => {
+        const min = Math.max(0, color - colorDistance);
+        const max = Math.min(s, color + colorDistance);
+        return o(min + r() * (max - min));
+    };
+
+    const newColor = randomThemeColor.map(getRandomColor);
+    return `rgba(${newColor[0]}, ${newColor[1]}, ${newColor[2]}, 0.8)`;
+}
 
 const MonthlyPieChart = ({ data }) => {
     const canvasRef = useRef(null);

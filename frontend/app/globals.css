@@ -83,7 +83,8 @@
 #btn-edit,
 #auth-login-btn,
 #auth-signup-btn,
-#goal-add-btn {
+#goal-add-btn,
+#tx-add-btn {
     background-color: #124559;
     border-color: #124559;
     color: #EFF6E0;
@@ -95,7 +96,9 @@
 #btn-completed-goals:hover,
 #btn-edit:hover,
 #auth-login-btn:hover,
-#auth-signup-btn:hover {
+#auth-signup-btn:hover,
+#goal-add-btn:hover,
+#tx-add-btn:hover {
     background-color: #598392;
     border-color: #598392;
     color: #EFF6E0;

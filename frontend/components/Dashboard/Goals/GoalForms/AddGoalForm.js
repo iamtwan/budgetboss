@@ -101,7 +101,7 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                 <Form onSubmit={handleSubmit} className='container'>
                     <div className='row mb-4'>
                         <Form.Group controlId='goalName' className='col'>
-                            <Form.Label className='fw-bold text-uppercase text-nowrap nav-text'>Goal Name<span className='red-text'>*</span></Form.Label>
+                            <Form.Label className='fw-bold text-nowrap nav-text'>Goal Name<span className='red-text'>*</span></Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='Name'
@@ -111,7 +111,7 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                             />
                         </Form.Group>
                         <Form.Group controlId='targetDate' className='col'>
-                            <Form.Label className='fw-bold text-uppercase text-nowrap nav-text'>Deadline<span className='red-text'>*</span></Form.Label>
+                            <Form.Label className='fw-bold text-nowrap nav-text'>Deadline<span className='red-text'>*</span></Form.Label>
                             <Form.Control
                                 type='date'
                                 value={targetDate}
@@ -123,11 +123,11 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                     </div>
                     <div className='row'>
                         <Form.Group controlId='savedAmount' className='col'>
-                            <Form.Label className='fw-bold text-uppercase text-nowrap nav-text'>
-                                {goal ? 'Currently Saved' : 'Initial'}
+                            <Form.Label className='fw-bold text-nowrap nav-text'>
+                                {goal ? 'Currently Saved' : 'Initial Savings'}
                             </Form.Label>
                             <div className="input-group mb-3">
-                                <span className="input-group-text">$</span>
+                                <span className="input-group-text"><span className='nav-text fw-bold'>$</span></span>
                                 <Form.Control
                                     type='number'
                                     placeholder='Amount'
@@ -137,9 +137,9 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                             </div>
                         </Form.Group>
                         <Form.Group controlId='targetAmount' className='col'>
-                            <Form.Label className='fw-bold text-uppercase text-nowrap nav-text'>Target<span className='red-text'>*</span></Form.Label>
+                            <Form.Label className='fw-bold text-nowrap nav-text'>Target<span className='red-text'>*</span></Form.Label>
                             <div className="input-group mb-3">
-                                <span className="input-group-text">$</span>
+                                <span className="input-group-text"><span className='nav-text fw-bold'>$</span></span>
                                 <Form.Control
                                     type='number'
                                     placeholder='Amount'

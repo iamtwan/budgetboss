@@ -27,6 +27,7 @@ const CashAccountsSection = ({ onOpenEditModal }) => {
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
             setSelectedAccount({ institutionId, ...account, type });
+            console.log(account.id);
         } catch (err) {
             console.log(err);
         }

@@ -1,21 +1,19 @@
-import React from 'react';
-
 const MonthlyTransactionView = ({ month }) => {
     return (
-        <div className="mx-3">
+        <div className='mx-3'>
             {Object.keys(month.accounts).map(account => {
                 const transactions = month.accounts[account];
 
                 return (
-                    <div key={account}>
-                        <h3>{account}</h3>
-                        <table className="table">
+                    <div key={account} className='container'>
+                        <h3 className='heading-text'>{account}</h3>
+                        <table className='table'>
                             <thead>
-                                <tr className="table-primary">
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Category</th>
+                                <tr className='table custom-warning'>
+                                    <th scope='col'>Name</th>
+                                    <th scope='col'>Date</th>
+                                    <th scope='col'>Amount</th>
+                                    <th scope='col'>Category</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,6 +42,6 @@ const MonthlyTransactionView = ({ month }) => {
             })}
         </div>
     );
-};
+}
 
 export default MonthlyTransactionView;

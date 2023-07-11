@@ -1,4 +1,3 @@
-import React from 'react';
 import TransactionListModal from '../Transactions/TransactionModals/TransactionListModal';
 import AccountList from './AccountList';
 
@@ -15,7 +14,7 @@ const InstitutionList = ({
 }) => {
     return (
         <div className='col m-2'>
-            <h2 className='text-uppercase text-center text-nowrap fw-bold mt-2 fs-2 heading-text'><i class='bi bi-dash'></i>{title}<i class='bi bi-dash'></i></h2>
+            <h2 className='text-uppercase text-center text-nowrap fw-bold mt-2 fs-2 heading-text'><i className='bi bi-dash'></i>{title}<i className='bi bi-dash'></i></h2>
             {
                 institutions.map(institution => {
                     return institution.accounts.length > 0 &&
@@ -37,9 +36,8 @@ const InstitutionList = ({
                     type={type}
                 />
             )}
-
         </div>
     );
-};
+}
 
 export default InstitutionList;
