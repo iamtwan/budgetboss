@@ -42,7 +42,7 @@ const Dashboard = () => {
                     />
                 </div>
             </div>
-            <div className='row container-row-bot mt-3 justify-content-between dash-container-rows'>
+            <div className='row mt-3 justify-content-between dash-container-rows'>
                 <div className='bottom-left-container col-sm-12 col-md-12 col-lg-5 col-xl-6 me-lg-2 mb-sm-2 mb-md-2 mb-lg-0 container container-background'>
                     <BudgetSection />
                 </div>

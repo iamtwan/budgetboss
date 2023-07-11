@@ -66,17 +66,13 @@
     max-height: 60%;
 }
 
-
-.container-row-bot {
-    height: 37%;
-    max-height: 40%;
-}
-
 .bottom-left-container {
+    height: 400px;
     border-radius: 0 0 0 20px;
 }
 
 .bottom-right-container {
+    height: 400px;
     border-radius: 0 0 20px 0;
 }
 
@@ -180,16 +176,16 @@
     box-shadow: none !important;
 }
 
-.overflow-y-scroll::-webkit-scrollbar {
+.overflow-y-auto::-webkit-scrollbar {
     width: 12px;
 }
 
-.overflow-y-scroll::-webkit-scrollbar-track {
+.overflow-y-auto::-webkit-scrollbar-track {
     background-color: #AEC3B0;
     border-radius: 5px;
 }
 
-.overflow-y-scroll::-webkit-scrollbar-thumb {
+.overflow-y-auto::-webkit-scrollbar-thumb {
     background-color: #EFF6E0 !important;
     border-radius: 5px;
     border: 3px solid #AEC3B0;
@@ -213,10 +209,12 @@
     }
 
     .bottom-left-container {
+        height: 450px;
         border-radius: 0;
     }
 
     .bottom-right-container {
+        height: 450px;
         border-radius: 0 0 20px 20px;
     }
 }

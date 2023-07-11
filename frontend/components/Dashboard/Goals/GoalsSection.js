@@ -91,7 +91,7 @@ const GoalsSection = () => {
                     </Button>
                 </div>
             </div>
-            <div className='row mt-3 h-100 overflow-y-scroll rounded me-1'>
+            <div className={`row mt-3 h-100 rounded me-1 ${data && data.filter(goal => goal.status === 'ACTIVE').length > 0 ? 'overflow-y-auto' : ''}`}>
                 <div className='col'>
                     <div className='row'>
                         {
