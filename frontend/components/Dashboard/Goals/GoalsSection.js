@@ -79,7 +79,7 @@ const GoalsSection = () => {
                     </Button>
                 </div>
                 <div className='col text-center'>
-                    <h2 className='text-uppercase fw-bold fs-2 dark-text text-nowrap'><i class="bi bi-dash-lg"></i>Goals<i class="bi bi-dash-lg"></i></h2>
+                    <h2 className='text-uppercase fw-bold fs-2 heading-text text-nowrap'><i class="bi bi-dash-lg"></i>Goals<i class="bi bi-dash-lg"></i></h2>
                 </div>
                 <div className='col text-end me-1'>
                     <Button
