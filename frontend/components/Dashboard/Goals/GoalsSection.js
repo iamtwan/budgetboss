@@ -79,7 +79,7 @@ const GoalsSection = () => {
                     </Button>
                 </div>
                 <div className='col text-center'>
-                    <h2 className='text-uppercase fw-bold fs-2 heading-text text-nowrap'><i class="bi bi-dash-lg"></i>Goals<i class="bi bi-dash-lg"></i></h2>
+                    <h2 className='text-uppercase fw-bold fs-2 heading-text text-nowrap'><i class='bi bi-dash'></i>Goals<i class='bi bi-dash'></i></h2>
                 </div>
                 <div className='col text-end me-1'>
                     <Button
@@ -87,7 +87,7 @@ const GoalsSection = () => {
                         className='btn btn-sm fs-6 mt-1 z-0 position-relative'
                         onClick={handleToggleCompleted}
                     >
-                        <i class="bi bi-list-check"></i>
+                        <i class='bi bi-list-check'></i>
                     </Button>
                 </div>
             </div>

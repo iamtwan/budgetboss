@@ -22,13 +22,13 @@ const InvestmentAccountsSection = ({ onOpenEditModal }) => {
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-    };
+    }
 
     const handleAccountClick = (account) => {
         if (account.accountType === "linked") return;
 
         onOpenEditModal(account);
-    };
+    }
 
     return (
         <InstitutionList
@@ -41,6 +41,6 @@ const InvestmentAccountsSection = ({ onOpenEditModal }) => {
             showTransactions={false}
         />
     );
-};
+}
 
 export default InvestmentAccountsSection;

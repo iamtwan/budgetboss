@@ -28,21 +28,21 @@ const CreditAccountsSection = ({ onOpenEditModal }) => {
         } catch (err) {
             console.log(err);
         }
-    };
+    }
 
     const handleAccountClick = (account) => {
         if (account.accountType === "linked") return;
 
         onOpenEditModal(account);
-    };
+    }
 
     const handleCloseModal = () => {
         setSelectedAccount(null);
-    };
+    }
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-    };
+    }
 
     return (
         <InstitutionList
@@ -57,6 +57,6 @@ const CreditAccountsSection = ({ onOpenEditModal }) => {
             title='Credit'
         />
     );
-};
+}
 
 export default CreditAccountsSection;

@@ -37,7 +37,7 @@ const AddAccountDropdown = () => {
     return (
         <>
             <Dropdown>
-                <Dropdown.Toggle variant='primary' id='dropdown-basic' className='btn btn-sm p-2 fw-semibold'>
+                <Dropdown.Toggle variant='primary' id='dropdown-basic' className='btn-sm p-2 fw-semibold'>
                     Add Account
                 </Dropdown.Toggle>
                 <Dropdown.Menu className='nav-text' style={{ backgroundColor: '#EFF6E0' }}>
