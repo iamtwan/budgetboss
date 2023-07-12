@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Chart, DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import { formatCategory } from 'utils/helpers';
 
 Chart.register(DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -29,13 +30,14 @@ const generateRandomColor = () => {
 
 const MonthlyPieChart = ({ data }) => {
     const canvasRef = useRef(null);
+    console.log(data);
 
     useEffect(() => {
         let categories = [];
 
         if (data) {
             categories = Object.keys(data.categories).map(key => ({
-                label: key,
+                label: formatCategory(key),
                 percent: data.categories[key]
             }));
         }
@@ -44,11 +46,9 @@ const MonthlyPieChart = ({ data }) => {
             labels: categories.map(c => c.label),
             datasets: [{
                 data: categories.map(c => c.percent),
-                // backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#32CD32'],
                 backgroundColor: categories.map(() => generateRandomColor()),
-
             }]
-        };
+        }
 
         const config = {
             type: 'doughnut',
@@ -64,14 +64,14 @@ const MonthlyPieChart = ({ data }) => {
                             label: function (context) {
                                 let label = context.label;
                                 let value = context.parsed;
-                                return `${label}: ${(value * 100).toFixed(2)}%`;
+                                return `${label}: ${Math.round(value)}%`;
                             },
                         },
                     },
                 },
                 cutout: '50%',
             },
-        };
+        }
 
         let chart = null;
         if (canvasRef.current) {
@@ -82,15 +82,14 @@ const MonthlyPieChart = ({ data }) => {
             if (chart) {
                 chart.destroy();
             }
-        };
+        }
     }, [data]);
 
     return (
         <div style={{ width: "500px", height: "500px" }}>
             <canvas ref={canvasRef} />
         </div>
-        // <canvas className='' ref={canvasRef} />
     );
-};
+}
 
 export default MonthlyPieChart;

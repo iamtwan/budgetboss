@@ -21,9 +21,9 @@ const MainNav = () => {
         <Navbar expand='lg' className='mb-2'>
             <Container className='navbar-container'>
                 <Navbar.Brand className={bungee.className}>
-                    <p className='m-0 fs-1 logo-spacing nav-text'>
-                        <span className='nav-logo nav-b-text flip-horizontal'>B</span>
-                        udget<span className='nav-logo nav-b-text'>B</span>oss
+                    <p className='m-0 fs-1 logo-spacing nav-other-text'>
+                        <span className='nav-logo heading-text flip-horizontal'>B</span>
+                        udget<span className='nav-logo heading-text'>B</span>oss
                     </p>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />

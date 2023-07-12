@@ -15,7 +15,7 @@ const MonthlyModal = ({ month, show, onHide }) => {
 
     return (
         <Modal show={show} onHide={onHide} size='xl' centered>
-            <Modal.Header closeButton className='container-background heading-text'>
+            <Modal.Header closeButton className='container-background custom-warning'>
                 <Modal.Title className='text-uppercase fw-bold'>{month} Summary</Modal.Title>
             </Modal.Header>
             <Modal.Body className='pt-0 rounded container-background'>
@@ -51,8 +51,8 @@ const MonthlyModal = ({ month, show, onHide }) => {
                         </div>
                     </Col>
                 </Row>
-                <Row>
-                    <Col sm={12}>
+                <Row className='me-1 px-2'>
+                    <Col sm={12} className='modal-tx-custom overflow-y-auto px-2'>
                         <MonthlyTransactionView month={data} />
                     </Col>
                 </Row>

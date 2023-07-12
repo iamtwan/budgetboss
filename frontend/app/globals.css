@@ -22,8 +22,8 @@
     color: #124559;
 }
 
-.nav-b-text {
-    color: #598392
+.nav-other-text {
+    color: #598392;
 }
 
 .main-dashboard {
@@ -180,7 +180,7 @@
 }
 
 .overflow-y-auto::-webkit-scrollbar {
-    width: 12px;
+    width: 14px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
@@ -197,6 +197,28 @@
 .dropdown-item-custom:hover {
     background-color: #124559 !important;
     color: #EFF6E0 !important;
+}
+
+.modal-tx-custom {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* monthly budget transactions */
+.nameColumn {
+    width: 30%;
+}
+
+.dateColumn {
+    width: 20%;
+}
+
+.amountColumn {
+    width: 25%;
+}
+
+.categoryColumn {
+    width: 25%;
 }
 
 @media (max-height: 1150px) {
