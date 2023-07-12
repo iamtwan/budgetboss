@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Chart, DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
-import { formatCategory } from 'utils/helpers';
+import { formatString } from 'utils/helpers';
 
 Chart.register(DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -37,7 +37,7 @@ const MonthlyPieChart = ({ data }) => {
 
         if (data) {
             categories = Object.keys(data.categories).map(key => ({
-                label: formatCategory(key),
+                label: formatString(key),
                 percent: data.categories[key]
             }));
         }
@@ -86,7 +86,7 @@ const MonthlyPieChart = ({ data }) => {
     }, [data]);
 
     return (
-        <div style={{ width: "500px", height: "500px" }}>
+        <div style={{ width: '500px', height: '500px' }}>
             <canvas ref={canvasRef} />
         </div>
     );

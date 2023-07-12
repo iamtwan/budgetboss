@@ -84,7 +84,9 @@
 #auth-login-btn,
 #auth-signup-btn,
 #goal-add-btn,
-#tx-add-btn {
+#tx-add-btn,
+#acct-add-btn,
+#acct-edit-btn {
     background-color: #124559;
     border-color: #124559;
     color: #EFF6E0;
@@ -98,7 +100,9 @@
 #auth-login-btn:hover,
 #auth-signup-btn:hover,
 #goal-add-btn:hover,
-#tx-add-btn:hover {
+#tx-add-btn:hover,
+#acct-add-btn:hover,
+#acct-edit-btn:hover {
     background-color: #598392;
     border-color: #598392;
     color: #EFF6E0;
@@ -113,7 +117,8 @@
 }
 
 #logout-btn,
-#btn-delete {
+#btn-delete,
+#acct-delete {
     background-color: #598392;
     border-color: #598392;
     color: #EFF6E0;
@@ -121,7 +126,8 @@
 }
 
 #logout-btn:hover,
-#btn-delete:hover {
+#btn-delete:hover,
+#acct-delete:hover {
     background-color: #b74040;
     border-color: #b74040 !important;
 }
@@ -131,7 +137,8 @@
     color: #EFF6E0 !important;
 }
 
-.custom-warning {
+.custom-warning,
+.contrast-heading {
     background-color: #AEC3B0 !important;
     color: #124559 !important;
 }

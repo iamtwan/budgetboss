@@ -9,10 +9,10 @@ const CompletedGoals = ({ goals, show, onClose, onDelete, onEdit }) => {
     return (
         <Modal centered show={show} size='xl' onHide={onClose}>
             <Modal.Header closeButton className='nav-text container-background'>
-                <Modal.Title className='text-uppercase fs-2 w-100 text-center fw-bold'>Completed Goals</Modal.Title>
+                <Modal.Title className='ms-2 text-uppercase fs-2 w-100 text-center fw-bold'>Completed Goals</Modal.Title>
             </Modal.Header>
             <Modal.Body className='container-background rounded'>
-                <Table hover size="sm">
+                <Table hover size='sm'>
                     <thead>
                         <tr className='d-flex-inline nav-text fs-4'>
                             <th className='text-uppercase fs-4 flex-grow-1 text-nowrap'>Goal</th>

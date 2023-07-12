@@ -1,4 +1,4 @@
-import { formatCategory } from 'utils/helpers';
+import { formatString, formatDate } from 'utils/helpers';
 
 const MonthlyTransactionView = ({ month }) => {
     return (
@@ -22,7 +22,7 @@ const MonthlyTransactionView = ({ month }) => {
                                 {transactions.map((transaction, index) => (
                                     <tr key={index} className='nav-text'>
                                         <td className='nameColumn'>{transaction.merchantName || transaction.name}</td>
-                                        <td className='dateColumn'>{transaction.date}</td>
+                                        <td className='dateColumn'>{formatDate(transaction.date)}</td>
                                         <td className='amountColumn'>
                                             {transaction.amount < 0 ? (
                                                 <span>
@@ -34,7 +34,7 @@ const MonthlyTransactionView = ({ month }) => {
                                                 </span>
                                             )}
                                         </td>
-                                        <td className='categoryColumn'>{formatCategory(transaction.category)}</td>
+                                        <td className='categoryColumn'>{formatString(transaction.category)}</td>
                                     </tr>
                                 ))}
                             </tbody>

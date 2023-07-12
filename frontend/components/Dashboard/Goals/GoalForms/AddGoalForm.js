@@ -92,16 +92,16 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
 
     return (
         <Modal centered sm-down show={show} onHide={() => { resetForm(); onClose(); }}>
-            <Modal.Header className='container-background nav-text' closeButton>
+            <Modal.Header className='contrast-heading' closeButton>
                 <Modal.Title className='text-uppercase fw-bold fs-3'>
                     {goal ? 'Edit Goal' : 'Add Goal'}
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body className='container-background rounded'>
+            <Modal.Body className='container-background rounded nav-text fw-semibold'>
                 <Form onSubmit={handleSubmit} className='container'>
                     <div className='row mb-4'>
                         <Form.Group controlId='goalName' className='col'>
-                            <Form.Label className='fw-bold text-nowrap nav-text'>Goal Name<span className='red-text'>*</span></Form.Label>
+                            <Form.Label className='text-nowrap'>Goal<span className='red-text'>*</span></Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='Name'
@@ -111,7 +111,7 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                             />
                         </Form.Group>
                         <Form.Group controlId='targetDate' className='col'>
-                            <Form.Label className='fw-bold text-nowrap nav-text'>Deadline<span className='red-text'>*</span></Form.Label>
+                            <Form.Label className='text-nowrap'>Deadline<span className='red-text'>*</span></Form.Label>
                             <Form.Control
                                 type='date'
                                 value={targetDate}
@@ -123,11 +123,11 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                     </div>
                     <div className='row'>
                         <Form.Group controlId='savedAmount' className='col'>
-                            <Form.Label className='fw-bold text-nowrap nav-text'>
+                            <Form.Label className='text-nowrap'>
                                 {goal ? 'Currently Saved' : 'Initial Savings'}
                             </Form.Label>
-                            <div className="input-group mb-3">
-                                <span className="input-group-text"><span className='nav-text fw-bold'>$</span></span>
+                            <div className='input-group mb-3'>
+                                <span className='input-group-text'><span className='nav-text fw-bold'>$</span></span>
                                 <Form.Control
                                     type='number'
                                     placeholder='Amount'
@@ -137,9 +137,9 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                             </div>
                         </Form.Group>
                         <Form.Group controlId='targetAmount' className='col'>
-                            <Form.Label className='fw-bold text-nowrap nav-text'>Target<span className='red-text'>*</span></Form.Label>
-                            <div className="input-group mb-3">
-                                <span className="input-group-text"><span className='nav-text fw-bold'>$</span></span>
+                            <Form.Label className='text-nowrap'>Target<span className='red-text'>*</span></Form.Label>
+                            <div className='input-group mb-3'>
+                                <span className='input-group-text'><span className='nav-text fw-bold'>$</span></span>
                                 <Form.Control
                                     type='number'
                                     placeholder='Amount'
