@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import InstitutionList from '../InstitutionList';
 import { mergeAccounts } from '../../../../utils/accountUtils';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
@@ -54,7 +54,6 @@ const CreditAccountsSection = ({ onOpenEditModal }) => {
             manualData={manualData}
             handleCloseModal={handleCloseModal}
             type='credit'
-            title='Credit'
         />
     );
 }

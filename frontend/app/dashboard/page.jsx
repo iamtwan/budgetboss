@@ -25,21 +25,30 @@ const Dashboard = () => {
 
     return (
         <div className='container main-dashboard'>
-            <div className='row justify-content-around overflow-y-auto container-row-top py-4 mb-3 container-background dash-container-rows'>
-                <div className='col-12 col-md-6 col-lg-4 overflow-y-auto h-100'>
-                    <CashAccountsSection
-                        onOpenEditModal={handleOpenEditModal}
-                    />
+            <div className='row justify-content-around container-row-top py-4 mb-3 container-background dash-container-rows'>
+                <div className='col-12 col-md-6 col-lg-4 h-100'>
+                    <h2 className='text-uppercase text-center text-nowrap fw-bold mt-2 fs-2 heading-text'><i className='bi bi-dash'></i>Cash<i className='bi bi-dash'></i></h2>
+                    <div className='overflow-y-auto max-height-accounts'>
+                        <CashAccountsSection
+                            onOpenEditModal={handleOpenEditModal}
+                        />
+                    </div>
                 </div>
-                <div className='col-12 col-md-6 col-lg-4 overflow-y-auto h-100'>
-                    <CreditAccountsSection
-                        onOpenEditModal={handleOpenEditModal}
-                    />
+                <div className='col-12 col-md-6 col-lg-4 h-100'>
+                    <h2 className='text-uppercase text-center text-nowrap fw-bold mt-2 fs-2 heading-text'><i className='bi bi-dash'></i>Credit<i className='bi bi-dash'></i></h2>
+                    <div className='overflow-y-auto max-height-accounts'>
+                        <CreditAccountsSection
+                            onOpenEditModal={handleOpenEditModal}
+                        />
+                    </div>
                 </div>
-                <div className='col-12 col-md-6 col-lg-4 overflow-y-auto h-100'>
-                    <InvestmentAccountsSection
-                        onOpenEditModal={handleOpenEditModal}
-                    />
+                <div className='col-12 col-md-6 col-lg-4 h-100'>
+                    <h2 className='text-uppercase text-center text-nowrap fw-bold mt-2 fs-2 heading-text'><i className='bi bi-dash'></i>Investment<i className='bi bi-dash'></i></h2>
+                    <div className='overflow-y-auto max-height-accounts'>
+                        <InvestmentAccountsSection
+                            onOpenEditModal={handleOpenEditModal}
+                        />
+                    </div>
                 </div>
             </div>
             <div className='row mt-3 justify-content-between dash-container-rows'>

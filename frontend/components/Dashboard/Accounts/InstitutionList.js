@@ -9,12 +9,10 @@ const InstitutionList = ({
     formatCurrency,
     handleCloseModal,
     type,
-    title,
     showTransactions = true,
 }) => {
     return (
-        <div className='col m-2'>
-            <h2 className='text-uppercase text-center text-nowrap fw-bold mt-2 fs-2 heading-text'><i className='bi bi-dash'></i>{title}<i className='bi bi-dash'></i></h2>
+        <div className='col me-2'>
             {
                 institutions.map(institution => {
                     return institution.accounts.length > 0 &&
@@ -36,6 +34,7 @@ const InstitutionList = ({
                     type={type}
                 />
             )}
+
         </div>
     );
 }

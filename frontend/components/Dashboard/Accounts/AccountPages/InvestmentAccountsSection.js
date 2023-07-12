@@ -1,4 +1,3 @@
-import React from 'react';
 import InstitutionList from '../InstitutionList';
 import { mergeAccounts } from '../../../../utils/accountUtils';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
@@ -37,7 +36,6 @@ const InvestmentAccountsSection = ({ onOpenEditModal }) => {
             formatCurrency={formatCurrency}
             manualData={manualData}
             type='investment'
-            title='Investment'
             showTransactions={false}
         />
     );

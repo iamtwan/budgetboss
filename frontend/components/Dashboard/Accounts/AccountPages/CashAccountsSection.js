@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import InstitutionList from '../InstitutionList';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { mergeAccounts } from '../../../../utils/accountUtils';
@@ -56,7 +56,6 @@ const CashAccountsSection = ({ onOpenEditModal }) => {
             formatCurrency={formatCurrency}
             handleCloseModal={handleCloseModal}
             type='cash'
-            title='Cash'
         />
     );
 }

@@ -8,8 +8,8 @@ const formatDate = (dateString) => {
 const CompletedGoals = ({ goals, show, onClose, onDelete, onEdit }) => {
     return (
         <Modal centered show={show} size='xl' onHide={onClose}>
-            <Modal.Header closeButton className='nav-text container-background'>
-                <Modal.Title className='ms-2 text-uppercase fs-2 w-100 text-center fw-bold'>Completed Goals</Modal.Title>
+            <Modal.Header closeButton className='contrast-heading'>
+                <Modal.Title className='ms-3 text-uppercase fs-2 w-100 text-center fw-bold'>Completed Goals</Modal.Title>
             </Modal.Header>
             <Modal.Body className='container-background rounded'>
                 <Table hover size='sm'>

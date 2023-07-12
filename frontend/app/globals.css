@@ -228,6 +228,10 @@
     width: 25%;
 }
 
+.max-height-accounts {
+    max-height: 90%;
+}
+
 @media (max-height: 1150px) {
     .container-row-top {
         height: 550px;

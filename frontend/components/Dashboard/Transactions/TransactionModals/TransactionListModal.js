@@ -80,7 +80,7 @@ const TransactionListModal = ({ account, onClose }) => {
     return (
         <>
             <Modal show={showModal && showTransactionList} onHide={handleCloseModal} size='xl' centered>
-                <Modal.Header closeButton className='nav-text container-background'>
+                <Modal.Header closeButton className='contrast-heading'>
                     <Modal.Title className='text-uppercase fs-2 w-100 text-center fw-bold'>{account.name} Transactions</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='rounded container-background'>
