@@ -109,10 +109,11 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
-#goal-msg-bg {
+#goal-msg-bg,
+#pie-msg-bg {
     background-color: #EFF6E0;
     border-color: #AEC3B0;
-    color: #01161E;
+    color: #124559;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
@@ -207,7 +208,7 @@
 }
 
 .modal-tx-custom {
-    max-height: 600px;
+    max-height: 575px;
     overflow-y: auto;
 }
 
@@ -252,5 +253,12 @@
     .bottom-right-container {
         height: 450px;
         border-radius: 0 0 20px 20px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .modal-tx-custom {
+        max-height: 375px;
+        overflow-y: auto;
     }
 }

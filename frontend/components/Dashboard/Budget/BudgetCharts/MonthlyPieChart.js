@@ -7,10 +7,8 @@ import { formatString } from 'utils/helpers';
 Chart.register(DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const themeColors = [
-    [1, 22, 30],
     [174, 195, 176],
-    [18, 69, 89],
-    [1, 22, 30]
+    [89, 131, 146],
 ];
 
 const generateRandomColor = () => {
@@ -47,6 +45,11 @@ const MonthlyPieChart = ({ data }) => {
             datasets: [{
                 data: categories.map(c => c.percent),
                 backgroundColor: categories.map(() => generateRandomColor()),
+                borderColor: '#EFF6E0',
+                borderWidth: 6,
+                hoverBackgroundColor: '#EFF6E0',
+                hoverBorderColor: '#012F44',
+                hoverBorderWidth: 3,
             }]
         }
 
@@ -57,7 +60,7 @@ const MonthlyPieChart = ({ data }) => {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'right',
+                        position: 'bottom',
                     },
                     tooltip: {
                         callbacks: {
@@ -85,8 +88,12 @@ const MonthlyPieChart = ({ data }) => {
         }
     }, [data]);
 
+    if (!data || Object.keys(data.categories).length < 2) {
+        return <div id='pie-msg-bg' className='alert alert-info align-self-center' role='alert'>Add/Link more transactions to display chart.</div>;
+    }
+
     return (
-        <div style={{ width: '500px', height: '500px' }}>
+        <div className='mt-4' style={{ width: '500px', height: '500px' }}>
             <canvas ref={canvasRef} />
         </div>
     );

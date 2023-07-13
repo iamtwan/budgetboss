@@ -19,13 +19,13 @@ const MonthlyModal = ({ month, show, onHide }) => {
             <Modal.Header closeButton className='container-background custom-warning'>
                 <Modal.Title className='ms-2 text-uppercase fs-2 fw-bold w-100 text-center'>{month} Summary</Modal.Title>
             </Modal.Header>
-            <Modal.Body className='pt-0 rounded container-background'>
+            <Modal.Body className='rounded container-background'>
                 <Row className='mx-5 justify-content-center'>
                     <Col xl={7} className='d-flex justify-content-center'>
                         <MonthlyPieChart data={data} />
                     </Col>
                     <Col lg={7} xl={5} className='d-flex flex-column justify-content-center'>
-                        <Card>
+                        <Card className='shadow-sm'>
                             <Card.Header className='contrast-heading'>
                                 <h3 className='fs-5 fw-bold text-center m-0'>
                                     {formatString(month)} Report
@@ -60,7 +60,7 @@ const MonthlyModal = ({ month, show, onHide }) => {
                     </Col>
                 </Row>
                 <Row className='me-1 mt-2 px-2'>
-                    <Col sm={12} className='modal-tx-custom overflow-y-auto px-2'>
+                    <Col sm={12} className='modal-tx-custom overflow-y-auto px-2 rounded'>
                         <MonthlyTransactionView month={data} />
                     </Col>
                 </Row>
