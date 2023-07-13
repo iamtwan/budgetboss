@@ -28,7 +28,6 @@ const generateRandomColor = () => {
 
 const MonthlyPieChart = ({ data }) => {
     const canvasRef = useRef(null);
-    console.log(data);
 
     useEffect(() => {
         let categories = [];
@@ -36,7 +35,7 @@ const MonthlyPieChart = ({ data }) => {
         if (data) {
             categories = Object.keys(data.categories).map(key => ({
                 label: formatString(key),
-                percent: data.categories[key]
+                percent: (data.categories[key] / data.totalExpenses) * 100
             }));
         }
 
