@@ -24,8 +24,8 @@ const AddAccountDropdown = () => {
 
     if (isLoading) {
         return (
-            <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
+            <div className='spinner-border' role='status'>
+                <span className='visually-hidden'>Loading...</span>
             </div>
         );
     }
@@ -42,7 +42,7 @@ const AddAccountDropdown = () => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu className='nav-text' style={{ backgroundColor: '#EFF6E0' }}>
                     <Dropdown.Item className='dropdown-item-custom' onClick={() => setLinkAccountOpen(true)}>Linked Account</Dropdown.Item>
-                    {linkAccountOpen && <LinkAccount linkToken={data.linkToken} openImmediately />}
+                    {linkAccountOpen && <LinkAccount linkToken={data.linkToken} openImmediately onClose={() => setLinkAccountOpen(false)} />}
                     <Dropdown.Item className='dropdown-item-custom' onClick={() => handleToggleAddAccountForm(showModal, setShowModal)}>Manual Account</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
