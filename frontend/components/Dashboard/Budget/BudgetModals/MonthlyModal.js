@@ -15,16 +15,16 @@ const MonthlyModal = ({ month, show, onHide }) => {
     }
 
     return (
-        <Modal show={show} onHide={onHide} size='xl' centered>
+        <Modal show={show} onHide={onHide} size='xl' centered className='monthly-modal'>
             <Modal.Header closeButton className='container-background custom-warning'>
                 <Modal.Title className='ms-2 text-uppercase fs-2 fw-bold w-100 text-center'>{month} Summary</Modal.Title>
             </Modal.Header>
             <Modal.Body className='pt-0 rounded container-background'>
-                <Row className='mx-5'>
-                    <Col sm={7}>
+                <Row className='mx-5 justify-content-center'>
+                    <Col xl={7} className='d-flex justify-content-center'>
                         <MonthlyPieChart data={data} />
                     </Col>
-                    <Col sm={5} className='d-flex flex-column justify-content-center'>
+                    <Col lg={7} xl={5} className='d-flex flex-column justify-content-center'>
                         <Card>
                             <Card.Header className='contrast-heading'>
                                 <h3 className='fs-5 fw-bold text-center m-0'>
@@ -35,20 +35,20 @@ const MonthlyModal = ({ month, show, onHide }) => {
                                 <ListGroup variant='flush'>
                                     <ListGroup.Item style={{ backgroundColor: '#EFF6E0' }}>
                                         <div className='row nav-text'>
-                                            <div className='col'>Total Deposits:</div>
+                                            <div className='col text-nowrap'>Total Deposits:</div>
                                             <div className='col text-end'>${Number(data.totalDeposits).toFixed(2)}</div>
                                         </div>
                                     </ListGroup.Item>
                                     <ListGroup.Item style={{ backgroundColor: '#EFF6E0' }}>
                                         <div className='row nav-text'>
-                                            <div className='col'>Total Expenses:</div>
+                                            <div className='col text-nowrap'>Total Expenses:</div>
                                             <div className='col text-end'>${Number(data.totalExpenses).toFixed(2)}</div>
                                         </div>
                                     </ListGroup.Item>
                                     <ListGroup.Item style={{ backgroundColor: '#EFF6E0' }}>
                                         <div className='row nav-text'>
-                                            <div className='col fw-bold'>{formatString(month)} Net:</div>
-                                            <div className={`col fw-bold text-end ${Number(data.netBalance) < 0 ? 'red-text' : ''}`}>
+                                            <div className='col fw-bold text-nowrap'>{formatString(month)} Net:</div>
+                                            <div className={`col fw-bold text-end text-nowrap' ${Number(data.netBalance) < 0 ? 'red-text' : ''}`}>
                                                 {Number(data.netBalance) < 0 ? '-$' : '+$'}
                                                 {Math.abs(Number(data.netBalance)).toFixed(2)}
                                             </div>
@@ -59,7 +59,7 @@ const MonthlyModal = ({ month, show, onHide }) => {
                         </Card>
                     </Col>
                 </Row>
-                <Row className='me-1 px-2'>
+                <Row className='me-1 mt-2 px-2'>
                     <Col sm={12} className='modal-tx-custom overflow-y-auto px-2'>
                         <MonthlyTransactionView month={data} />
                     </Col>

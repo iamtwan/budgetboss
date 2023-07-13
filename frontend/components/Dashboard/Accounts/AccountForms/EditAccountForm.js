@@ -58,8 +58,22 @@ const EditAccountModal = ({ show, account, onClose }) => {
         updateManualAccounts(() => updateManualAccount(account.id, formData));
     }
 
-    const handleDelete = () => {
-        updateManualAccounts(() => deleteManualAccount(account.id));
+    const handleDelete = async () => {
+        try {
+            await deleteManualAccount(account.id);
+
+            mutate('http://localhost:8080/api/manual-institutions', (data) => {
+                return data.map(institution => {
+                    const updatedManualAccounts = institution.manualAccounts.filter(acc => acc.id !== account.id);
+                    return { ...institution, manualAccounts: updatedManualAccounts };
+                });
+            }, false);
+
+            onClose();
+        } catch (error) {
+            console.log(error);
+            setError(error.message);
+        }
     }
 
     return (
@@ -69,23 +83,23 @@ const EditAccountModal = ({ show, account, onClose }) => {
             </Modal.Header>
             <Modal.Body className='container-background rounded nav-text fw-semibold'>
                 <Form>
-                    {error && <p className="text-danger">{error}</p>}
+                    {error && <p className='text-danger'>{error}</p>}
                     <div className='row mb-4'>
-                        <Form.Group controlId="accountName" className='col'>
+                        <Form.Group controlId='accountName' className='col'>
                             <Form.Label>Account Name<span className='red-text'>*</span></Form.Label>
                             <Form.Control
-                                type="text"
-                                placeholder="Enter account name"
+                                type='text'
+                                placeholder='Enter account name'
                                 value={accountName}
                                 onChange={handleAccountNameChange}
                                 required
                             />
                         </Form.Group>
-                        <Form.Group controlId="balance" className='col'>
+                        <Form.Group controlId='balance' className='col'>
                             <Form.Label>New Balance<span className='red-text'>*</span></Form.Label>
                             <Form.Control
-                                type="number"
-                                placeholder="Enter balance"
+                                type='number'
+                                placeholder='Enter balance'
                                 value={balance}
                                 onChange={handleBalanceChange}
                                 required
@@ -93,10 +107,10 @@ const EditAccountModal = ({ show, account, onClose }) => {
                         </Form.Group>
                     </div>
                     <div className='d-flex justify-content-end mt-2'>
-                        <Button id='acct-edit-btn' className='me-2' variant="primary" onClick={handleEdit}>
+                        <Button id='acct-edit-btn' className='me-2' variant='primary' onClick={handleEdit}>
                             Update
                         </Button>
-                        <Button id='acct-delete' variant="danger" onClick={handleDelete}>
+                        <Button id='acct-delete' variant='danger' onClick={handleDelete}>
                             Delete
                         </Button>
                     </div>
