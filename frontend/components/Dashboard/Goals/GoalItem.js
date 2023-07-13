@@ -35,7 +35,7 @@ const GoalItem = ({ goal, onDelete, onEdit }) => {
                 />
             </ProgressBar>
             <div className='form-text text-start fst-italic mt-0 ms-1'>
-                <p className='text-nowrap transaction-text fw-bold'>
+                <p className='text-nowrap goal-text'>
                     Currently saved {calculation.percent}% {calculation.percent < 20 ? `($${roundedSavedAmount})` : ''} of the ${roundedTargetAmount} goal with {goal.calculation.daysRemaining} days remaining.
                 </p>
             </div>
