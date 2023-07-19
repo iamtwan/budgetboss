@@ -38,7 +38,7 @@ public class ManualTransactionController {
   public ResponseEntity<List<ManualTransactionResponseDTO>> getManualTransactions(
       @CurrentUser User user, @PathVariable Long id) {
     logger.info("/api/manual-transactions/{} GET request received", id);
-    List<ManualTransactionResponseDTO> manualTransactions = manualTransactionService.getManualTransactions(
+    List<ManualTransactionResponseDTO> manualTransactions = manualTransactionService.getManualTransactionsById(
         user, id);
     logger.info("/api/manual-transactions/{} retrieved manual transactions: {}",
         manualTransactions.size(), id);

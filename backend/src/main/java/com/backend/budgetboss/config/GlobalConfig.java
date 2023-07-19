@@ -9,7 +9,6 @@ import com.plaid.client.request.PlaidApi;
 import java.util.HashMap;
 import java.util.Map;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.convert.ApplicationConversionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
