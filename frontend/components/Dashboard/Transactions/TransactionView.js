@@ -1,29 +1,29 @@
 const TransactionView = ({ transactions, onTransactionClick, selectedTransactions, handleSelectTransaction }) => {
     return (
-        <div>
-            <table className="table">
+        <div className='container'>
+            <table className='table'>
                 <thead>
-                    <tr className="table-primary">
-                        <th scope="col">Delete</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Category</th>
+                    <tr className='table custom-warning'>
+                        <th scope='col'>Delete</th>
+                        <th scope='col'>Name <span className='text-nowrap transaction-text fw-lighter fst-italic'>(click to edit)</span></th>
+                        <th scope='col'>Date</th>
+                        <th scope='col'>Amount</th>
+                        <th scope='col'>Category</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='nav-text'>
                     {transactions.map((transaction) => (
                         <tr key={transaction.id}>
                             <td>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={selectedTransactions.includes(transaction.id)}
                                     onChange={() => handleSelectTransaction(transaction.id)}
                                 />
                             </td>
                             <td
-                                style={{ cursor: "pointer" }}
-                                className="text-primary cursor-pointer"
+                                style={{ cursor: 'pointer' }}
+                                className='fw-bold'
                                 onClick={() => onTransactionClick(transaction.id)}
                             >
                                 {transaction.merchantName || transaction.name}

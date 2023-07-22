@@ -67,67 +67,68 @@ const GoalsSection = () => {
     }
 
     return (
-        <div className='col'>
-            <div className='container m-2'>
-                <div className='col me-3'>
-                    <div className='row mt-3'>
-                        <div className='col text-start ms-1'>
-                            <Button
-                                id='btn-add'
-                                className='btn btn-sm mt-1 fs-6'
-                                onClick={handleToggleAddGoalForm}
-                            >
-                                <i className='bi bi-plus-lg'></i>
-                            </Button>
-                        </div>
-                        <div className='col text-center'>
-                            <h2 className='text-uppercase fw-bold fs-2 dark-text text-nowrap'><i class="bi bi-dash-lg"></i>Goals<i class="bi bi-dash-lg"></i></h2>
-                        </div>
-                        <div className='col text-end me-1'>
-                            <Button
-                                id='btn-completed-goals'
-                                className='btn btn-sm fs-6 mt-1'
-                                onClick={handleToggleCompleted}
-                            >
-                                <i class="bi bi-list-check"></i>
-                            </Button>
-                        </div>
-                    </div>
-
-                    {
-                        data && data.filter(goal => goal.status === 'ACTIVE').length > 0
-                            ? data
-                                .filter(goal => goal.status === 'ACTIVE')
-                                .map(goal =>
-                                    <div key={goal.id}>
-                                        <GoalItem
-                                            goal={goal}
-                                            onEdit={handleEditGoal}
-                                            onDelete={handleDeleteGoal}
-                                        />
-                                    </div>
-                                )
-                            : <div className='d-flex justify-content-center align-items-center text-center mt-3'>
-                                <div id='goal-msg-bg' className='alert alert-info' role='alert'>
-                                    No active goals! Click the '+' button to add a new goal.
-                                </div>
-                            </div>
-                    }
-                    <AddGoalForm
-                        goal={editedGoal}
-                        show={showModal}
-                        onClose={handleToggleAddGoalForm}
-                        onSubmit={handleSubmitGoalForm}
-                    />
-                    <CompletedGoals
-                        goals={data}
-                        show={showCompletedModal}
-                        onClose={() => setShowCompletedModal(false)}
-                        onEdit={handleEditGoal}
-                        onDelete={handleDeleteGoal}
-                    />
+        <div className='container h-75'>
+            <div className='row mt-3'>
+                <div className='col text-start ms-1'>
+                    <Button
+                        id='btn-add'
+                        className='btn btn-sm mt-1 fs-6'
+                        onClick={handleToggleAddGoalForm}
+                    >
+                        <i className='bi bi-plus-lg'></i>
+                    </Button>
+                </div>
+                <div className='col text-center'>
+                    <h2 className='text-uppercase fw-bold fs-2 heading-text text-nowrap'><i className='bi bi-dash'></i>Goals<i className='bi bi-dash'></i></h2>
+                </div>
+                <div className='col text-end me-1'>
+                    <Button
+                        id='btn-completed-goals'
+                        className='btn btn-sm fs-6 mt-1 z-0 position-relative'
+                        onClick={handleToggleCompleted}
+                    >
+                        <i className='bi bi-list-check'></i>
+                    </Button>
                 </div>
             </div>
+            <div className={`row mt-3 h-100 rounded me-1 ${data && data.filter(goal => goal.status === 'ACTIVE').length > 0 ? 'overflow-y-auto' : ''}`}>
+                <div className='col'>
+                    <div className='row'>
+                        {
+                            data && data.filter(goal => goal.status === 'ACTIVE').length > 0
+                                ? data
+                                    .filter(goal => goal.status === 'ACTIVE')
+                                    .map(goal =>
+                                        <div key={goal.id} className=''>
+                                            <GoalItem
+                                                goal={goal}
+                                                onEdit={handleEditGoal}
+                                                onDelete={handleDeleteGoal}
+                                            />
+                                        </div>
+                                    )
+                                : <div className='d-flex justify-content-center align-items-center text-center mt-3'>
+                                    <div id='goal-msg-bg' className='alert alert-info' role='alert'>
+                                        No active goals! Click the '+' button to add a new goal.
+                                    </div>
+                                </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <AddGoalForm
+                goal={editedGoal}
+                show={showModal}
+                onClose={handleToggleAddGoalForm}
+                onSubmit={handleSubmitGoalForm}
+            />
+            <CompletedGoals
+                goals={data}
+                show={showCompletedModal}
+                onClose={() => setShowCompletedModal(false)}
+                onEdit={handleEditGoal}
+                onDelete={handleDeleteGoal}
+            />
         </div>
     );
 }

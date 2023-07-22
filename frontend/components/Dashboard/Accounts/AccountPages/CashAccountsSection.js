@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import AccountsList from '../AccountsList';
+import { useState } from 'react';
+import InstitutionList from '../InstitutionList';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { mergeAccounts } from '../../../../utils/accountUtils';
 import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
@@ -27,27 +27,28 @@ const CashAccountsSection = ({ onOpenEditModal }) => {
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
             setSelectedAccount({ institutionId, ...account, type });
+            console.log(account.id);
         } catch (err) {
             console.log(err);
         }
-    };
+    }
 
     const handleAccountClick = (account) => {
         if (account.accountType === 'linked') return;
 
         onOpenEditModal(account);
-    };
+    }
 
     const handleCloseModal = () => {
         setSelectedAccount(null);
-    };
+    }
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-    };
+    }
 
     return (
-        <AccountsList
+        <InstitutionList
             institutions={institutions}
             selectedAccount={selectedAccount}
             handleAccountClick={handleAccountClick}
@@ -55,9 +56,8 @@ const CashAccountsSection = ({ onOpenEditModal }) => {
             formatCurrency={formatCurrency}
             handleCloseModal={handleCloseModal}
             type='cash'
-            title='Cash'
         />
     );
-};
+}
 
 export default CashAccountsSection;

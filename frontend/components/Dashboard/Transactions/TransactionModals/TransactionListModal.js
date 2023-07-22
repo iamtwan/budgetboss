@@ -46,7 +46,7 @@ const TransactionListModal = ({ account, onClose }) => {
         setSelectedTransactionId(null);
     }
 
-    const isLinkedAccount = account.type === "linked";
+    const isLinkedAccount = account.type === 'linked';
 
     const handleTransactionClick = (transactionId) => {
         if (isLinkedAccount) return;
@@ -59,6 +59,7 @@ const TransactionListModal = ({ account, onClose }) => {
         try {
             selectedTransactions.forEach(async (transactionId) => {
                 await deleteManualTransaction(transactionId);
+
                 mutate();
             });
 
@@ -78,15 +79,15 @@ const TransactionListModal = ({ account, onClose }) => {
 
     return (
         <>
-            <Modal show={showModal && showTransactionList} onHide={handleCloseModal} size="xl" centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{account.name} Transactions</Modal.Title>
+            <Modal show={showModal && showTransactionList} onHide={handleCloseModal} size='xl' centered>
+                <Modal.Header closeButton className='contrast-heading'>
+                    <Modal.Title className='text-uppercase fs-2 w-100 text-center fw-bold'>{account.name} Transactions</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className='rounded container-background'>
                     {!isLinkedAccount && (
-                        <div className="mb-3">
-                            <Button onClick={handleShowAddTransactionForm}>Add Transaction</Button>
-                            <Button variant="danger" onClick={handleDeleteSelected}>Delete Selected</Button>
+                        <div className='mb-3 container d-flex justify-content-between'>
+                            <Button id='btn-edit' className='btn-sm' onClick={handleShowAddTransactionForm}>Add Transaction</Button>
+                            <Button id='btn-delete' className='btn-sm' variant='danger' onClick={handleDeleteSelected}>Delete Selected</Button>
                         </div>
                     )}
                     <TransactionView

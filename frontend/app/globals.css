@@ -1,9 +1,8 @@
 .background {
-    /* background-color: #AEC3B0; */
-    --s: 100px;
+    --s: 125px;
     background:
-        linear-gradient(135deg, #0000 18.75%, #AEC3B0 0 31.25%, #0000 0),
-        repeating-linear-gradient(45deg, #AEC3B0 -6.25% 6.25%, #EFF6E0 0 18.75%);
+        linear-gradient(135deg, #0000 18.75%, #598392 0 31.25%, #0000 0),
+        repeating-linear-gradient(45deg, #598392 -6.25% 10.25%, #AEC3B0 0 18.75%);
     background-size: var(--s) var(--s);
 }
 
@@ -12,127 +11,237 @@
 }
 
 .nav-logo {
-    font-size: 52px;
+    font-size: 62px;
 }
 
-.dark-text {
-    color: #01161E;
+.nav-text,
+.heading-text,
+.account-text,
+.transaction-text,
+.goal-text {
+    color: #124559;
 }
 
-.nav-text {
-    color: #01161E;
-    /* text-decoration: underline;
-    text-decoration-color: #01161E; */
+.nav-other-text,
+.institution-text {
+    color: #598392;
 }
 
-.nav-height {
-    height: 8vh;
+.red-text {
+    color: #b74040;
 }
 
-.main-content {
-    height: calc(100vh - 12vh);
+.transaction-text,
+.dash-container-rows,
+.auth-container {
+    position: relative;
+    z-index: 0;
+}
+
+.main-dashboard {
+    height: 100%;
+    max-height: 90vh;
+}
+
+.navbar-container,
+.container-row-top {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 0px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+.bottom-left-container,
+.bottom-right-container,
+.auth-container {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+.auth-container {
+    border-radius: 0 0 20px 20px;
+}
+
+.container-background,
+.navbar-container {
+    background-color: #EFF6E0;
 }
 
 .container-row-top {
-    height: 60%;
+    height: 720px;
+    max-height: 60%;
 }
 
-.container-row-bot {
-    height: 40%;
+.bottom-left-container,
+.bottom-right-container {
+    height: 400px;
 }
 
-.container-shadow {
-    border-radius: 5px;
-    /* box-shadow: rgba(174, 195, 176, 0.4) 0px 0px 0px 4px,
-        rgba(96, 103, 111, 0.65) 0px 4px 6px -1px,
-        rgba(174, 195, 176, 0.4) 0px 1px 0px inset; */
-    box-shadow: rgba(110, 147, 114, 0.4) 0px 0px 0px 4px,
-        rgba(73, 87, 97, 0.65) 0px 4px 6px -1px,
-        rgba(110, 147, 114, 0.4) 0px 1px 0px inset;
-
+.bottom-left-container {
+    border-radius: 0 0 0 20px;
 }
 
-.container-background {
-    background-color: #EFF6E0;
+.bottom-right-container {
+    border-radius: 0 0 20px 0;
 }
 
 #dropdown-basic,
 #btn-add,
 #btn-completed-goals,
-#btn-edit {
+#btn-edit,
+#auth-login-btn,
+#auth-signup-btn,
+#goal-add-btn,
+#tx-add-btn,
+#acct-add-btn,
+#acct-edit-btn,
+#logout-btn,
+#btn-delete,
+#acct-delete {
     background-color: #124559;
     border-color: #124559;
     color: #EFF6E0;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
 #dropdown-basic:hover,
 #btn-add:hover,
 #btn-completed-goals:hover,
-#btn-edit:hover {
+#btn-edit:hover,
+#auth-login-btn:hover,
+#auth-signup-btn:hover,
+#goal-add-btn:hover,
+#tx-add-btn:hover,
+#acct-add-btn:hover,
+#acct-edit-btn:hover {
     background-color: #598392;
     border-color: #598392;
     color: #EFF6E0;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
-#goal-msg-bg {
+#goal-msg-bg,
+#pie-msg-bg {
     background-color: #EFF6E0;
     border-color: #AEC3B0;
-    color: #01161E;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-}
-
-#logout-btn,
-#btn-delete {
-    background-color: #598392;
-    border-color: #598392;
-    color: #EFF6E0;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    color: #124559;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
 #logout-btn:hover,
-#btn-delete:hover {
+#btn-delete:hover,
+#acct-delete:hover {
     background-color: #b74040;
     border-color: #b74040 !important;
 }
 
 .custom-success {
-    background-color: #EFF6E0 !important;
-    color: #124559 !important;
+    background-color: #598392 !important;
+    color: #EFF6E0 !important;
 }
 
-.custom-warning {
+.custom-warning,
+.contrast-heading {
     background-color: #AEC3B0 !important;
     color: #124559 !important;
 }
 
 .progressbar-main {
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
     height: 30px !important;
+    position: relative;
+    z-index: 0;
 }
 
-.barchart-main {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+.flip-horizontal {
+    transform: scaleX(-1);
+    display: inline-block;
+    margin-right: -3px;
 }
 
-.institution-text {
-    color: #598392 !important;
+.my-accordion-body,
+.accordion-button,
+.accordion-button:focus {
+    background-color: #EFF6E0 !important;
 }
 
-.institution-text-stale {
-    color: #b74040;
+.accordion-button:focus {
+    z-index: 3;
+    border-color: #EFF6E0;
+    outline: 0;
+    box-shadow: none !important;
 }
 
-.account-text {
-    color: #124559;
+.overflow-y-auto::-webkit-scrollbar {
+    width: 14px;
 }
 
-.transaction-text {
-    color: #90a892
+.overflow-y-auto::-webkit-scrollbar-track {
+    background-color: #AEC3B0;
+    border-radius: 5px;
 }
 
-#barchart-container {
-    width: 100%;
-    height: 100%;
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: #EFF6E0 !important;
+    border-radius: 5px;
+    border: 3px solid #AEC3B0;
+}
+
+.dropdown-item-custom:hover {
+    background-color: #124559 !important;
+    color: #EFF6E0 !important;
+}
+
+.modal-tx-custom {
+    max-height: 575px;
+    overflow-y: auto;
+}
+
+/* monthly budget transactions */
+.nameColumn {
+    width: 30%;
+}
+
+.dateColumn {
+    width: 20%;
+}
+
+.amountColumn {
+    width: 25%;
+}
+
+.categoryColumn {
+    width: 25%;
+}
+
+.max-height-accounts {
+    max-height: 90%;
+}
+
+@media (max-height: 1150px) {
+    .container-row-top {
+        height: 550px;
+    }
+}
+
+@media (max-width: 991px) {
+    .container-row-top {
+        height: auto;
+    }
+
+    .bottom-left-container,
+    .bottom-right-container {
+        height: 450px;
+    }
+
+    .bottom-left-container {
+        border-radius: 0;
+    }
+
+    .bottom-right-container {
+        border-radius: 0 0 20px 20px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .modal-tx-custom {
+        max-height: 375px;
+        overflow-y: auto;
+    }
 }

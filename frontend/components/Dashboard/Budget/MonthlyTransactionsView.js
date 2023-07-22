@@ -1,29 +1,29 @@
-import React from 'react';
+import { formatString, formatDate } from 'utils/helpers';
 
 const MonthlyTransactionView = ({ month }) => {
     return (
-        <div className="mx-3">
+        <div className='mx-3'>
             {Object.keys(month.accounts).map(account => {
                 const transactions = month.accounts[account];
 
                 return (
-                    <div key={account}>
-                        <h3>{account}</h3>
-                        <table className="table">
+                    <div key={account} className='container'>
+                        <h3 className='heading-text'>{account}</h3>
+                        <table className='table'>
                             <thead>
-                                <tr className="table-primary">
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Category</th>
+                                <tr className='table custom-warning'>
+                                    <th scope='col' className='nameColumn'>Name</th>
+                                    <th scope='col' className='dateColumn'>Date</th>
+                                    <th scope='col' className='amountColumn'>Amount</th>
+                                    <th scope='col' className='categoryColumn'>Category</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className='table-group-divider'>
                                 {transactions.map((transaction, index) => (
-                                    <tr key={index}>
-                                        <td>{transaction.merchantName || transaction.name}</td>
-                                        <td>{transaction.date}</td>
-                                        <td>
+                                    <tr key={index} className='nav-text'>
+                                        <td className='nameColumn'>{transaction.merchantName || transaction.name}</td>
+                                        <td className='dateColumn'>{formatDate(transaction.date)}</td>
+                                        <td className='amountColumn'>
                                             {transaction.amount < 0 ? (
                                                 <span>
                                                     ${Math.abs(transaction.amount).toFixed(2)}
@@ -34,16 +34,16 @@ const MonthlyTransactionView = ({ month }) => {
                                                 </span>
                                             )}
                                         </td>
-                                        <td>{transaction.category}</td>
+                                        <td className='categoryColumn'>{formatString(transaction.category)}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                )
+                );
             })}
         </div>
     );
-};
+}
 
 export default MonthlyTransactionView;
