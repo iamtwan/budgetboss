@@ -81,6 +81,7 @@
     border-radius: 0 0 20px 0;
 }
 
+#back-dash,
 #dropdown-basic,
 #btn-add,
 #btn-completed-goals,
@@ -100,6 +101,7 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
+#back-dash:hover,
 #dropdown-basic:hover,
 #btn-add:hover,
 #btn-completed-goals:hover,

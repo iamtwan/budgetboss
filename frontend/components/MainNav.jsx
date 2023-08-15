@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Logout from './Authentication/Logout';
+import RedirectToDashboard from './Dashboard/Settings/RedirectToDashboard';
 import { Bungee } from 'next/font/google';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -32,6 +33,12 @@ const MainNav = () => {
                         {pathname === '/dashboard' && (
                             <>
                                 <AddAccountDropdown />
+                                <Logout />
+                            </>
+                        )}
+                        {pathname === '/dashboard/settings' && (
+                            <>
+                                <RedirectToDashboard />
                                 <Logout />
                             </>
                         )}
