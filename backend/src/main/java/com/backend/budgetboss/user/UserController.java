@@ -71,8 +71,9 @@ public class UserController {
 
   @DeleteMapping("/delete")
   @Operation(summary = "Delete a user's account", description = "Delete a user's account permanently")
-  public void delete(@CurrentUser User user) {
+  public ResponseEntity<Void> delete(@CurrentUser User user) {
     logger.info("/api/users/delete DELETE request received");
     userService.deleteUser(user);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -48,7 +48,6 @@ public class ItemServiceImpl implements ItemService {
 
   @Override
   public List<ItemResponseDTO> getItemsByCash(User user, int pageNo, int pageSize) {
-
     return null;
   }
 
@@ -64,5 +63,12 @@ public class ItemServiceImpl implements ItemService {
     if (!response.isSuccessful()) {
       throw new TokenCreationException("Unable to remove item: " + itemId);
     }
+  }
+
+  @Override
+  @Transactional
+  public void unlinkUser(User user) {
+    List<Item> items = itemRepository.findAllByUser(user);
+    itemRepository.deleteAll(items);
   }
 }

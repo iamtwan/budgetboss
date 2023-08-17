@@ -13,4 +13,6 @@ public interface ItemService {
 
   void deleteItem(User user, Long itemId) throws IOException;
 
+  void unlinkUser(User user);
+
 }
