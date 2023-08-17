@@ -1,6 +1,5 @@
 package com.backend.budgetboss.user;
 
-import com.backend.budgetboss.security.UserPrincipal;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,5 +67,12 @@ public class UserController {
     logger.info("/api/users/logout POST request received");
     throw new IllegalStateException(
         "This method shouldn't be called. It's implemented by Spring Security's filter chain.");
+  }
+
+  @DeleteMapping("/delete")
+  @Operation(summary = "Delete a user's account", description = "Delete a user's account permanently")
+  public void delete(@CurrentUser User user) {
+    logger.info("/api/users/delete DELETE request received");
+    userService.deleteUser(user);
   }
 }

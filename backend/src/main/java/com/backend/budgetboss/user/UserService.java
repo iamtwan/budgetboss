@@ -7,11 +7,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface UserService {
 
-  UserResponseDTO getUser(User useer);
+  UserResponseDTO getUser(User user);
 
   UserResponseDTO registerUser(CreateUserDTO createUserDTO, HttpServletRequest request,
       HttpServletResponse response);
 
   UserResponseDTO loginUser(CreateUserDTO createUserDTO, HttpServletRequest request,
       HttpServletResponse response);
+
+  void deleteUser(User user);
 }

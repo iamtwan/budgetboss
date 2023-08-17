@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
     return modelMapper.map(userDetails, UserResponseDTO.class);
   }
 
+  @Override
+  public void deleteUser(User user) {
+    userRepository.deleteById(user.getId());
+  }
+
   private void setAuthenticationContext(Authentication authentication,
       HttpServletRequest request,
       HttpServletResponse response) {
