@@ -7,7 +7,7 @@ import Accordion from 'react-bootstrap/Accordion';
 
 const LoginSignUpPage = () => {
     return (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center mb-5'>
             <Accordion defaultActiveKey='0' flush className='container p-4 container-background auth-container'>
                 <Accordion.Item eventKey='0'>
                     <Accordion.Header>
