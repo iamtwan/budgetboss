@@ -31,6 +31,7 @@
     color: #b74040;
 }
 
+.settings-container,
 .transaction-text,
 .dash-container-rows,
 .auth-container {
@@ -38,22 +39,26 @@
     z-index: 0;
 }
 
+.settings-container,
 .main-dashboard {
     height: 100%;
     max-height: 90vh;
 }
 
+.settings-container,
 .navbar-container,
 .container-row-top {
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 0px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
+.settings-container,
 .bottom-left-container,
 .bottom-right-container,
 .auth-container {
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
+.settings-container,
 .auth-container {
     border-radius: 0 0 20px 20px;
 }
@@ -63,10 +68,16 @@
     background-color: #EFF6E0;
 }
 
+.settings-container,
 .container-row-top {
     height: 720px;
     max-height: 60%;
 }
+
+/* .settings-container {
+    height: 720px;
+    max-height: 60%;
+} */
 
 .bottom-left-container,
 .bottom-right-container {
@@ -81,6 +92,7 @@
     border-radius: 0 0 20px 0;
 }
 
+#toggle-check,
 #back-dash,
 #dropdown-basic,
 #btn-add,
@@ -101,6 +113,7 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
+#toggle-check:hover,
 #back-dash:hover,
 #dropdown-basic:hover,
 #btn-add:hover,
@@ -223,6 +236,15 @@
 }
 
 @media (max-width: 991px) {
+    .settings-section {
+        margin: 0 auto;
+        max-height: 300px;
+    }
+
+    .settings-container {
+        height: 1100px;
+    }
+
     .container-row-top {
         height: auto;
     }
