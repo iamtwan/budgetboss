@@ -12,7 +12,7 @@ const LoginSignUpPage = ({ signUpRef }) => {
             <Accordion defaultActiveKey='1' flush className='container p-4 container-background auth-container'>
                 <Accordion.Item eventKey='0'>
                     <Accordion.Header>
-                        <h2 className='text-uppercase nav-text fw-bold fs-2'><i class="bi bi-dash-lg"></i>Login<i class="bi bi-dash-lg"></i></h2>
+                        <h2 className='text-uppercase nav-text fw-bold fs-2'><i className="bi bi-dash-lg"></i>Login<i className="bi bi-dash-lg"></i></h2>
                     </Accordion.Header>
                     <Accordion.Body className='my-accordion-body'>
                         <LoginForm />
@@ -20,7 +20,7 @@ const LoginSignUpPage = ({ signUpRef }) => {
                 </Accordion.Item>
                 <Accordion.Item ref={signUpRef} eventKey='1'>
                     <Accordion.Header>
-                        <h2 className='text-uppercase align-items-center nav-text fw-bold fs-2'><i class="bi bi-dash-lg"></i>Sign Up<i class="bi bi-dash-lg"></i></h2>
+                        <h2 className='text-uppercase align-items-center nav-text fw-bold fs-2'><i className="bi bi-dash-lg"></i>Sign Up<i className="bi bi-dash-lg"></i></h2>
                     </Accordion.Header>
                     <Accordion.Body className='my-accordion-body'>
                         <SignUpForm />

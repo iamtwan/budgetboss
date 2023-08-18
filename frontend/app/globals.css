@@ -209,6 +209,13 @@
     overflow-y: auto;
 }
 
+.active-feature .card {
+    background-color: #e6e6e6;
+    transform: scale(1.05);
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* monthly budget transactions */
 .nameColumn {
     width: 30%;
