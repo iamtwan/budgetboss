@@ -1,9 +1,11 @@
 package com.backend.budgetboss.user;
 
+import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 
 public interface UserService {
 
@@ -16,4 +18,10 @@ public interface UserService {
       HttpServletResponse response);
 
   void deleteUser(User user);
+
+  void changePassword(Authentication authentication,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      User user,
+      ChangePasswordDTO changePasswordDTO);
 }

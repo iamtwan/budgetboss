@@ -1,5 +1,6 @@
 package com.backend.budgetboss.user;
 
+import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,9 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,11 +72,23 @@ public class UserController {
         "This method shouldn't be called. It's implemented by Spring Security's filter chain.");
   }
 
-  @DeleteMapping("/delete")
+  @DeleteMapping
   @Operation(summary = "Delete a user's account", description = "Delete a user's account permanently")
   public ResponseEntity<Void> delete(@CurrentUser User user) {
-    logger.info("/api/users/delete DELETE request received");
+    logger.info("/api/users DELETE request received");
     userService.deleteUser(user);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("change-password")
+  @Operation(summary = "Change the current user's password", description = "Change the current user's password")
+  public ResponseEntity<Void> changePassword(Authentication authentication,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      @CurrentUser User user,
+      @RequestBody ChangePasswordDTO changePasswordDTO) {
+    logger.info("/api/users/change-password PUT request received");
+    userService.changePassword(authentication, request, response, user, changePasswordDTO);
     return ResponseEntity.noContent().build();
   }
 }

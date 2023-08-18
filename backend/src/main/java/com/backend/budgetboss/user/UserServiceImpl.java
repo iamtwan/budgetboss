@@ -2,6 +2,7 @@ package com.backend.budgetboss.user;
 
 import com.backend.budgetboss.security.UserPrincipal;
 import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
+import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService {
   private final AuthenticationManager authenticationManager;
   private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
   private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+  private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
   public UserServiceImpl(UserRepository userRepository,
       ModelMapper modelMapper,
@@ -80,6 +84,19 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(User user) {
     userRepository.deleteById(user.getId());
+  }
+
+  @Override
+  public void changePassword(Authentication authentication,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      User user,
+      ChangePasswordDTO changePasswordDTO) {
+    User realUser = userRepository.findByEmail(user.getEmail())
+        .orElseThrow(() -> new UsernameNotFoundException(user.getEmail()));
+    realUser.setPassword(passwordEncoder.encode(changePasswordDTO.getPassword()));
+    logoutHandler.logout(request, response, authentication);
+    userRepository.save(realUser);
   }
 
   private void setAuthenticationContext(Authentication authentication,
