@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react';
-import FeatureCarousel from './Carousel';
-import FeatureCards from './FeatureCards';
-import TaglineBlock from './TaglineBlock';
+import FeatureCarousel from './LandingComponents/Carousel';
+import FeatureCards from './LandingComponents/FeatureCards';
+import TaglineBlock from './LandingComponents/TaglineBlock';
 
 
 const LandingSection = ({ signUpRef }) => {
@@ -13,7 +13,6 @@ const LandingSection = ({ signUpRef }) => {
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
         setActiveFeature(selectedIndex);
-        console.log(selectedIndex);
     }
 
     const setFeature = (index) => {

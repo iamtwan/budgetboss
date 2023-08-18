@@ -3,10 +3,9 @@
 import LoginForm from './AuthForms/LoginForm';
 import SignUpForm from './AuthForms/SignUpForm';
 import Accordion from 'react-bootstrap/Accordion';
-import React from 'react';
 
 
-const LoginSignUpPage = ({ signUpRef }) => {
+const LoginSignUpSection = ({ signUpRef }) => {
     return (
         <div className='d-flex justify-content-center mb-5'>
             <Accordion defaultActiveKey='1' flush className='container p-4 container-background auth-container'>
@@ -31,4 +30,4 @@ const LoginSignUpPage = ({ signUpRef }) => {
     );
 };
 
-export default LoginSignUpPage;
+export default LoginSignUpSection;

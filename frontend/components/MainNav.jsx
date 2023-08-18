@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation';
 import Logout from './Authentication/Logout';
 import RedirectToDashboard from './Settings/RedirectToDashboard';
 import RedirectToSettings from './Dashboard/RedirectToSettings';
+import LoginNav from './Authentication/LoginNav';
+import SignUpNav from './Authentication/SignUpNav';
 import { Bungee } from 'next/font/google';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -31,6 +33,12 @@ const MainNav = () => {
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav' className='justify-content-end'>
                     <Nav className='ms-auto align-items-center'>
+                        {pathname === '/' && (
+                            <>
+                                <LoginNav />
+                                <SignUpNav />
+                            </>
+                        )}
                         {pathname === '/dashboard' && (
                             <>
                                 <AddAccountDropdown />
