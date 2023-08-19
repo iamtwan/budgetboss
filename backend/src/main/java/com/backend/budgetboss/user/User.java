@@ -29,6 +29,10 @@ public class User {
   @NotBlank(message = "Password is required")
   private String password;
 
+  private boolean verified;
+
+  private String verificationCode;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Item> items = new ArrayList<>();
 
@@ -44,6 +48,7 @@ public class User {
     this.id = user.id;
     this.email = user.email;
     this.password = user.password;
+    this.verified = user.verified;
     this.items = user.items;
     this.manualInstitutions = user.manualInstitutions;
     this.goals = user.goals;
@@ -71,6 +76,22 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public boolean isVerified() {
+    return verified;
+  }
+
+  public void setVerified(boolean verified) {
+    this.verified = verified;
+  }
+
+  public String getVerificationCode() {
+    return verificationCode;
+  }
+
+  public void setVerificationCode(String verificationCode) {
+    this.verificationCode = verificationCode;
   }
 
   public List<Item> getItems() {
@@ -120,6 +141,8 @@ public class User {
         "id=" + id +
         ", email='" + email + '\'' +
         ", password='" + password + '\'' +
+        ", verified=" + verified +
+        ", verificationCode='" + verificationCode + '\'' +
         ", items=" + items.size() +
         ", manualInstitutions=" + manualInstitutions.size() +
         ", goals=" + goals.size() +
