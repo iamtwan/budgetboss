@@ -1,16 +1,17 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Logout from './Authentication/Logout';
-import RedirectToDashboard from './Settings/RedirectToDashboard';
-import RedirectToSettings from './Dashboard/RedirectToSettings';
-import LoginNav from './Authentication/LoginNav';
-import SignUpNav from './Authentication/SignUpNav';
+import Logout from '../Authentication/Logout';
+import RedirectToDashboard from '../Settings/RedirectToDashboard';
+import RedirectToSettings from '../Dashboard/RedirectToSettings';
+import LoginNav from './NavComponents/LoginNav';
+import SignUpNav from './NavComponents/SignUpNav';
+import AboutNav from './NavComponents/AboutNav';
 import { Bungee } from 'next/font/google';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import AddAccountDropdown from './Dashboard/Accounts/AddAccountDropdown';
+import AddAccountDropdown from '../Dashboard/Accounts/AddAccountDropdown';
 
 const bungee = Bungee({
     weight: ['400'],
@@ -35,6 +36,7 @@ const MainNav = () => {
                     <Nav className='ms-auto align-items-center'>
                         {pathname === '/' && (
                             <>
+                                <AboutNav />
                                 <LoginNav />
                                 <SignUpNav />
                             </>

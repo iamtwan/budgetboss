@@ -2,7 +2,7 @@ const FeatureCards = ({ activeFeature, setFeature }) => {
     const renderFeatureCard = (index, title, text) => (
         <div className={`col-3-lg mb-2 mb-lg-0 ${activeFeature === index ? 'active-feature' : ''}`} onClick={() => setFeature(index)}>
             <div className='card'>
-                <div className='card-body'>
+                <div className='card-body feature-cards'>
                     <h3 className='card-title'>{title}</h3>
                     <p className='card-text'>{text}</p>
                 </div>
