@@ -4,6 +4,10 @@ import { useState } from 'react';
 import FeatureCarousel from './LandingComponents/Carousel';
 import FeatureCards from './LandingComponents/FeatureCards';
 import TaglineBlock from './LandingComponents/TaglineBlock';
+import dynamic from 'next/dynamic';
+
+
+const PricingSection = dynamic(() => import('./LandingComponents/Pricing'), { ssr: false });
 
 
 const LandingSection = ({ signUpRef }) => {
@@ -31,6 +35,7 @@ const LandingSection = ({ signUpRef }) => {
             <FeatureCards activeFeature={activeFeature} setFeature={setFeature} />
             <FeatureCarousel activeIndex={index} onSelect={handleSelect} />
             <hr />
+            <PricingSection />
         </div>
     );
 }

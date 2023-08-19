@@ -38,12 +38,13 @@ const SignUpForm = () => {
                     </Form.Label>
                     <Form.Control
                         required
-                        value='test@gmail.com'
+                        // value='test@gmail.com'
                         type='email'
                         name='email'
                         className='form-control'
                         id='exampleInputEmail1'
                         aria-describedby='emailHelp'
+                        placeholder='Enter a valid email'
                     />
                     <Form.Text id='emailHelp' className='form-text'>
                         We'll never share your email with anyone else!
@@ -57,7 +58,7 @@ const SignUpForm = () => {
                         <div className='col-auto'>
                             <Form.Control
                                 required
-                                value='Test123!!'
+                                // value='Test123!!'
                                 pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$'
                                 title='Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number.'
                                 minLength='8'
@@ -83,7 +84,7 @@ const SignUpForm = () => {
                         <div className='col-auto'>
                             <Form.Control
                                 required
-                                value='Test123!!'
+                                // value='Test123!!'
                                 pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$'
                                 title='Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number.'
                                 minLength='8'

@@ -69,7 +69,8 @@
 }
 
 .landing-section {
-    height: 1400px;
+    height: auto;
+    max-height: 1700px;
 }
 
 .settings-container,
