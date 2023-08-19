@@ -13,7 +13,7 @@ const LoginNav = () => {
 
     return (
         <div className='me-2'>
-            <a type='button' className='btn-sm p-2 fw-semibold nav-text link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover' onClick={handleShow}>Login</a>
+            <a type='button' className='btn-sm p-2 fw-bold nav-text link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover' onClick={handleShow}>Login</a>
             <Modal size='lg' show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title id='example-modal-sizes-title-sm'>

@@ -242,13 +242,22 @@
     max-height: 90%;
 }
 
-@media (max-height: 1150px) {
-    .container-row-top {
-        height: 550px;
+@media (max-width: 1200px) {
+    .feature-cards {
+        height: 350px
     }
 }
 
 @media (max-width: 991px) {
+    .landing-section {
+        height: auto;
+        max-height: 2000px;
+    }
+
+    .feature-cards {
+        height: 150px;
+    }
+
     .settings-section {
         margin: 0 auto;
         max-height: 300px;
@@ -273,6 +282,13 @@
 
     .bottom-right-container {
         border-radius: 0 0 20px 20px;
+    }
+}
+
+
+@media (max-height: 1150px) {
+    .container-row-top {
+        height: 550px;
     }
 }
 

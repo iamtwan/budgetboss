@@ -4,10 +4,7 @@ import { useState } from 'react';
 import FeatureCarousel from './LandingComponents/Carousel';
 import FeatureCards from './LandingComponents/FeatureCards';
 import TaglineBlock from './LandingComponents/TaglineBlock';
-import dynamic from 'next/dynamic';
-
-
-const PricingSection = dynamic(() => import('./LandingComponents/Pricing'), { ssr: false });
+import PricingSection from './LandingComponents/Pricing';
 
 
 const LandingSection = ({ signUpRef }) => {
