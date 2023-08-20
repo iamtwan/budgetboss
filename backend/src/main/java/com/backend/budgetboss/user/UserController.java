@@ -74,13 +74,16 @@ public class UserController {
 
   @DeleteMapping
   @Operation(summary = "Delete a user's account", description = "Delete a user's account permanently")
-  public ResponseEntity<Void> delete(@CurrentUser User user) {
+  public ResponseEntity<Void> delete(Authentication authentication,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      @CurrentUser User user) {
     logger.info("/api/users DELETE request received");
-    userService.deleteUser(user);
+    userService.deleteUser(authentication, request, response, user);
     return ResponseEntity.noContent().build();
   }
 
-  @PutMapping("change-password")
+  @PutMapping("/change-password")
   @Operation(summary = "Change the current user's password", description = "Change the current user's password")
   public ResponseEntity<Void> changePassword(Authentication authentication,
       HttpServletRequest request,

@@ -8,9 +8,12 @@ import com.plaid.client.model.AccountBase;
 import com.plaid.client.request.PlaidApi;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration

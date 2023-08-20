@@ -8,6 +8,9 @@ import com.backend.budgetboss.user.dto.UserResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,15 +34,18 @@ public class UserServiceImpl implements UserService {
   private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
   private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
   private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+  private final JavaMailSender emailSender;
 
   public UserServiceImpl(UserRepository userRepository,
       ModelMapper modelMapper,
       BCryptPasswordEncoder passwordEncoder,
-      AuthenticationManager authenticationManager) {
+      AuthenticationManager authenticationManager,
+      JavaMailSender emailSender) {
     this.userRepository = userRepository;
     this.modelMapper = modelMapper;
     this.passwordEncoder = passwordEncoder;
     this.authenticationManager = authenticationManager;
+    this.emailSender = emailSender;
   }
 
   @Override
@@ -57,13 +63,15 @@ public class UserServiceImpl implements UserService {
     }
 
     String temp = createUserDTO.getPassword();
+    String verificationCode = RandomString.make(64);
     createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
-    User user = userRepository.save(modelMapper.map(createUserDTO, User.class));
 
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), temp)
-    );
-    setAuthenticationContext(authentication, request, response);
+    User user = modelMapper.map(createUserDTO, User.class);
+    user.setVerificationCode(verificationCode);
+    user.setVerified(false);
+
+    userRepository.save(user);
+    sendVerificationEmail(user);
 
     return modelMapper.map(user, UserResponseDTO.class);
   }
@@ -82,8 +90,12 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void deleteUser(User user) {
+  public void deleteUser(Authentication authentication,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      User user) {
     userRepository.deleteById(user.getId());
+    logoutHandler.logout(request, response, authentication);
   }
 
   @Override
@@ -95,8 +107,8 @@ public class UserServiceImpl implements UserService {
     User realUser = userRepository.findByEmail(user.getEmail())
         .orElseThrow(() -> new UsernameNotFoundException(user.getEmail()));
     realUser.setPassword(passwordEncoder.encode(changePasswordDTO.getPassword()));
-    logoutHandler.logout(request, response, authentication);
     userRepository.save(realUser);
+    logoutHandler.logout(request, response, authentication);
   }
 
   private void setAuthenticationContext(Authentication authentication,
@@ -106,5 +118,14 @@ public class UserServiceImpl implements UserService {
     context.setAuthentication(authentication);
     securityContextHolderStrategy.setContext(context);
     securityContextRepository.saveContext(context, request, response);
+  }
+
+  private void sendVerificationEmail(User user) {
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(user.getEmail());
+    message.setSubject("Account verification");
+    message.setText("Your verification code is: " + user.getVerificationCode());
+
+    emailSender.send(message);
   }
 }

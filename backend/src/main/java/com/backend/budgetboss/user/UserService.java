@@ -17,7 +17,10 @@ public interface UserService {
   UserResponseDTO loginUser(CreateUserDTO createUserDTO, HttpServletRequest request,
       HttpServletResponse response);
 
-  void deleteUser(User user);
+  void deleteUser(Authentication authentication,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      User user);
 
   void changePassword(Authentication authentication,
       HttpServletRequest request,
