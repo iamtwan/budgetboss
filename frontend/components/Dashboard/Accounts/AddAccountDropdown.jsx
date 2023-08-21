@@ -38,7 +38,7 @@ const AddAccountDropdown = () => {
         <>
             <Dropdown>
                 <Dropdown.Toggle variant='primary' id='dropdown-basic' className='btn-sm p-2 fw-semibold'>
-                    Add Account
+                    Add
                 </Dropdown.Toggle>
                 <Dropdown.Menu className='nav-text' style={{ backgroundColor: '#EFF6E0' }}>
                     <Dropdown.Item className='dropdown-item-custom' onClick={() => setLinkAccountOpen(true)}>Linked Account</Dropdown.Item>

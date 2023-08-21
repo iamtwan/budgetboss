@@ -31,6 +31,7 @@
     color: #b74040;
 }
 
+.settings-container,
 .transaction-text,
 .dash-container-rows,
 .auth-container {
@@ -38,22 +39,26 @@
     z-index: 0;
 }
 
+.settings-container,
 .main-dashboard {
     height: 100%;
     max-height: 90vh;
 }
 
+.landing-section,
 .navbar-container,
 .container-row-top {
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 0px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
+.settings-container,
 .bottom-left-container,
 .bottom-right-container,
 .auth-container {
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
+.settings-container,
 .auth-container {
     border-radius: 0 0 20px 20px;
 }
@@ -63,6 +68,12 @@
     background-color: #EFF6E0;
 }
 
+.landing-section {
+    height: auto;
+    max-height: 1700px;
+}
+
+.settings-container,
 .container-row-top {
     height: 720px;
     max-height: 60%;
@@ -81,6 +92,9 @@
     border-radius: 0 0 20px 0;
 }
 
+#sign-up,
+#toggle-check,
+#back-dash,
 #dropdown-basic,
 #btn-add,
 #btn-completed-goals,
@@ -100,6 +114,9 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
+#sign-up:hover,
+#toggle-check:hover,
+#back-dash:hover,
 #dropdown-basic:hover,
 #btn-add:hover,
 #btn-completed-goals:hover,
@@ -193,6 +210,17 @@
     overflow-y: auto;
 }
 
+.active-feature .card {
+    background-color: #e6e6e6;
+    transform: scale(1.05);
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.feature-cards {
+    height: 300px;
+}
+
 /* monthly budget transactions */
 .nameColumn {
     width: 30%;
@@ -214,13 +242,31 @@
     max-height: 90%;
 }
 
-@media (max-height: 1150px) {
-    .container-row-top {
-        height: 550px;
+@media (max-width: 1200px) {
+    .feature-cards {
+        height: 350px
     }
 }
 
 @media (max-width: 991px) {
+    .landing-section {
+        height: auto;
+        max-height: 2000px;
+    }
+
+    .feature-cards {
+        height: 150px;
+    }
+
+    .settings-section {
+        margin: 0 auto;
+        max-height: 300px;
+    }
+
+    .settings-container {
+        height: 1100px;
+    }
+
     .container-row-top {
         height: auto;
     }
@@ -236,6 +282,13 @@
 
     .bottom-right-container {
         border-radius: 0 0 20px 20px;
+    }
+}
+
+
+@media (max-height: 1150px) {
+    .container-row-top {
+        height: 550px;
     }
 }
 

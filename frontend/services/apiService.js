@@ -277,9 +277,10 @@ export const useTransactions = (accountType, id) => {
 
 // for protected route use
 export const useUser = () => {
-    const { error, isLoading } = useSWR(`${API_BASE_URL}/users`, fetcher);
+    const { data, error, isLoading } = useSWR(`${API_BASE_URL}/users`, fetcher);
 
     return {
+        data,
         error,
         isLoading,
     };
