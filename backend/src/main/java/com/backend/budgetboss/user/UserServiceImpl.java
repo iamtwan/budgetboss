@@ -5,10 +5,13 @@ import com.backend.budgetboss.security.exception.UserAlreadyExistsException;
 import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
+import com.backend.budgetboss.user.verification.VerificationCode;
+import com.backend.budgetboss.user.verification.VerificationRepository;
+import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,17 +38,20 @@ public class UserServiceImpl implements UserService {
   private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
   private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
   private final JavaMailSender emailSender;
+  private final VerificationRepository verificationRepository;
 
   public UserServiceImpl(UserRepository userRepository,
       ModelMapper modelMapper,
       BCryptPasswordEncoder passwordEncoder,
       AuthenticationManager authenticationManager,
-      JavaMailSender emailSender) {
+      JavaMailSender emailSender,
+      VerificationRepository verificationRepository) {
     this.userRepository = userRepository;
     this.modelMapper = modelMapper;
     this.passwordEncoder = passwordEncoder;
     this.authenticationManager = authenticationManager;
     this.emailSender = emailSender;
+    this.verificationRepository = verificationRepository;
   }
 
   @Override
@@ -63,15 +69,13 @@ public class UserServiceImpl implements UserService {
     }
 
     String temp = createUserDTO.getPassword();
-    String verificationCode = RandomString.make(64);
-    createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+    createUserDTO.setPassword(passwordEncoder.encode(temp));
 
-    User user = modelMapper.map(createUserDTO, User.class);
-    user.setVerificationCode(verificationCode);
-    user.setVerified(false);
-
-    userRepository.save(user);
-    sendVerificationEmail(user);
+    User user = userRepository.save(modelMapper.map(createUserDTO, User.class));
+    Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), temp)
+    );
+    setAuthenticationContext(authentication, request, response);
 
     return modelMapper.map(user, UserResponseDTO.class);
   }
@@ -111,6 +115,21 @@ public class UserServiceImpl implements UserService {
     logoutHandler.logout(request, response, authentication);
   }
 
+  @Override
+  public void sendCode(RequestCodeDTO requestCodeDTO) {
+    String code = RandomStringUtils.randomNumeric(6);
+
+    VerificationCode verificationCode = new VerificationCode(requestCodeDTO.getEmail(), code);
+    verificationRepository.save(verificationCode);
+
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(requestCodeDTO.getEmail());
+    message.setSubject("Account verification");
+    message.setText("Your verification code is: " + code);
+
+    emailSender.send(message);
+  }
+
   private void setAuthenticationContext(Authentication authentication,
       HttpServletRequest request,
       HttpServletResponse response) {
@@ -118,14 +137,5 @@ public class UserServiceImpl implements UserService {
     context.setAuthentication(authentication);
     securityContextHolderStrategy.setContext(context);
     securityContextRepository.saveContext(context, request, response);
-  }
-
-  private void sendVerificationEmail(User user) {
-    SimpleMailMessage message = new SimpleMailMessage();
-    message.setTo(user.getEmail());
-    message.setSubject("Account verification");
-    message.setText("Your verification code is: " + user.getVerificationCode());
-
-    emailSender.send(message);
   }
 }

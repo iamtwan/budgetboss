@@ -3,6 +3,8 @@ package com.backend.budgetboss.user;
 import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
+import com.backend.budgetboss.user.dto.VerificationCodeDTO;
+import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -92,6 +95,14 @@ public class UserController {
       @RequestBody ChangePasswordDTO changePasswordDTO) {
     logger.info("/api/users/change-password PUT request received");
     userService.changePassword(authentication, request, response, user, changePasswordDTO);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/verify-email/send-code")
+  @Operation(summary = "Send a verification code to the provided email", description = "Send a verification code to the provided email")
+  public ResponseEntity<Void> sendCode(@RequestBody RequestCodeDTO requestCodeDTO) {
+    logger.info("/api/users/verify-email/send-code POST request received");
+    userService.sendCode(requestCodeDTO);
     return ResponseEntity.noContent().build();
   }
 }

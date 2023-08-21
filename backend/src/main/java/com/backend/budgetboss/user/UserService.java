@@ -3,6 +3,8 @@ package com.backend.budgetboss.user;
 import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
+import com.backend.budgetboss.user.dto.VerificationCodeDTO;
+import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -27,4 +29,6 @@ public interface UserService {
       HttpServletResponse response,
       User user,
       ChangePasswordDTO changePasswordDTO);
+
+  void sendCode(RequestCodeDTO requestCodeDTO);
 }

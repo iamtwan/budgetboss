@@ -38,6 +38,6 @@ public class UserPrincipal extends User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return isVerified();
+    return true;
   }
 }
