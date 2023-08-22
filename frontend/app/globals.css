@@ -70,7 +70,7 @@
 
 .landing-section {
     height: auto;
-    max-height: 1700px;
+    max-height: 2000px;
 }
 
 .settings-container,
@@ -251,7 +251,7 @@
 @media (max-width: 991px) {
     .landing-section {
         height: auto;
-        max-height: 2000px;
+        max-height: 3000px;
     }
 
     .feature-cards {

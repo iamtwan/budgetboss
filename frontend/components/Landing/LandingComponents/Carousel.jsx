@@ -1,41 +1,50 @@
 import { Carousel } from 'react-bootstrap';
+import Image from 'next/image';
 
 
 const FeatureCarousel = ({ activeIndex, onSelect }) => {
     return (
-        <div className='container row mb-4'>
-            <Carousel activeIndex={activeIndex} onSelect={onSelect} interval={null}>
+        <div className='container row mb-4 m-auto'>
+            <Carousel fade activeIndex={activeIndex} onSelect={onSelect} interval={null} data-bs-theme='dark'>
                 <Carousel.Item>
-                    <img src='https://via.placeholder.com/800x400?text=Image1' className='d-block w-100' alt='...' />
-                    <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                    </Carousel.Caption>
+                    <Image
+                        src='/images/feature_1.png'
+                        width={1133}
+                        height={704}
+                        alt='First Slide'
+                        className='d-block w-100'
+                        quality={100}
+                    />
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img src='https://via.placeholder.com/800x400?text=Image2' className='d-block w-100' alt='...' />
-                    <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </Carousel.Caption>
+                    <Image
+                        src='/images/feature_2.png'
+                        width={1133}
+                        height={704}
+                        alt='Second Slide'
+                        className='d-block w-100'
+                        quality={100}
+                    />
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img src='https://via.placeholder.com/800x400?text=Image3' className='d-block w-100' alt='...' />
-                    <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>
-                            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                        </p>
-                    </Carousel.Caption>
+                    <Image
+                        src='/images/feature_3.png'
+                        width={1133}
+                        height={704}
+                        alt='Third Slide'
+                        className='d-block w-100'
+                        quality={100}
+                    />
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img src='https://via.placeholder.com/800x400?text=Image4' className='d-block w-100' alt='...' />
-                    <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>
-                            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                        </p>
-                    </Carousel.Caption>
+                    <Image
+                        src='/images/feature_4.png'
+                        width={1133}
+                        height={704}
+                        alt='Fourth Slide'
+                        className='d-block w-100'
+                        quality={100}
+                    />
                 </Carousel.Item>
             </Carousel>
         </div>

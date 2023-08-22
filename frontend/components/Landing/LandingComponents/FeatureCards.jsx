@@ -2,9 +2,9 @@ const FeatureCards = ({ activeFeature, setFeature }) => {
     const renderFeatureCard = (index, title, text) => (
         <div className={`col-3-lg mb-2 mb-lg-0 ${activeFeature === index ? 'active-feature' : ''}`} onClick={() => setFeature(index)}>
             <div className='card'>
-                <div className='card-body feature-cards'>
-                    <h3 className='card-title'>{title}</h3>
-                    <p className='card-text'>{text}</p>
+                <div className='card-body feature-cards d-flex flex-column'>
+                    <h3 className='card-title mb-auto'>{title}</h3>
+                    <p className='card-text my-auto'>{text}</p>
                 </div>
             </div>
         </div>
@@ -13,10 +13,10 @@ const FeatureCards = ({ activeFeature, setFeature }) => {
     return (
         <div className='container p-3 mb-3'>
             <div className='row row-cols-sm-1 row-cols-lg-4 gx-3'>
-                {renderFeatureCard(0, 'Feature 1', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia veniam expedita eos aliquid, minus error sequi pariatur! Deserunt aliquam, commodi omnis quam delectus cumque aperiam beatae, doloremque nostrum sunt quidem.')}
-                {renderFeatureCard(1, 'Feature 2', 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore, reiciendis, doloremque iure atque sequi natus rem tenetur quo aut eius repudiandae ipsa minima in quibusdam distinctio, impedit asperiores autem praesentium!')}
-                {renderFeatureCard(2, 'Feature 3', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis iste vitae soluta nihil sit repudiandae porro autem, eaque ipsum unde, deserunt expedita harum quidem deleniti error officiis quia distinctio sunt.')}
-                {renderFeatureCard(3, 'Feature 4', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt aperiam ipsum assumenda labore impedit voluptatibus adipisci nostrum maxime quae magni provident consequatur illum, vitae at sit et fugiat. Earum, voluptate?')}
+                {renderFeatureCard(0, 'Seamless Account Management ', 'Seamlessly link your financial accounts for effortless tracking. Prefer manual entries? Manage accounts and transactions to stay in charge of your finances!')}
+                {renderFeatureCard(1, 'Financial Trajectory Overview', 'Visualize your finances with an interactive 6-month financial outlook. See monthly net balances and strategize for a brighter financial future.')}
+                {renderFeatureCard(2, 'In-Depth Monthly Analysis', 'Experience in-depth monthly analysis with Budget Boss! Beyond the 6-month overview, see categorical expense breakdowns and every transaction for each month.')}
+                {renderFeatureCard(3, 'Financial Goal Planner', 'Financial goals aren\'t just aspirational, they\'re essential. Budget Boss offers a dedicated section to create, manage, and achieve your financial ambitions. Chart your path to success with us.')}
             </div>
         </div>
     );
