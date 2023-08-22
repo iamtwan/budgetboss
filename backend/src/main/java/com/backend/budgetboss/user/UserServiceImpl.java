@@ -8,6 +8,7 @@ import com.backend.budgetboss.user.dto.UserResponseDTO;
 import com.backend.budgetboss.user.verification.VerificationCode;
 import com.backend.budgetboss.user.verification.VerificationRepository;
 import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
+import com.backend.budgetboss.user.verification.exception.VerificationCodeException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
@@ -73,10 +74,10 @@ public class UserServiceImpl implements UserService {
 
     VerificationCode code = verificationRepository
         .findByEmailAndExpirationDateAfter(email, LocalDateTime.now())
-        .orElseThrow(() -> new Error("Couldn't find code"));
+        .orElseThrow(VerificationCodeException::new);
 
     if (!code.getCode().equals(createUserDTO.getVerificationCode())) {
-      throw new Error("Failed");
+      throw new VerificationCodeException();
     }
 
     createUserDTO.setPassword(passwordEncoder.encode(password));
