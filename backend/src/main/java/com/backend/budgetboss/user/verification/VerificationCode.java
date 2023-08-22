@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "verification_codes")
@@ -20,11 +22,14 @@ public class VerificationCode {
   @NotBlank(message = "Verification code is required")
   private String code;
 
+  private LocalDateTime expirationDate;
+
   public VerificationCode() {}
 
   public VerificationCode(String email, String code) {
     this.email = email;
     this.code = code;
+    this.expirationDate = LocalDateTime.now().plusMinutes(15);
   }
 
   public Long getId() {
@@ -49,5 +54,13 @@ public class VerificationCode {
 
   public void setCode(String code) {
     this.code = code;
+  }
+
+  public LocalDateTime getExpirationDate() {
+    return expirationDate;
+  }
+
+  public void setExpirationDate(LocalDateTime expirationDate) {
+    this.expirationDate = expirationDate;
   }
 }
