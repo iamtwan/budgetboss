@@ -342,3 +342,46 @@ export const updateGoal = async (goalId, formData) => {
 
     return await response.json();
 }
+
+export const changePassword = async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/users/change-password`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}
+
+export const unlinkAllItems = async () => {
+    const response = await fetch(`${API_BASE_URL}/items/unlink`, {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}
+
+export const deleteUserAccount = async () => {
+    const response = await fetch(`${API_BASE_URL}/users`, {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}

@@ -30,6 +30,7 @@ To install Budget Boss:
 - Sign-Up or visit `http://localhost:3000/dashboard/demo`
 - Connect your bank account using Plaid or manually input transactions.
 - Visualize your expenses through interactive charts and set budgetary goals for effective financial management.
+- Add and or manage existing goals.
 
 ## Deployment
 

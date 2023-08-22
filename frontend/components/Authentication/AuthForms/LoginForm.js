@@ -21,7 +21,7 @@ const LoginForm = () => {
 
             router.push('/dashboard');
         } catch (error) {
-            console.error(error.response.data);
+            console.error(error.response);
         }
     }
 
