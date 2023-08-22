@@ -17,7 +17,7 @@ public class CreateUserDTO {
   @NotBlank(message = "Password cannot be empty")
   private String password;
 
-  @NotBlank
+  @NotBlank(message = "Verification code cannot be empty")
   private String verificationCode;
 
   public String getEmail() {

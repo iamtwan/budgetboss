@@ -10,6 +10,7 @@ import com.backend.budgetboss.user.verification.VerificationRepository;
 import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -63,17 +64,26 @@ public class UserServiceImpl implements UserService {
   public UserResponseDTO registerUser(CreateUserDTO createUserDTO,
       HttpServletRequest request,
       HttpServletResponse response) {
+    String email = createUserDTO.getEmail();
+    String password = createUserDTO.getPassword();
+
     if (userRepository.existsByEmail(createUserDTO.getEmail())) {
-      throw new UserAlreadyExistsException(
-          "User already exists for email: " + createUserDTO.getEmail());
+      throw new UserAlreadyExistsException("User already exists for email: " + email);
     }
 
-    String temp = createUserDTO.getPassword();
-    createUserDTO.setPassword(passwordEncoder.encode(temp));
+    VerificationCode code = verificationRepository
+        .findByEmailAndExpirationDateAfter(email, LocalDateTime.now())
+        .orElseThrow(() -> new Error("Couldn't find code"));
+
+    if (!code.getCode().equals(createUserDTO.getVerificationCode())) {
+      throw new Error("Failed");
+    }
+
+    createUserDTO.setPassword(passwordEncoder.encode(password));
 
     User user = userRepository.save(modelMapper.map(createUserDTO, User.class));
     Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), temp)
+        new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), password)
     );
     setAuthenticationContext(authentication, request, response);
 
