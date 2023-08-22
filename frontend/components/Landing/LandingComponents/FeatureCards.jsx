@@ -3,7 +3,7 @@ const FeatureCards = ({ activeFeature, setFeature }) => {
         <div className={`col-3-lg mb-2 mb-lg-0 ${activeFeature === index ? 'active-feature' : ''}`} onClick={() => setFeature(index)}>
             <div className='card'>
                 <div className='card-body feature-cards d-flex flex-column'>
-                    <h3 className='card-title mb-auto'>{title}</h3>
+                    <h3 className='card-title mb-auto fw-bold'>{title}</h3>
                     <p className='card-text my-auto'>{text}</p>
                 </div>
             </div>
