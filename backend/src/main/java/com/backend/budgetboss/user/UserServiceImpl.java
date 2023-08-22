@@ -128,13 +128,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void sendCode(RequestCodeDTO requestCodeDTO) {
+    String email = requestCodeDTO.getEmail();
     String code = RandomStringUtils.randomNumeric(6);
 
-    VerificationCode verificationCode = new VerificationCode(requestCodeDTO.getEmail(), code);
+    VerificationCode verificationCode = verificationRepository.findByEmail(email)
+        .orElse(new VerificationCode(requestCodeDTO.getEmail()));
+    verificationCode.setCode(code);
+
     verificationRepository.save(verificationCode);
 
     SimpleMailMessage message = new SimpleMailMessage();
-    message.setTo(requestCodeDTO.getEmail());
+    message.setTo(email);
     message.setSubject("Account verification");
     message.setText("Your verification code is: " + code);
 

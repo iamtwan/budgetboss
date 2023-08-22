@@ -5,5 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VerificationRepository extends JpaRepository<VerificationCode, Long> {
+  Optional<VerificationCode> findByEmail(String email);
+
   Optional<VerificationCode> findByEmailAndExpirationDateAfter(String email, LocalDateTime date);
 }

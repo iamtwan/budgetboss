@@ -1,5 +1,6 @@
 package com.backend.budgetboss.user.verification;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class VerificationCode {
   private Long id;
 
   @NotBlank(message = "Email is required")
+  @Column(unique = true)
   private String email;
 
   @NotBlank(message = "Verification code is required")
@@ -26,9 +28,8 @@ public class VerificationCode {
 
   public VerificationCode() {}
 
-  public VerificationCode(String email, String code) {
+  public VerificationCode(String email) {
     this.email = email;
-    this.code = code;
     this.expirationDate = LocalDateTime.now().plusMinutes(15);
   }
 
