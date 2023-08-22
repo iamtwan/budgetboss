@@ -45,6 +45,7 @@
     max-height: 90vh;
 }
 
+.pricing-container,
 .landing-section,
 .navbar-container,
 .container-row-top {
@@ -211,17 +212,22 @@
     overflow-y: auto;
 }
 
-.active-feature .card {
-    background-color: #AEC3B0;
+.active-feature .feature-cards {
+    background-color: #e3e9d7;
     transform: scale(1.05);
-    transition: all 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .feature-cards {
     height: 300px;
     background-color: #AEC3B0;
     color: #124559 !important;
+}
+
+.pricing-container,
+.pricing-inner {
+    background-color: #AEC3B0 !important;
 }
 
 /* monthly budget transactions */
