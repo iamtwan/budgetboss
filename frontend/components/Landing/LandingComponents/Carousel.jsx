@@ -5,7 +5,7 @@ import Image from 'next/image';
 const FeatureCarousel = ({ activeIndex, onSelect }) => {
     return (
         <div className='container row mb-4 m-auto'>
-            <Carousel fade activeIndex={activeIndex} onSelect={onSelect} interval={null} data-bs-theme='dark' className='rounded m-0 p-0 carousel-container'>
+            <Carousel fade activeIndex={activeIndex} onSelect={onSelect} data-bs-theme='dark' className='rounded m-0 p-0 carousel-container'>
                 <Carousel.Item>
                     <Image
                         src='/images/feature_1.png'
