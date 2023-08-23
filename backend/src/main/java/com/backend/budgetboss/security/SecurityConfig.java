@@ -45,7 +45,8 @@ public class SecurityConfig {
             .requestMatchers("/api/webhooks/**",
                 "/api/users/login",
                 "/api/users/register",
-                "/api/users/verify-email/send-code",
+                "/api/users/register/send-code",
+                "/api/users/recover-password/send-link",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/v3/api-docs/**")
