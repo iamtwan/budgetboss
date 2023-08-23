@@ -225,9 +225,12 @@
     color: #124559 !important;
 }
 
+.questions-inner,
+.questions-header,
 .pricing-container,
 .pricing-inner {
     background-color: #AEC3B0 !important;
+    color: #124559 !important;
 }
 
 /* monthly budget transactions */
