@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
   public void sendLink(RequestCodeDTO requestCodeDTO) {
     String email = requestCodeDTO.getEmail();
     String token = UUID.randomUUID().toString();
-    String link = "http://localhost:3000/reset/" + token;
+    String link = "http://localhost:3000/reset?token=" + token;
 
     VerificationToken verificationToken = verificationTokenRepository.findByEmail(email)
         .orElse(new VerificationToken(requestCodeDTO.getEmail()));

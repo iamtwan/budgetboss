@@ -45,7 +45,7 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  @Operation(summary = "Register new user", description = "Register a new user with the given email and password")
+  @Operation(summary = "Register new user", description = "Register a new user with the given email, password, and verification code")
   public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody CreateUserDTO user,
       HttpServletRequest request,
       HttpServletResponse response) {
@@ -53,6 +53,14 @@ public class UserController {
     UserResponseDTO userResponse = userService.registerUser(user, request, response);
     logger.info("/api/users/register created user: {}", userResponse);
     return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+  }
+
+  @PostMapping("/register/send-code")
+  @Operation(summary = "Send a verification code to the provided email", description = "Send a verification code to the provided email")
+  public ResponseEntity<Void> sendCode(@RequestBody RequestCodeDTO requestCodeDTO) {
+    logger.info("/api/users/register/send-code POST request received");
+    userService.sendCode(requestCodeDTO);
+    return ResponseEntity.noContent().build();
   }
 
   @PostMapping("/login")
@@ -110,14 +118,6 @@ public class UserController {
   public ResponseEntity<Void> sendLink(@RequestBody RequestCodeDTO requestCodeDTO) {
     logger.info("/api/users/recover-password/send-link POST request received");
     userService.sendLink(requestCodeDTO);
-    return ResponseEntity.noContent().build();
-  }
-
-  @PostMapping("/verify-email/send-code")
-  @Operation(summary = "Send a verification code to the provided email", description = "Send a verification code to the provided email")
-  public ResponseEntity<Void> sendCode(@RequestBody RequestCodeDTO requestCodeDTO) {
-    logger.info("/api/users/verify-email/send-code POST request received");
-    userService.sendCode(requestCodeDTO);
     return ResponseEntity.noContent().build();
   }
 }
