@@ -12,6 +12,7 @@ import com.backend.budgetboss.user.verification.VerificationTokenRepository;
 import com.backend.budgetboss.user.verification.dto.RecoverPasswordDTO;
 import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import com.backend.budgetboss.user.verification.exception.VerificationCodeException;
+import com.backend.budgetboss.user.verification.exception.VerificationTokenException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
@@ -139,7 +140,7 @@ public class UserServiceImpl implements UserService {
 
     VerificationToken verificationToken = verificationTokenRepository
         .findByTokenAndExpirationDateAfter(token, LocalDateTime.now())
-        .orElseThrow(VerificationCodeException::new);
+        .orElseThrow(VerificationTokenException::new);
 
     String email = verificationToken.getEmail();
 
