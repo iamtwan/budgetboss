@@ -10,8 +10,8 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "verification_codes")
-public class VerificationCode {
+@Table(name = "verification_tokens")
+public class VerificationToken {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -21,13 +21,13 @@ public class VerificationCode {
   private String email;
 
   @NotBlank(message = "Verification code is required")
-  private String code;
+  private String token;
 
   private LocalDateTime expirationDate;
 
-  public VerificationCode() {}
+  public VerificationToken() {}
 
-  public VerificationCode(String email) {
+  public VerificationToken(String email) {
     this.email = email;
     this.expirationDate = LocalDateTime.now().plusMinutes(15);
   }
@@ -48,12 +48,12 @@ public class VerificationCode {
     this.email = email;
   }
 
-  public String getCode() {
-    return code;
+  public String getToken() {
+    return token;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setToken(String token) {
+    this.token = token;
   }
 
   public LocalDateTime getExpirationDate() {
@@ -62,5 +62,15 @@ public class VerificationCode {
 
   public void setExpirationDate(LocalDateTime expirationDate) {
     this.expirationDate = expirationDate;
+  }
+
+  @Override
+  public String toString() {
+    return "VerificationToken{" +
+        "id=" + id +
+        ", email='" + email + '\'' +
+        ", token='" + token + '\'' +
+        ", expirationDate=" + expirationDate +
+        '}';
   }
 }

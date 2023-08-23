@@ -6,12 +6,16 @@ import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
 import com.backend.budgetboss.user.verification.VerificationCode;
-import com.backend.budgetboss.user.verification.VerificationRepository;
+import com.backend.budgetboss.user.verification.VerificationCodeRepository;
+import com.backend.budgetboss.user.verification.VerificationToken;
+import com.backend.budgetboss.user.verification.VerificationTokenRepository;
+import com.backend.budgetboss.user.verification.dto.RecoverPasswordDTO;
 import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import com.backend.budgetboss.user.verification.exception.VerificationCodeException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -40,20 +44,23 @@ public class UserServiceImpl implements UserService {
   private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
   private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
   private final JavaMailSender emailSender;
-  private final VerificationRepository verificationRepository;
+  private final VerificationCodeRepository verificationCodeRepository;
+  private final VerificationTokenRepository verificationTokenRepository;
 
   public UserServiceImpl(UserRepository userRepository,
       ModelMapper modelMapper,
       BCryptPasswordEncoder passwordEncoder,
       AuthenticationManager authenticationManager,
       JavaMailSender emailSender,
-      VerificationRepository verificationRepository) {
+      VerificationCodeRepository verificationCodeRepository,
+      VerificationTokenRepository verificationTokenRepository) {
     this.userRepository = userRepository;
     this.modelMapper = modelMapper;
     this.passwordEncoder = passwordEncoder;
     this.authenticationManager = authenticationManager;
     this.emailSender = emailSender;
-    this.verificationRepository = verificationRepository;
+    this.verificationCodeRepository = verificationCodeRepository;
+    this.verificationTokenRepository = verificationTokenRepository;
   }
 
   @Override
@@ -72,7 +79,7 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistsException("User already exists for email: " + email);
     }
 
-    VerificationCode code = verificationRepository
+    VerificationCode code = verificationCodeRepository
         .findByEmailAndExpirationDateAfter(email, LocalDateTime.now())
         .orElseThrow(VerificationCodeException::new);
 
@@ -127,20 +134,56 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public void recoverPassword(RecoverPasswordDTO recoverPasswordDTO) {
+    String token = recoverPasswordDTO.getVerificationToken();
+
+    VerificationToken verificationToken = verificationTokenRepository
+        .findByTokenAndExpirationDateAfter(token, LocalDateTime.now())
+        .orElseThrow(VerificationCodeException::new);
+
+    String email = verificationToken.getEmail();
+
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException(email));
+    user.setPassword(passwordEncoder.encode(recoverPasswordDTO.getPassword()));
+    userRepository.save(user);
+  }
+
+  @Override
   public void sendCode(RequestCodeDTO requestCodeDTO) {
     String email = requestCodeDTO.getEmail();
     String code = RandomStringUtils.randomNumeric(6);
 
-    VerificationCode verificationCode = verificationRepository.findByEmail(email)
+    VerificationCode verificationCode = verificationCodeRepository.findByEmail(email)
         .orElse(new VerificationCode(requestCodeDTO.getEmail()));
     verificationCode.setCode(code);
 
-    verificationRepository.save(verificationCode);
+    verificationCodeRepository.save(verificationCode);
 
     SimpleMailMessage message = new SimpleMailMessage();
     message.setTo(email);
     message.setSubject("Account verification");
     message.setText("Your verification code is: " + code);
+
+    emailSender.send(message);
+  }
+
+  @Override
+  public void sendLink(RequestCodeDTO requestCodeDTO) {
+    String email = requestCodeDTO.getEmail();
+    String token = UUID.randomUUID().toString();
+    String link = "http://localhost:3000/reset/" + token;
+
+    VerificationToken verificationToken = verificationTokenRepository.findByEmail(email)
+        .orElse(new VerificationToken(requestCodeDTO.getEmail()));
+    verificationToken.setToken(token);
+
+    verificationTokenRepository.save(verificationToken);
+
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(email);
+    message.setSubject("Account Recovery");
+    message.setText("Click the following link to recover your account: " + link);
 
     emailSender.send(message);
   }

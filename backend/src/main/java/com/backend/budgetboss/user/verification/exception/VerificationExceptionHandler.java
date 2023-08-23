@@ -1,6 +1,5 @@
 package com.backend.budgetboss.user.verification.exception;
 
-import com.backend.budgetboss.token.exception.TokenCreationException;
 import com.backend.budgetboss.token.exception.TokenExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +17,24 @@ public class VerificationExceptionHandler {
 
   @ExceptionHandler(VerificationCodeException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<ProblemDetail> handleTokenCreationException(TokenCreationException e) {
+  public ResponseEntity<ProblemDetail> handleVerificationCodeException(
+      VerificationCodeException e) {
     logger.error(e.getMessage());
 
     ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
     pd.setTitle("Verification Code Exception");
+
+    return new ResponseEntity<>(pd, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(VerificationTokenException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<ProblemDetail> handleVerificationTokenException(
+      VerificationTokenException e) {
+    logger.error(e.getMessage());
+
+    ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+    pd.setTitle("Verification Token Exception");
 
     return new ResponseEntity<>(pd, HttpStatus.BAD_REQUEST);
   }

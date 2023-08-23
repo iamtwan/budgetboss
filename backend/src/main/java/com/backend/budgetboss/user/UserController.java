@@ -3,7 +3,7 @@ package com.backend.budgetboss.user;
 import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
-import com.backend.budgetboss.user.dto.VerificationCodeDTO;
+import com.backend.budgetboss.user.verification.dto.RecoverPasswordDTO;
 import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -95,6 +94,22 @@ public class UserController {
       @RequestBody ChangePasswordDTO changePasswordDTO) {
     logger.info("/api/users/change-password PUT request received");
     userService.changePassword(authentication, request, response, user, changePasswordDTO);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/recover-password")
+  @Operation(summary = "Change the user's password with the provided password and verification token", description = "Change the user's password with the provided password and verification token")
+  public ResponseEntity<Void> recoverPassword(@RequestBody RecoverPasswordDTO recoverPasswordDTO) {
+    logger.info("/api/users/recover-password POST request received");
+    userService.recoverPassword(recoverPasswordDTO);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("recover-password/send-link")
+  @Operation(summary = "Send a forgotten password link to the provided email", description = "Send a forgotten password link to the provided email")
+  public ResponseEntity<Void> sendLink(@RequestBody RequestCodeDTO requestCodeDTO) {
+    logger.info("/api/users/recover-password/send-link POST request received");
+    userService.sendLink(requestCodeDTO);
     return ResponseEntity.noContent().build();
   }
 

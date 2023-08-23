@@ -3,7 +3,7 @@ package com.backend.budgetboss.user;
 import com.backend.budgetboss.user.dto.ChangePasswordDTO;
 import com.backend.budgetboss.user.dto.CreateUserDTO;
 import com.backend.budgetboss.user.dto.UserResponseDTO;
-import com.backend.budgetboss.user.dto.VerificationCodeDTO;
+import com.backend.budgetboss.user.verification.dto.RecoverPasswordDTO;
 import com.backend.budgetboss.user.verification.dto.RequestCodeDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,5 +30,9 @@ public interface UserService {
       User user,
       ChangePasswordDTO changePasswordDTO);
 
+  void recoverPassword(RecoverPasswordDTO recoverPasswordDTO);
+
   void sendCode(RequestCodeDTO requestCodeDTO);
+
+  void sendLink(RequestCodeDTO requestCodeDTO);
 }
