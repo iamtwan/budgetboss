@@ -6,20 +6,20 @@ const fetcher = async (url) => {
     const response = await fetch(url, { credentials: 'include' });
 
     if (!response.ok) {
-        throw new Error("Error: ", await response.json());
+        throw new Error('Error: ', await response.json());
     }
 
     return await response.json();
 }
 
-export const createSignUp = async (formData) => {
+export const createSignUp = async (updatedFormData) => {
     const response = await fetch(`${API_BASE_URL}/users/register`, {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(updatedFormData)
     });
 
     if (!response.ok) {
@@ -377,6 +377,22 @@ export const deleteUserAccount = async () => {
     const response = await fetch(`${API_BASE_URL}/users`, {
         method: 'DELETE',
         credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}
+
+export const sendSignUpCode = async (email) => {
+    const response = await fetch(`${API_BASE_URL}/users/register/send-code`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
     });
 
     if (!response.ok) {

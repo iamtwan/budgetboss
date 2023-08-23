@@ -1,30 +1,68 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { createSignUp } from '../../../services/apiService';
+import { createSignUp, sendSignUpCode } from '../../../services/apiService';
 import { Button, Form } from 'react-bootstrap';
 
 const SignUpForm = () => {
     const router = useRouter();
     const [error, setError] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        passwordConfirmation: ''
+    });
+    const [verificationPrompt, setVerificationPrompt] = useState(false);
+    const verificationCodeRef = useRef(null);
 
     const handleSignUp = async (e) => {
         e.preventDefault();
+        const emailValue = e.target.email.value;
+        const passwordValue = e.target.password.value;
+        const passwordConfirmationValue = e.target.passwordConfirmation.value;
 
-        const formData = {
-            email: e.target.email.value,
-            password: e.target.password.value,
-            passwordConfirmation: e.target.passwordConfirmation.value,
+        if (passwordValue !== passwordConfirmationValue) {
+            setError('Passwords do not match.')
+            return;
+        } else {
+            setFormData({
+                email: emailValue,
+                password: passwordValue,
+                passwordConfirmation: passwordConfirmationValue,
+            });
         }
 
         try {
-            await createSignUp(formData);
+            const response = await sendSignUpCode(emailValue);
+
+            if (response.status === 409) {
+                setError(`The email ${formData.email} already exists.`)
+                return;
+            }
+
+            setVerificationPrompt(true);
+        } catch (error) {
+            setError(`Error sending verification email to '${formData.email}'.`);
+            console.error('An error has occurred during email sending.', error);
+        }
+    }
+
+    const handleSignUpVerification = async (e) => {
+        e.preventDefault();
+
+        const updatedFormData = {
+            ...formData,
+            verificationCode: verificationCodeRef.current.value
+        }
+
+        try {
+            await createSignUp(updatedFormData);
 
             router.push('/dashboard');
         } catch (error) {
-            setError(`The email '${formData.email}' already exists.`);
-            console.error('An error has occurred during registration.', error);
+            setError(`Registration error for '${formData.email}'.`);
+            console.error('An error has occurred during registration.', error)
         }
     }
 
@@ -33,22 +71,46 @@ const SignUpForm = () => {
             <Form className='row d-flex justify-content-around' onSubmit={handleSignUp}>
                 {error && <p className='text-danger'>{error}</p>}
                 <div className='col-sm-12 col-md-5 col-lg-4 mb-3'>
-                    <Form.Label htmlFor='exampleInputEmail1' className='form-label fw-bold nav-text'>
-                        Email Address
-                    </Form.Label>
-                    <Form.Control
-                        required
-                        // value='test@gmail.com'
-                        type='email'
-                        name='email'
-                        className='form-control'
-                        id='exampleInputEmail1'
-                        aria-describedby='emailHelp'
-                        placeholder='Enter a valid email'
-                    />
-                    <Form.Text id='emailHelp' className='form-text'>
-                        We'll never share your email with anyone else!
-                    </Form.Text>
+                    <div>
+                        <Form.Label htmlFor='exampleInputEmail1' className='form-label fw-bold nav-text'>
+                            Email Address
+                        </Form.Label>
+                        <Form.Control
+                            required
+                            type='email'
+                            name='email'
+                            className='form-control'
+                            id='exampleInputEmail1'
+                            aria-describedby='emailHelp'
+                            placeholder='Enter a valid email'
+                        />
+                        <Form.Text id='emailHelp' className='form-text'>
+                            We'll never share your email with anyone else!
+                        </Form.Text>
+                    </div>
+                    {verificationPrompt && (
+                        <div className='mb-3'>
+                            <Form.Label htmlFor='codeInput' className='form-label fw-bold nav-text'>
+                                Verification Code
+                            </Form.Label>
+                            <Form.Control
+                                required
+                                type='number'
+                                name='verificationCode'
+                                ref={verificationCodeRef}
+                                className='form-control'
+                                id='codeInput'
+                                aria-describedby='verificationCode'
+                                placeholder='Enter code'
+                            />
+                            <Form.Text id='emailHelp' className='form-text'>
+                                We'll never share your email with anyone else!
+                            </Form.Text>
+                            <Button id='auth-signup-btn' type='button' className='btn mt-3 btn-shrink' onClick={handleSignUpVerification}>
+                                Confirm
+                            </Button>
+                        </div>
+                    )}
                 </div>
                 <div className='col-sm-12 col-md-5 col-lg-4'>
                     <Form.Label htmlFor='password' className='col-form-label fw-bold nav-text'>
