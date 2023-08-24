@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -57,11 +58,11 @@ public class UserController {
 
   @PostMapping("/register/send-code")
   @Operation(summary = "Send a verification code to the provided email", description = "Send a verification code to the provided email")
-  public ResponseEntity<Void> sendCode(@RequestBody RequestCodeDTO requestCodeDTO) {
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void sendCode(@RequestBody RequestCodeDTO requestCodeDTO) {
     logger.info("/api/users/register/send-code POST request received");
     userService.sendCode(requestCodeDTO);
     logger.info("/api/users/register/send-code sent code to {}", requestCodeDTO.getEmail());
-    return ResponseEntity.noContent().build();
   }
 
   @PostMapping("/login")
@@ -85,19 +86,20 @@ public class UserController {
 
   @DeleteMapping
   @Operation(summary = "Delete a user's account", description = "Delete a user's account permanently")
-  public ResponseEntity<Void> delete(Authentication authentication,
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void delete(Authentication authentication,
       HttpServletRequest request,
       HttpServletResponse response,
       @CurrentUser User user) {
     logger.info("/api/users DELETE request received");
     userService.deleteUser(authentication, request, response, user);
     logger.info("/api/users deleted user: {}", user.getEmail());
-    return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/change-password")
   @Operation(summary = "Change the current user's password", description = "Change the current user's password")
-  public ResponseEntity<Void> changePassword(Authentication authentication,
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void changePassword(Authentication authentication,
       HttpServletRequest request,
       HttpServletResponse response,
       @CurrentUser User user,
@@ -105,24 +107,23 @@ public class UserController {
     logger.info("/api/users/change-password PUT request received");
     userService.changePassword(authentication, request, response, user, changePasswordDTO);
     logger.info("/api/users/change-password changed password for user: {}", user.getEmail());
-    return ResponseEntity.noContent().build();
   }
 
   @PostMapping("/recover-password")
   @Operation(summary = "Change the user's password with the provided password and verification token", description = "Change the user's password with the provided password and verification token")
-  public ResponseEntity<Void> recoverPassword(@RequestBody RecoverPasswordDTO recoverPasswordDTO) {
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void recoverPassword(@RequestBody RecoverPasswordDTO recoverPasswordDTO) {
     logger.info("/api/users/recover-password POST request received");
     userService.recoverPassword(recoverPasswordDTO);
     logger.info("/api/users/recover-password updated user password");
-    return ResponseEntity.noContent().build();
   }
 
   @PostMapping("recover-password/send-link")
   @Operation(summary = "Send a forgotten password link to the provided email", description = "Send a forgotten password link to the provided email")
-  public ResponseEntity<Void> sendLink(@RequestBody RequestCodeDTO requestCodeDTO) {
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void sendLink(@RequestBody RequestCodeDTO requestCodeDTO) {
     logger.info("/api/users/recover-password/send-link POST request received");
     userService.sendLink(requestCodeDTO);
     logger.info("/api/users/recover-password/send-link sent link to {}", requestCodeDTO.getEmail());
-    return ResponseEntity.noContent().build();
   }
 }
