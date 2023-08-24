@@ -155,6 +155,10 @@ public class UserServiceImpl implements UserService {
     String email = requestCodeDTO.getEmail();
     String code = RandomStringUtils.randomNumeric(6);
 
+    if (userRepository.existsByEmail(email)) {
+      throw new UserAlreadyExistsException("User already exists for email: " + email);
+    }
+
     VerificationCode verificationCode = verificationCodeRepository.findByEmail(email)
         .orElse(new VerificationCode(requestCodeDTO.getEmail()));
     verificationCode.setCode(code);

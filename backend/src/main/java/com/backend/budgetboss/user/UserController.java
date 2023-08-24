@@ -60,6 +60,7 @@ public class UserController {
   public ResponseEntity<Void> sendCode(@RequestBody RequestCodeDTO requestCodeDTO) {
     logger.info("/api/users/register/send-code POST request received");
     userService.sendCode(requestCodeDTO);
+    logger.info("/api/users/register/send-code sent code to {}", requestCodeDTO.getEmail());
     return ResponseEntity.noContent().build();
   }
 
@@ -90,6 +91,7 @@ public class UserController {
       @CurrentUser User user) {
     logger.info("/api/users DELETE request received");
     userService.deleteUser(authentication, request, response, user);
+    logger.info("/api/users deleted user: {}", user.getEmail());
     return ResponseEntity.noContent().build();
   }
 
@@ -102,6 +104,7 @@ public class UserController {
       @RequestBody ChangePasswordDTO changePasswordDTO) {
     logger.info("/api/users/change-password PUT request received");
     userService.changePassword(authentication, request, response, user, changePasswordDTO);
+    logger.info("/api/users/change-password changed password for user: {}", user.getEmail());
     return ResponseEntity.noContent().build();
   }
 
@@ -110,6 +113,7 @@ public class UserController {
   public ResponseEntity<Void> recoverPassword(@RequestBody RecoverPasswordDTO recoverPasswordDTO) {
     logger.info("/api/users/recover-password POST request received");
     userService.recoverPassword(recoverPasswordDTO);
+    logger.info("/api/users/recover-password updated user password");
     return ResponseEntity.noContent().build();
   }
 
@@ -118,6 +122,7 @@ public class UserController {
   public ResponseEntity<Void> sendLink(@RequestBody RequestCodeDTO requestCodeDTO) {
     logger.info("/api/users/recover-password/send-link POST request received");
     userService.sendLink(requestCodeDTO);
+    logger.info("/api/users/recover-password/send-link sent link to {}", requestCodeDTO.getEmail());
     return ResponseEntity.noContent().build();
   }
 }
