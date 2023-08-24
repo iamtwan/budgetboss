@@ -12,6 +12,23 @@ const fetcher = async (url) => {
     return await response.json();
 }
 
+export const sendSignUpCode = async (email) => {
+    const response = await fetch(`${API_BASE_URL}/users/register/send-code`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    });
+
+
+    if (!response.ok) {
+        throw { response };
+    }
+
+    return response;
+}
+
 export const createSignUp = async (updatedFormData) => {
     const response = await fetch(`${API_BASE_URL}/users/register`, {
         method: 'POST',
@@ -22,11 +39,13 @@ export const createSignUp = async (updatedFormData) => {
         body: JSON.stringify(updatedFormData)
     });
 
+    const responseData = await response.json();
+
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw { response, responseData };
     }
 
-    return await response.json();
+    return await responseData;
 }
 
 export const fetchUserLogin = async (formData) => {
@@ -377,22 +396,6 @@ export const deleteUserAccount = async () => {
     const response = await fetch(`${API_BASE_URL}/users`, {
         method: 'DELETE',
         credentials: 'include'
-    });
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    return response;
-}
-
-export const sendSignUpCode = async (email) => {
-    const response = await fetch(`${API_BASE_URL}/users/register/send-code`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
     });
 
     if (!response.ok) {
