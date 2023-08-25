@@ -404,3 +404,20 @@ export const deleteUserAccount = async () => {
 
     return response;
 }
+
+export const sendResetLink = async (email) => {
+    const response = await fetch(`${API_BASE_URL}/users/recover-password/send-link`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    })
+
+    if (!response.ok) {
+        throw { response };
+    }
+
+    return response;
+}

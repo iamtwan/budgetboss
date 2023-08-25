@@ -50,6 +50,7 @@ const LoginForm = () => {
                             placeholder='Password'
                             required
                         />
+                        <p className='m-2'><a className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover' href='/reset_password'>Forgot Password?</a></p>
                     </Form.Group>
                 </div>
                 <div className='d-flex justify-content-end'>
