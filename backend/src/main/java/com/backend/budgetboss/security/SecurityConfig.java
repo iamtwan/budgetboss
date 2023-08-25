@@ -46,6 +46,7 @@ public class SecurityConfig {
                 "/api/users/login",
                 "/api/users/register",
                 "/api/users/register/send-code",
+                "/api/users/recover-password",
                 "/api/users/recover-password/send-link",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
