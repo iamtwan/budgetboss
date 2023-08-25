@@ -28,7 +28,7 @@ const ResetPassword = () => {
                 <Form onSubmit={handleResetLink} className='w-50'>
                     <Form.Group className='mb-3'>
                         <div className='text-center'>
-                            <Form.Label className='text-uppercase nav-text fw-semibold fs-4'>Account Email address</Form.Label>
+                            <Form.Label className='text-uppercase nav-text fw-semibold fs-4'>Account Recovery</Form.Label>
                         </div>
                         <Form.Control
                             required

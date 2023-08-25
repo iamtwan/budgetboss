@@ -421,3 +421,23 @@ export const sendResetLink = async (email) => {
 
     return response;
 }
+
+export const resetUserPassword = async (password, token) => {
+    const response = await fetch(`${API_BASE_URL}/users/recover-password`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            password: password,
+            verificationToken: token
+        })
+    })
+
+    if (!response.ok) {
+        throw { response };
+    }
+
+    return response;
+}
