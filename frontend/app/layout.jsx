@@ -8,6 +8,10 @@ const lato = Lato({
     display: 'swap',
 });
 
+export const metadata = {
+    title: 'Budget Boss',
+  }
+
 export default function RootLayout({ children }) {
     return (
         <html className='h-100' lang='en'>

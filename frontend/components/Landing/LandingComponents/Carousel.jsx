@@ -12,8 +12,9 @@ const FeatureCarousel = ({ activeIndex, onSelect }) => {
                         width={1133}
                         height={704}
                         alt='First Slide'
-                        className='d-block w-100'
+                        className='d-block w-100 carousel-img'
                         quality={100}
+                        priority
                     />
                 </Carousel.Item>
                 <Carousel.Item>
@@ -22,7 +23,7 @@ const FeatureCarousel = ({ activeIndex, onSelect }) => {
                         width={1133}
                         height={704}
                         alt='Second Slide'
-                        className='d-block w-100'
+                        className='d-block w-100 carousel-img'
                         quality={100}
                     />
                 </Carousel.Item>
@@ -32,7 +33,7 @@ const FeatureCarousel = ({ activeIndex, onSelect }) => {
                         width={1133}
                         height={704}
                         alt='Third Slide'
-                        className='d-block w-100'
+                        className='d-block w-100 carousel-img'
                         quality={100}
                     />
                 </Carousel.Item>
@@ -42,7 +43,7 @@ const FeatureCarousel = ({ activeIndex, onSelect }) => {
                         width={1133}
                         height={704}
                         alt='Fourth Slide'
-                        className='d-block w-100'
+                        className='d-block w-100 carousel-img'
                         quality={100}
                     />
                 </Carousel.Item>

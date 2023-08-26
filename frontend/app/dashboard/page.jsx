@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.css'; // development
-// import 'bootstrap/dist/css/bootstrap.min.css'; // production
+// import 'bootstrap/dist/css/bootstrap.css'; // development
+import 'bootstrap/dist/css/bootstrap.min.css'; // production
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import withAuth from '../../components/Authentication/ProtectedRoute';
 

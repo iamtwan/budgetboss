@@ -250,6 +250,11 @@
     height: 600px;
 }
 
+.carousel-img {
+    width: 100%;
+    height: auto;
+}
+
 /* monthly budget transactions */
 .nameColumn {
     width: 30%;
