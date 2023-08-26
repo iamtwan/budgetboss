@@ -47,11 +47,11 @@ const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => 
 		try {
 			await updateManualTransaction(transaction.id, formData);
 
-			mutate(`http://localhost:8080/api/manual-transactions/${account.id}`);
-			mutate('http://localhost:8080/api/manual-institutions');
-			mutate('http://localhost:8080/api/charts');
+			mutate(`${API_BASE_URL}/manual-transactions/${account.id}`);
+			mutate(`${API_BASE_URL}/manual-institutions`);
+			mutate(`${API_BASE_URL}/charts`);
 		} catch (error) {
-			console.error('Error updating transaction:', error);
+			setError('Error updating transaction:', error);
 		}
 	}
 
@@ -64,11 +64,11 @@ const TransactionForm = ({ show, account, onClose, transaction, isEditing }) => 
 		try {
 			await createManualTransaction(account.id, formData);
 
-			mutate(`http://localhost:8080/api/manual-transactions/${account.id}`);
-			mutate('http://localhost:8080/api/manual-institutions');
-			mutate('http://localhost:8080/api/charts');
+			mutate(`${API_BASE_URL}/manual-transactions/${account.id}`);
+			mutate(`${API_BASE_URL}/manual-institutions`);
+			mutate(`${API_BASE_URL}/charts`);
 		} catch (error) {
-			console.error('Error adding transaction:', error);
+			setError('Error adding transaction:', error);
 		}
 	}
 

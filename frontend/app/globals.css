@@ -31,6 +31,7 @@
     color: #b74040;
 }
 
+/* .reset-container, */
 .settings-container,
 .transaction-text,
 .dash-container-rows,
@@ -39,18 +40,22 @@
     z-index: 0;
 }
 
+/* .reset-container, */
 .settings-container,
 .main-dashboard {
     height: 100%;
     max-height: 90vh;
 }
 
+.carousel-container,
+.pricing-container,
 .landing-section,
 .navbar-container,
 .container-row-top {
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 0px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
+.reset-container,
 .settings-container,
 .bottom-left-container,
 .bottom-right-container,
@@ -58,6 +63,7 @@
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
+.reset-container,
 .settings-container,
 .auth-container {
     border-radius: 0 0 20px 20px;
@@ -70,9 +76,10 @@
 
 .landing-section {
     height: auto;
-    max-height: 1700px;
+    max-height: 2000px;
 }
 
+.reset-container,
 .settings-container,
 .container-row-top {
     height: 720px;
@@ -92,6 +99,7 @@
     border-radius: 0 0 20px 0;
 }
 
+#reset-btn,
 #sign-up,
 #toggle-check,
 #back-dash,
@@ -114,6 +122,7 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
+#reset-btn:hover,
 #sign-up:hover,
 #toggle-check:hover,
 #back-dash:hover,
@@ -210,15 +219,40 @@
     overflow-y: auto;
 }
 
-.active-feature .card {
-    background-color: #e6e6e6;
+.active-feature .feature-cards {
+    background-color: #e3e9d7;
     transform: scale(1.05);
-    transition: all 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .feature-cards {
     height: 300px;
+    background-color: #AEC3B0;
+    color: #124559 !important;
+}
+
+.questions-inner,
+.questions-header,
+.pricing-container,
+.pricing-inner {
+    background-color: #AEC3B0 !important;
+    color: #124559 !important;
+}
+
+.pricing-container-prem,
+.pricing-inner-prem {
+    background-color: #AEC3B0 !important;
+    color: #124559d9 !important;
+}
+
+.reset-container {
+    height: 600px;
+}
+
+.carousel-img {
+    width: 100%;
+    height: auto;
 }
 
 /* monthly budget transactions */
@@ -251,7 +285,7 @@
 @media (max-width: 991px) {
     .landing-section {
         height: auto;
-        max-height: 2000px;
+        max-height: 3000px;
     }
 
     .feature-cards {

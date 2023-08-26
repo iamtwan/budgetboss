@@ -1,6 +1,6 @@
 'use client'
 
-import { Modal, Link } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import LoginForm from '../../Authentication/AuthForms/LoginForm';
 

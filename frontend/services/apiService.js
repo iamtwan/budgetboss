@@ -1,32 +1,51 @@
 import useSWR from 'swr';
+import { API_BASE_URL } from './apiConfig';
 
-const API_BASE_URL = 'http://localhost:8080/api';
 
 const fetcher = async (url) => {
     const response = await fetch(url, { credentials: 'include' });
 
     if (!response.ok) {
-        throw new Error("Error: ", await response.json());
+        throw new Error('Error: ', await response.json());
     }
 
     return await response.json();
 }
 
-export const createSignUp = async (formData) => {
+export const sendSignUpCode = async (email) => {
+    const response = await fetch(`${API_BASE_URL}/users/register/send-code`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    });
+
+
+    if (!response.ok) {
+        throw { response };
+    }
+
+    return response;
+}
+
+export const createSignUp = async (updatedFormData) => {
     const response = await fetch(`${API_BASE_URL}/users/register`, {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(updatedFormData)
     });
 
+    const responseData = await response.json();
+
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw { response, responseData };
     }
 
-    return await response.json();
+    return await responseData;
 }
 
 export const fetchUserLogin = async (formData) => {
@@ -41,7 +60,9 @@ export const fetchUserLogin = async (formData) => {
     });
 
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw {
+            status: response.status
+        }
     }
 
     return await response.json();
@@ -341,4 +362,84 @@ export const updateGoal = async (goalId, formData) => {
     }
 
     return await response.json();
+}
+
+export const changePassword = async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/users/change-password`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}
+
+export const unlinkAllItems = async () => {
+    const response = await fetch(`${API_BASE_URL}/items/unlink`, {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}
+
+export const deleteUserAccount = async () => {
+    const response = await fetch(`${API_BASE_URL}/users`, {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response;
+}
+
+export const sendResetLink = async (email) => {
+    const response = await fetch(`${API_BASE_URL}/users/recover-password/send-link`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    })
+
+    if (!response.ok) {
+        throw { response };
+    }
+
+    return response;
+}
+
+export const resetUserPassword = async (password, token) => {
+    const response = await fetch(`${API_BASE_URL}/users/recover-password`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            password: password,
+            verificationToken: token
+        })
+    })
+
+    if (!response.ok) {
+        throw { response };
+    }
+
+    return response;
 }

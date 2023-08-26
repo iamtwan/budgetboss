@@ -1,16 +1,17 @@
 'use client'
 
-import 'bootstrap/dist/css/bootstrap.css'; // development
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useState } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css'; // production
-// import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import withAuth from '../../../components/Authentication/ProtectedRoute';
 import { useUser } from 'services/apiService';
+import { changePassword, unlinkAllItems, deleteUserAccount } from 'services/apiService';
+import { useRouter } from 'next/navigation';
 
 
 const Settings = () => {
     const { data } = useUser();
+    const router = useRouter();
     const [show, setShow] = useState(false);
     const [deleteButton, setDeleteButton] = useState(false)
     const [isChecked, setIsChecked] = useState(false)
@@ -25,16 +26,36 @@ const Settings = () => {
         }
 
         try {
-            // add api call when ready
-            // await updateAccountPass(formData);
+            await changePassword(formData);
             setShow(true);
+
+            router.push('/');
         } catch (error) {
             console.error(error);
         }
     }
 
     const handleDeleteDisclaimer = (e) => {
-        setDeleteButton(e.target.checked)
+        setDeleteButton(e.target.checked);
+    }
+
+    const handleDeleteUserAccount = async () => {
+        if (deleteButton) {
+            try {
+                await deleteUserAccount();
+                router.push('/');
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+
+    const handleUnlinkAllItems = async () => {
+        try {
+            await unlinkAllItems();
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleEmailToggle = async () => {
@@ -47,7 +68,7 @@ const Settings = () => {
             // set timeout on call for spam toggle
             console.log(`Toggle is now: ${checkedStatus ? 'Checked' : 'Unchecked'}`)
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -71,7 +92,7 @@ const Settings = () => {
                             </div>
                             <div className="d-flex justify-content-between align-items-center w-100 mb-3">
                                 <Form.Group controlId='password' className='w-75 col-sm-12 col-md-5 col-lg-10 mb-3'>
-                                    <Form.Label className='fw-bold fs-6 text-uppercase nav-text text-nowrap'>Account Password</Form.Label>
+                                    <Form.Label className='fw-bold fs-6 text-uppercase nav-text text-nowrap'>Change Account Password</Form.Label>
                                     <Form.Control
                                         type='password'
                                         pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$'
@@ -105,16 +126,16 @@ const Settings = () => {
                             />
                         </div>
                         <div>
-                            <Button id='' className='' variant='danger' type='submit' disabled={!deleteButton}>Delete</Button>
+                            <Button id='' className='' variant='danger' type='button' onClick={handleDeleteUserAccount} disabled={!deleteButton}>Delete</Button>
                         </div>
                     </div>
                     <div className='d-flex w-100 justify-content-between align-items-center mt-4'>
                         <div>
                             <h3 className='fw-bold fs-4 text-uppercase nav-text text-nowrap'>Unlink Plaid Accounts</h3>
-                            <p className=''>This will disconnect all Plaid accounts.</p>
+                            <p className=''>Disconnect all Plaid accounts.</p>
                         </div>
                         <div>
-                            <Button id='auth-login-btn' className='' variant='' type='submit'>Unlink</Button>
+                            <Button id='auth-login-btn' className='' variant='' type='button' onClick={handleUnlinkAllItems}>Unlink</Button>
                         </div>
                     </div>
                     <div className='d-flex w-100 justify-content-between align-items-center mt-3'>
@@ -124,7 +145,7 @@ const Settings = () => {
                         </div>
                         <div>
                             <Button id='toggle-check' className='btn btn-md px-4' variant='' type='button' onClick={handleEmailToggle}>
-                                {isChecked ? <i class="bi bi-envelope-check"></i> : <i class="bi bi-x-lg"></i>}
+                                {isChecked ? <i className="bi bi-envelope-check"></i> : <i className="bi bi-x-lg"></i>}
                             </Button>
                         </div>
                     </div>

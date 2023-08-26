@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { LinkAccount } from './Link/LinkAccount';
 import { fetchLinkToken } from '../../../services/apiService';
+import { API_BASE_URL } from 'services/apiConfig';
 import AddAccountForm from './AccountForms/AddAccountForm';
 import useSWR from 'swr';
 
@@ -12,14 +13,13 @@ const AddAccountDropdown = () => {
     const [showModal, setShowModal] = useState(false);
     const [linkAccountOpen, setLinkAccountOpen] = useState(false);
 
-    const { data, error, isLoading } = useSWR('http://localhost:8080/api/tokens', fetchLinkToken, {
+    const { data, error, isLoading } = useSWR(`${API_BASE_URL}/tokens`, fetchLinkToken, {
         refreshInterval: 60 * 25 * 1000,
         revalidateOnFocus: false,
     });
 
     if (error) {
-        console.log(error.info);
-        return <div>Error occurred</div>;
+        return <div><p>Error. Please try again or contact support.</p></div>;
     }
 
     if (isLoading) {

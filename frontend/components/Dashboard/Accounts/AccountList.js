@@ -5,6 +5,8 @@ import { updateItem, deleteItem } from '../../../services/apiService';
 import Link from './Link/LinkTokenExchange';
 import { useSWRConfig } from 'swr';
 import { Button } from 'react-bootstrap';
+import { API_BASE_URL } from 'services/apiConfig';
+
 
 const AccountList = ({
     institution,
@@ -23,7 +25,7 @@ const AccountList = ({
             const response = await updateItem(id);
             setToken(response.linkToken);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -31,10 +33,10 @@ const AccountList = ({
         try {
             await deleteItem(id);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         } finally {
-            mutate('http://localhost:8080/api/items');
-            mutate('http://localhost:8080/api/charts');
+            mutate(`${API_BASE_URL}/items`);
+            mutate(`${API_BASE_URL}/charts`);
         }
     }
 

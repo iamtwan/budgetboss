@@ -1,26 +1,26 @@
+import { API_BASE_URL } from './apiConfig';
+
+
 export const resetItem = async (itemId) => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/webhooks/item/${itemId}/reset`, {
-        method: 'GET',
-        credentials: 'include'
-      });
+  try {
+    await fetch(`${API_BASE_URL}/webhooks/item/${itemId}/reset`, {
+      method: 'GET',
+      credentials: 'include'
+    });
 
-      console.log(response);
-    } catch (error) {
-      console.error('Failed to reset item', error);
-    }
-  };
+  } catch (error) {
+    throw error;
+  }
+};
 
-  export const fireEvent = async (itemId) => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/webhooks/item/${itemId}/fire`, {
-        method: 'GET',
-        credentials: 'include'
-      });
+export const fireEvent = async (itemId) => {
+  try {
+    await fetch(`${API_BASE_URL}/webhooks/item/${itemId}/fire`, {
+      method: 'GET',
+      credentials: 'include'
+    });
 
-      console.log(response);
-    } catch (error) {
-      console.error('Failed to fire webhook event', error);
-      throw error;
-    }
-  };
+  } catch (error) {
+    throw error;
+  }
+};

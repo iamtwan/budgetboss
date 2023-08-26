@@ -5,33 +5,43 @@ const NavQuestions = () => {
     return (
         <Accordion flush>
             <Accordion.Item eventKey='0'>
-                <Accordion.Header>What is BudgetBoss?</Accordion.Header>
-                <Accordion.Body>
-                    BudgetBoss is designed to help you effectively track, analyze, and manage your personal finances, ensuring you're always in control of your money. Think of it as your non-intrusive pocket financial advisor!
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>What is BudgetBoss?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className="fw-semibold fst-italic">
+                        BudgetBoss is designed to help you effectively track, analyze, and manage your personal finances, ensuring you're always in control of your money. Think of it as your non-intrusive pocket financial advisor!
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='1'>
-                <Accordion.Header>How secure is connecting my bank account with the app?</Accordion.Header>
-                <Accordion.Body>
-                    BudgetBoss prioritizes your security. We use a ubiquitous third-party service called Plaid to securely connect your bank accounts. Plaid is trusted by many major financial institutions, ensuring that your data remains private and protected.
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>How secure is connecting my bank account with the app?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className='fw-semibold fst-italic'>
+                        BudgetBoss prioritizes your security. We use a ubiquitous third-party service called Plaid to securely connect your bank accounts. Plaid is trusted by many major financial institutions, ensuring that your data remains private and protected.
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='2'>
-                <Accordion.Header>I'm a bit wary of connecting my bank. Can I still use the app?</Accordion.Header>
-                <Accordion.Body>
-                    Absolutely! You can manually create accounts and add transactions if you'd prefer not to connect your bank. However, connecting via Plaid offers additional automated features like account updates, but the choice is yours.
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>I'm a bit wary of connecting my bank. Can I still use the app?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className="fw-semibold fst-italic">
+                        Absolutely! You can manually create accounts and add transactions if you'd prefer not to connect your bank. However, connecting via Plaid offers additional automated features like account updates, but the choice is yours.
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='3'>
-                <Accordion.Header>How will I benefit from connecting my bank account?</Accordion.Header>
-                <Accordion.Body>
-                    By connecting your bank account through Plaid, you'll receive automatic updates, keeping your records timely and accurate. It's like having your personal accountant keeping tabs without you lifting a finger.
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>How will I benefit from connecting my bank account?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className="fw-semibold fst-italic">
+                        By connecting your bank account through Plaid, you'll receive automatic updates, keeping your records timely and accurate. It's like having your personal accountant keeping tabs without you lifting a finger.
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='4'>
-                <Accordion.Header>How can I track my monthly spending?</Accordion.Header>
-                <Accordion.Body>
-                    The app provides two insightful visual aids:
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>How can I track my monthly spending?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p lassName="fw-semibold fst-italic">
+                        The app provides two insightful visual aids:
+                    </p>
                     <br />
                     <br />
                     - 6-month bar chart to see trends in your monthly budget.
@@ -40,27 +50,35 @@ const NavQuestions = () => {
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='5'>
-                <Accordion.Header>Can I set financial goals with BudgetBoss?</Accordion.Header>
-                <Accordion.Body>
-                    Absolutely! You can create specific financial goals, track your progress towards achieving them, and even archive them once completed. Setting a goal has never been easier or more motivating!
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>Can I set financial goals with BudgetBoss?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className="fw-semibold fst-italic">
+                        Absolutely! You can create specific financial goals, track your progress towards achieving them, and even archive them once completed. Setting a goal has never been easier or more motivating!
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='6'>
-                <Accordion.Header>Are there any hidden fees associated with BudgetBoss?</Accordion.Header>
-                <Accordion.Body>
-                    Currently, BudgetBoss is completely free to use! No trials. No payment method required to get started. Should this policy change, rest assured a public announcement will be made.
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>Are there any hidden fees associated with BudgetBoss?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className="fw-semibold fst-italic">
+                        Currently, BudgetBoss is completely free to use! No trials. No payment method required to get started. Should this policy change, rest assured a public announcement will be made.
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='7'>
-                <Accordion.Header>I need some guidance using BudgetBoss or I have additional questions. Is there customer support?</Accordion.Header>
-                <Accordion.Body>
-                    Of course! Our friendly support team is always ready to help. Reach out to us at @bbsupport.com or check our in-app guide for instant assistance.
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>I need some guidance using BudgetBoss or I have additional questions. Is there customer support?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className="fw-semibold fst-italic">
+                        Of course! Our friendly support team is always ready to help. Reach out to us at @bbsupport.com or check our in-app guide for instant assistance.
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='8'>
-                <Accordion.Header>What happens if I spot an error in a transaction?</Accordion.Header>
-                <Accordion.Body>
-                    Errors can occur, especially with manual entries. Simply navigate to the specific transaction and choose the 'Edit' option. If the error is from an auto-update via Plaid, please contact our support for assistance.
+                <Accordion.Header><span className='nav-text fw-semibold text-uppercase'>What happens if I spot an error in a transaction?</span></Accordion.Header>
+                <Accordion.Body className='questions-inner'>
+                    <p className="fw-semibold fst-italic">
+                        Errors can occur, especially with manual entries. Simply navigate to the specific transaction and choose the 'Edit' option. If the error is from an auto-update via Plaid, please contact our support for assistance.
+                    </p>
                 </Accordion.Body>
             </Accordion.Item>
         </Accordion>
