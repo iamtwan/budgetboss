@@ -2,6 +2,7 @@ package com.backend.budgetboss.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,9 @@ public class SecurityConfig {
 
   private final UserDetailsService userDetailsService;
   private final PasswordEncoder passwordEncoder;
+
+  @Value("${BASE_URL}")
+  private String baseUrl;
 
   public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
     this.userDetailsService = userDetailsService;
@@ -64,7 +68,7 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowCredentials(true);
-    configuration.addAllowedOrigin("http://localhost:3000");
+    configuration.addAllowedOrigin(baseUrl);
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
