@@ -25,8 +25,8 @@ const CreditAccountsSection = ({ onOpenEditModal }) => {
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
             setSelectedAccount({ institutionId, ...account, type });
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
+            console.error(error);
         }
     }
 

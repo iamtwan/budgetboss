@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
 import { exchangeLinkToken } from '../../../../services/apiService';
 import { useSWRConfig } from 'swr';
+import { API_BASE_URL } from 'services/apiConfig';
+
 
 export const LinkAccount = ({
     linkToken, openImmediately = false, onClose
@@ -19,11 +21,11 @@ export const LinkAccount = ({
             };
 
             await exchangeLinkToken(tokenData);
-            mutate('http://localhost:8080/api/items');
-            mutate('http://localhost:8080/api/charts');
+            mutate(`${API_BASE_URL}/items`);
+            mutate(`${API_BASE_URL}/charts`);
             onClose();
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
+            console.error(error);
         }
     }
 

@@ -1,10 +1,8 @@
 'use client'
 
-import 'bootstrap/dist/css/bootstrap.css'; // development
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useState } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css'; // production
-// import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import withAuth from '../../../components/Authentication/ProtectedRoute';
 import { useUser } from 'services/apiService';
 import { changePassword, unlinkAllItems, deleteUserAccount } from 'services/apiService';
@@ -45,7 +43,6 @@ const Settings = () => {
         if (deleteButton) {
             try {
                 await deleteUserAccount();
-                console.log('successful account delete')
                 router.push('/');
             } catch (error) {
                 console.error(error);
@@ -95,7 +92,7 @@ const Settings = () => {
                             </div>
                             <div className="d-flex justify-content-between align-items-center w-100 mb-3">
                                 <Form.Group controlId='password' className='w-75 col-sm-12 col-md-5 col-lg-10 mb-3'>
-                                    <Form.Label className='fw-bold fs-6 text-uppercase nav-text text-nowrap'>Account Password</Form.Label>
+                                    <Form.Label className='fw-bold fs-6 text-uppercase nav-text text-nowrap'>Change Account Password</Form.Label>
                                     <Form.Control
                                         type='password'
                                         pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^!&+=])[A-Za-z\d@#$%^!&+=]+$'

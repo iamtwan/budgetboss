@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { updateManualAccount, deleteManualAccount } from '../../../../services/apiService';
 import { useSWRConfig } from 'swr';
+import { API_BASE_URL } from 'services/apiConfig';
+
 
 const EditAccountModal = ({ show, account, onClose }) => {
     const [accountName, setAccountName] = useState('');
@@ -29,7 +31,7 @@ const EditAccountModal = ({ show, account, onClose }) => {
 
     const updateManualAccounts = async (accountUpdate) => {
         try {
-            mutate('http://localhost:8080/api/manual-institutions', accountUpdate, {
+            mutate(`${API_BASE_URL}/manual-institutions`, accountUpdate, {
                 populateCache: (account, institutions) => {
                     const updatedInstitutions = institutions.map(institution => {
                         const updatedManualAccounts = institution.manualAccounts.map(acc => acc.id === account.id ? account : acc);
@@ -43,7 +45,6 @@ const EditAccountModal = ({ show, account, onClose }) => {
 
             onClose();
         } catch (error) {
-            console.log(error);
             setError(error.message);
         }
     }
@@ -62,7 +63,7 @@ const EditAccountModal = ({ show, account, onClose }) => {
         try {
             await deleteManualAccount(account.id);
 
-            mutate('http://localhost:8080/api/manual-institutions', (data) => {
+            mutate(`${API_BASE_URL}/manual-institutions`, (data) => {
                 return data.map(institution => {
                     const updatedManualAccounts = institution.manualAccounts.filter(acc => acc.id !== account.id);
                     return { ...institution, manualAccounts: updatedManualAccounts };
@@ -71,7 +72,6 @@ const EditAccountModal = ({ show, account, onClose }) => {
 
             onClose();
         } catch (error) {
-            console.log(error);
             setError(error.message);
         }
     }

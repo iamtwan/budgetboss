@@ -6,8 +6,9 @@ import { Button } from 'react-bootstrap';
 import AddGoalForm from './GoalForms/AddGoalForm';
 import CompletedGoals from './CompletedGoalsModal';
 import { useSWRConfig } from 'swr';
-
 import { fetchGoals, deleteGoal, updateGoal, createGoal } from '../../../services/apiService';
+import { API_BASE_URL } from 'services/apiConfig';
+
 
 const GoalsSection = () => {
     const [showModal, setShowModal] = useState(false);
@@ -35,9 +36,9 @@ const GoalsSection = () => {
         try {
             await deleteGoal(goal.id);
 
-            mutate('http://localhost:8080/api/goals');
+            mutate(`${API_BASE_URL}/goals`);
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
@@ -49,9 +50,9 @@ const GoalsSection = () => {
                 await createGoal(formData);
             }
 
-            mutate('http://localhost:8080/api/goals');
+            mutate(`${API_BASE_URL}/goals`);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         } finally {
             setEditedGoal(null);
         }

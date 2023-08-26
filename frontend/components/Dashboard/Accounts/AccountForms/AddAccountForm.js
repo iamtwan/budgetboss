@@ -52,8 +52,8 @@ const AddAccountForm = ({ show, onClose }) => {
         try {
             await createManualAccount(formData);
             mutate();
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            throw error;
         }
     }
 

@@ -1,6 +1,6 @@
 import useSWR from 'swr';
+import { API_BASE_URL } from './apiConfig';
 
-const API_BASE_URL = 'http://localhost:8080/api';
 
 const fetcher = async (url) => {
     const response = await fetch(url, { credentials: 'include' });

@@ -16,8 +16,8 @@ const Logout = () => {
             await userLogout();
             router.push('/');
             clearCache();
-        } catch (err) {
-            console.error('Logout failed', err);
+        } catch (error) {
+            console.error('Logout failed', error);
         }
     };
 
