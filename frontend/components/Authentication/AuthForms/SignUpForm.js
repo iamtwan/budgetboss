@@ -89,6 +89,7 @@ const SignUpForm = () => {
                                     id='exampleInputEmail1'
                                     aria-describedby='emailHelp'
                                     placeholder='Enter a valid email'
+                                    autoComplete='email'
                                 />
                             </div>
                             <div className='col-auto'>
@@ -149,6 +150,7 @@ const SignUpForm = () => {
                                     className='form-control'
                                     aria-labelledby='password'
                                     placeholder='Password'
+                                    autoComplete='new-password'
                                 />
                             </div>
                             <div className='col-auto'>
@@ -175,6 +177,7 @@ const SignUpForm = () => {
                                     className='form-control'
                                     aria-labelledby='passwordConfirmation'
                                     placeholder='Password Confirmation'
+                                    autoComplete='new-password'
                                 />
                             </div>
                             <div className='col-auto'>

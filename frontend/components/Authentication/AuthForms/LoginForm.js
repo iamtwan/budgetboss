@@ -42,6 +42,7 @@ const LoginForm = () => {
                             type='email'
                             placeholder='Email Address'
                             aria-describedby='email'
+                            autoComplete='email'
                             required
                         />
                         <p className='m-2 text-danger'>{error}</p>
@@ -55,6 +56,7 @@ const LoginForm = () => {
                             maxLength='20'
                             aria-labelledby='password'
                             placeholder='Password'
+                            autoComplete='current-password'
                             required
                         />
                         <p className='m-2'><a className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover' href='/recover'>Forgot Password?</a></p>
