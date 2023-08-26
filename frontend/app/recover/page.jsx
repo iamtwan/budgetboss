@@ -5,7 +5,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { sendResetLink } from 'services/apiService';
 
-const ResetPassword = () => {
+const RecoverAccount = () => {
     const [error, setError] = useState('');
     const [btnMessage, setBtnMessage] = useState(false);
 
@@ -55,4 +55,4 @@ const ResetPassword = () => {
     );
 }
 
-export default ResetPassword;
+export default RecoverAccount;

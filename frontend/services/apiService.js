@@ -60,7 +60,9 @@ export const fetchUserLogin = async (formData) => {
     });
 
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw {
+            status: response.status
+        }
     }
 
     return await response.json();

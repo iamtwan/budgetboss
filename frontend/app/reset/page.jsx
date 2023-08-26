@@ -18,7 +18,7 @@ const ResetCallback = () => {
         if (!fetchedToken) {
             setError('Invalid URL. Redirecting...');
             setTimeout(() => {
-                router.push('/reset_password');
+                router.push('/recover');
             }, 1100);
         } else {
             setToken(fetchedToken);
@@ -80,7 +80,7 @@ const ResetCallback = () => {
                                 {error && <p className='text-danger mt-2'>
                                     {error}
                                     <p className='mt-3'>
-                                        <a className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover' href='/reset_password'>Resend Recover Email</a>
+                                        <a className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover' href='/recover'>Resend Recover Email</a>
                                     </p>
                                 </p>}
                                 {formMessage && <p className='text-success fw-bold mt-2'>User password updated! Please login.</p>}

@@ -42,7 +42,12 @@ const MainNav = () => {
                                 <SignUpNav />
                             </>
                         )}
-                        {pathname === '/reset_password' && (
+                        {pathname === '/reset' && (
+                            <>
+                                <HomeNav />
+                            </>
+                        )}
+                        {pathname === '/recover' && (
                             <>
                                 <HomeNav />
                                 <LoginNav />
