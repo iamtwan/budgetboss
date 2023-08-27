@@ -3,7 +3,7 @@ COPY . .
 RUN mvn clean install -DskipTests
 
 FROM openjdk:19-jdk-slim-buster
-COPY --from=builder /target/budgetboss-0.0.1-SNAPSHOT.jar demo.jar
+COPY --from=builder /target/budgetboss-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
 
