@@ -1,8 +1,11 @@
+FROM maven:3.8.2-jdk-11 AS build
+
+COPY . .
+
+RUN mvn clean install -DskipTests
+
 # Use a base image with Java and Maven installed
 FROM openjdk:19-jdk-slim-buster
-
-# Set the working directory inside the container
-WORKDIR /backend
 
 # Copy the packaged Spring Boot application to the container
 COPY target/budgetboss-0.0.1-SNAPSHOT.jar .

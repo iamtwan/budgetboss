@@ -48,4 +48,12 @@ public class ItemController {
     logger.info("/api/items/{} deleted item", itemId);
     return ResponseEntity.noContent().build();
   }
+
+  @DeleteMapping("/unlink")
+  @Operation(summary = "Unlink all Plaid accounts for the current user", description = "Unlink all Plaid accounts for the current user")
+  public ResponseEntity<Void> unlink(@CurrentUser User user) {
+    logger.info("/api/items/unlink DELETE request received");
+    itemService.unlinkUser(user);
+    return ResponseEntity.noContent().build();
+  }
 }

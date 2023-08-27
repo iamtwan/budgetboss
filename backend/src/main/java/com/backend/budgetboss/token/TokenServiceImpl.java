@@ -20,6 +20,7 @@ import com.plaid.client.request.PlaidApi;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,9 @@ public class TokenServiceImpl implements TokenService {
   private final ItemRepository itemRepository;
   private final TransactionService transactionService;
   private final PlaidApi plaidApi;
+
+  @Value("${BASE_URL}")
+  private String baseUrl;
 
   public TokenServiceImpl(ItemHelper itemHelper,
       ItemRepository itemRepository,
@@ -73,7 +77,7 @@ public class TokenServiceImpl implements TokenService {
     JsonNode root = objectMapper.readTree(ngrokResponse.getBody());
     JsonNode tunnelsNode = root.path("tunnels");
 
-    String publicUrl = "";
+    String publicUrl = baseUrl;
 
     for (JsonNode tunnelNode : tunnelsNode) {
       JsonNode publicUrlNode = tunnelNode.path("public_url");
@@ -92,7 +96,7 @@ public class TokenServiceImpl implements TokenService {
         .products(products)
         .countryCodes(List.of(CountryCode.US))
         .language("en")
-        .redirectUri("http://localhost:3000/oauth")
+        .redirectUri(baseUrl + "/oauth")
         .webhook(publicUrl + "/api/webhooks")
         .accessToken(accessToken)
         .linkCustomizationName("budgetboss")

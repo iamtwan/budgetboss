@@ -17,6 +17,9 @@ public class CreateUserDTO {
   @NotBlank(message = "Password cannot be empty")
   private String password;
 
+  @NotBlank(message = "Verification code cannot be empty")
+  private String verificationCode;
+
   public String getEmail() {
     return email;
   }
@@ -33,11 +36,20 @@ public class CreateUserDTO {
     this.password = password;
   }
 
+  public String getVerificationCode() {
+    return verificationCode;
+  }
+
+  public void setVerificationCode(String verificationCode) {
+    this.verificationCode = verificationCode;
+  }
+
   @Override
   public String toString() {
     return "CreateUserDTO{" +
         "email='" + email + '\'' +
         ", password='" + password + '\'' +
+        ", verificationCode='" + verificationCode + '\'' +
         '}';
   }
 }

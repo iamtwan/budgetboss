@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal extends User implements UserDetails {
-
   public UserPrincipal(User user) {
     super(user);
   }
