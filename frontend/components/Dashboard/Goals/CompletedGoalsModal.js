@@ -7,34 +7,34 @@ const formatDate = (dateString) => {
 
 const CompletedGoals = ({ goals, show, onClose, onDelete, onEdit }) => {
     return (
-        <Modal show={show} size='xl' onHide={onClose}>
-            <Modal.Header closeButton>
-                <Modal.Title className='text-uppercase fs-3 fw-bold'>Completed Goals</Modal.Title>
+        <Modal centered show={show} size='xl' onHide={onClose}>
+            <Modal.Header closeButton className='contrast-heading'>
+                <Modal.Title className='ms-3 text-uppercase fs-2 w-100 text-center fw-bold'>Completed Goals</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                <Table>
+            <Modal.Body className='container-background rounded'>
+                <Table hover size='sm'>
                     <thead>
-                        <tr className='d-flex-inline'>
-                            <th className='text-uppercase fs-5 flex-grow-1 text-nowrap'>Goal</th>
-                            <th className='text-center text-uppercase fs-5 flex-grow-1 text-nowrap'>Amount Saved</th>
-                            <th className='text-center text-uppercase fs-5 text-nowrap'>Created Date</th>
-                            <th className='text-center text-uppercase fs-5 text-nowrap'>Completed Date</th>
-                            <th className='text-center text-uppercase fs-5 text-nowrap'>Edit/Delete</th>
+                        <tr className='d-flex-inline nav-text fs-4'>
+                            <th className='text-uppercase fs-4 flex-grow-1 text-nowrap'>Goal</th>
+                            <th className='text-center text-uppercase flex-grow-1 text-nowrap'>Amount Saved</th>
+                            <th className='text-center text-uppercase text-nowrap'>Created Date</th>
+                            <th className='text-center text-uppercase text-nowrap'>Completed Date</th>
+                            <th className='text-center text-uppercase text-nowrap'>Edit/Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         {goals
                             .filter(goal => goal.status === 'COMPLETED')
                             .map((goal) =>
-                                <tr key={goal.id} className='align-middle'>
-                                    <td className='fw-medium text-nowrap'>{goal.name}</td>
+                                <tr key={goal.id} className='align-middle nav-text'>
+                                    <td className='fw-semibold text-nowrap'>{goal.name}</td>
                                     <td className='text-center text-nowrap'>${Math.round(goal.savedAmount)}</td>
                                     <td className='text-center'>{formatDate(goal.createdAt)}</td>
                                     <td className='text-center'>{formatDate(goal.completedAt)}</td>
                                     <td className='text-center'>
-                                        <ButtonGroup size='sm' aria-label='edit delete goal buttons' className='pb-2 ms-1'>
-                                            <Button className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i className='bi bi-pencil-square'></i></Button>
-                                            <Button className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}><i className='bi bi-trash-fill'></i></Button>
+                                        <ButtonGroup size='sm' aria-label='edit delete goal buttons' className='pb-2 me-1'>
+                                            <Button id='btn-edit' className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i className='bi bi-pencil-square'></i></Button>
+                                            <Button id='btn-delete' className='p-1 m-0' variant='danger' onClick={() => onDelete(goal)}><i className='bi bi-trash-fill'></i></Button>
                                         </ButtonGroup>
                                     </td>
                                 </tr>

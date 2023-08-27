@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { createManualAccount, useManualData } from '../../../../services/apiService';
 
@@ -52,8 +52,8 @@ const AddAccountForm = ({ show, onClose }) => {
         try {
             await createManualAccount(formData);
             mutate();
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -61,18 +61,23 @@ const AddAccountForm = ({ show, onClose }) => {
         e.preventDefault();
         const institutionExists = data.some(
             (institution) => institution.name.toLowerCase() === newInstitution.toLowerCase()
-        );
+        )
 
         if (institutionExists) {
             setError(`The institution '${newInstitution}' already exists.`);
             return;
         }
+
+        if (!balance) {
+            setBalance('0');
+        }
+
         const formData = {
             institutionName: selectedInstitution === 'create' ? newInstitution : selectedInstitution,
             type: selectedAccountType.toUpperCase(),
             name: accountName,
-            balance: parseFloat(balance),
-        };
+            balance: Number(balance).toFixed(2)
+        }
 
         handleAddAccountSubmit(formData);
         resetForm();
@@ -80,64 +85,68 @@ const AddAccountForm = ({ show, onClose }) => {
     }
 
     return (
-        <Modal show={show} onHide={onClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Add Account</Modal.Title>
+        <Modal centered show={show} onHide={onClose}>
+            <Modal.Header className='contrast-heading' closeButton>
+                <Modal.Title className='fw-bold fs-3 text-uppercase'>Add Account</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='container-background rounded nav-text fw-semibold'>
                 <Form onSubmit={handleSubmit}>
-                    {error && <p className="text-danger">{error}</p>}
-                    <Form.Group controlId="institution">
-                        <Form.Label>Institution</Form.Label>
-                        <Form.Select value={selectedInstitution} onChange={handleInstitutionChange} required>
-                            <option value="">Select an institution</option>
-                            {data.map((manualInstitution) => (
-                                <option key={manualInstitution.id} value={manualInstitution.name}>
-                                    {manualInstitution.name}
-                                </option>
-                            ))}
-                            <option value="create">Create new institution</option>
-                        </Form.Select>
-                        {selectedInstitution === 'create' && (
+                    {error && <p className='text-danger'>{error}</p>}
+                    <div className='row mb-4'>
+                        <Form.Group controlId='institution' className='col'>
+                            <Form.Label>Institution<span className='red-text'>*</span></Form.Label>
+                            <Form.Select value={selectedInstitution} onChange={handleInstitutionChange} required>
+                                <option value=''>Select an institution</option>
+                                {data.map((manualInstitution) => (
+                                    <option key={manualInstitution.id} value={manualInstitution.name}>
+                                        {manualInstitution.name}
+                                    </option>
+                                ))}
+                                <option value='create'>Create new institution</option>
+                            </Form.Select>
+                            {selectedInstitution === 'create' && (
+                                <Form.Control
+                                    type='text'
+                                    placeholder='Enter institution name'
+                                    value={newInstitution}
+                                    onChange={(e) => setNewInstitution(e.target.value)}
+                                    required
+                                />
+                            )}
+                        </Form.Group>
+                        <Form.Group controlId='accountType' className='col'>
+                            <Form.Label>Account Type <span className='red-text'>*</span></Form.Label>
+                            <Form.Select value={selectedAccountType} onChange={handleAccountTypeChange} required>
+                                <option value=''>Select an account type</option>
+                                <option value='Depository'>Cash</option>
+                                <option value='Credit'>Credit</option>
+                                <option value='Investment'>Investment</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </div>
+                    <div className='row mb-2'>
+                        <Form.Group controlId='accountName' className='col'>
+                            <Form.Label>Account<span className='red-text'>*</span></Form.Label>
                             <Form.Control
-                                type="text"
-                                placeholder="Enter institution name"
-                                value={newInstitution}
-                                onChange={(e) => setNewInstitution(e.target.value)}
+                                type='text'
+                                placeholder='Name'
+                                value={accountName}
+                                onChange={handleAccountNameChange}
                                 required
                             />
-                        )}
-                    </Form.Group>
-                    <Form.Group controlId="accountType">
-                        <Form.Label>Account Type</Form.Label>
-                        <Form.Select value={selectedAccountType} onChange={handleAccountTypeChange} required>
-                            <option value="">Select an account type</option>
-                            <option value="Depository">Cash</option>
-                            <option value="Credit">Credit</option>
-                            <option value="Investment">Investment</option>
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group controlId="accountName">
-                        <Form.Label>Account</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Enter account name"
-                            value={accountName}
-                            onChange={handleAccountNameChange}
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="balance">
-                        <Form.Label>Balance</Form.Label>
-                        <Form.Control
-                            type="number"
-                            placeholder="Enter starting balance"
-                            value={balance}
-                            onChange={handleBalanceChange}
-                        />
-                    </Form.Group>
-                    <div className="d-flex justify-content-center">
-                        <Button className="btn btn-primary btn-md mt-2" type="submit">
+                        </Form.Group>
+                        <Form.Group controlId='balance' className='col'>
+                            <Form.Label>Initial Balance</Form.Label>
+                            <Form.Control
+                                type='number'
+                                placeholder='Amount'
+                                value={balance}
+                                onChange={handleBalanceChange}
+                            />
+                        </Form.Group>
+                    </div>
+                    <div className='d-flex justify-content-end'>
+                        <Button id='acct-add-btn' className='btn-md mt-2' type='submit'>
                             Add
                         </Button>
                     </div>

@@ -12,7 +12,7 @@ const GoalItem = ({ goal, onDelete, onEdit }) => {
 
     return (
         <div>
-            <div className='d-flex justify-content-between mt-3'>
+            <div className='d-flex justify-content-between'>
                 <h4 className='fw-semibold fs-4 ms-1 account-text'>{goal.name}</h4>
                 <ButtonGroup size='sm' aria-label='edit delete goal buttons' className='pb-2 me-1'>
                     <Button id='btn-edit' className='p-1 m-0' variant='secondary' onClick={() => onEdit(goal)}><i className='bi bi-pencil-square'></i></Button>
@@ -35,7 +35,7 @@ const GoalItem = ({ goal, onDelete, onEdit }) => {
                 />
             </ProgressBar>
             <div className='form-text text-start fst-italic mt-0 ms-1'>
-                <p className='text-nowrap transaction-text fw-bold'>
+                <p className='text-nowrap goal-text'>
                     Currently saved {calculation.percent}% {calculation.percent < 20 ? `($${roundedSavedAmount})` : ''} of the ${roundedTargetAmount} goal with {goal.calculation.daysRemaining} days remaining.
                 </p>
             </div>

@@ -14,6 +14,15 @@ const BudgetBarChart = ({ onMonthClick }) => {
     useEffect(() => {
         let chart = null;
 
+        const resizeHandler = () => {
+            if (chart) {
+                chart.resize();
+                chart.update('none');
+            }
+        };
+
+        window.addEventListener('resize', resizeHandler);
+
         if (canvasRef.current && dataset.length > 0) {
             const datasetCount = dataset.slice(0, 6);
             const data = {
@@ -26,7 +35,7 @@ const BudgetBarChart = ({ onMonthClick }) => {
                     borderWidth: 2.5,
                     borderRadius: 3.5,
                 }]
-            };
+            }
 
             const config = {
                 type: 'bar',
@@ -44,6 +53,9 @@ const BudgetBarChart = ({ onMonthClick }) => {
                             },
                             ticks: {
                                 color: '#124559',
+                                font: {
+                                    weight: 'bold',
+                                },
                                 callback: function (value) {
                                     return '$' + value;
                                 }
@@ -57,6 +69,9 @@ const BudgetBarChart = ({ onMonthClick }) => {
                             },
                             ticks: {
                                 color: '#124559',
+                                font: {
+                                    weight: 'bold',
+                                },
                             }
                         }
                     },
@@ -102,7 +117,11 @@ const BudgetBarChart = ({ onMonthClick }) => {
             if (chart) {
                 chart.destroy();
             }
+
+            window.removeEventListener('resize', resizeHandler);
         };
+
+
     }, [dataset, onMonthClick]);
 
     if (error) {
@@ -113,7 +132,7 @@ const BudgetBarChart = ({ onMonthClick }) => {
     }
 
     return (
-        <div id='barchart-container'>
+        <div className='w-100'>
             <canvas ref={canvasRef} />
         </div>
     );

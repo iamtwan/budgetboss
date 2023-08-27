@@ -1,5 +1,4 @@
-import React from 'react';
-import AccountsList from '../AccountsList';
+import InstitutionList from '../InstitutionList';
 import { mergeAccounts } from '../../../../utils/accountUtils';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
@@ -22,25 +21,24 @@ const InvestmentAccountsSection = ({ onOpenEditModal }) => {
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-    };
+    }
 
     const handleAccountClick = (account) => {
         if (account.accountType === "linked") return;
 
         onOpenEditModal(account);
-    };
+    }
 
     return (
-        <AccountsList
+        <InstitutionList
             institutions={institutions}
             handleAccountClick={handleAccountClick}
             formatCurrency={formatCurrency}
             manualData={manualData}
             type='investment'
-            title='Investment'
             showTransactions={false}
         />
     );
-};
+}
 
 export default InvestmentAccountsSection;

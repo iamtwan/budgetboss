@@ -85,54 +85,64 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
             targetDate: targetDate
         }
 
-        console.log(formData);
-
         onSubmit(formData);
         resetForm();
         onClose();
     }
 
     return (
-        <Modal show={show} onHide={() => { resetForm(); onClose(); }}>
-            <Modal.Header closeButton>
+        <Modal centered sm-down show={show} onHide={() => { resetForm(); onClose(); }}>
+            <Modal.Header className='contrast-heading' closeButton>
                 <Modal.Title className='text-uppercase fw-bold fs-3'>
                     {goal ? 'Edit Goal' : 'Add Goal'}
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId='goalName' className='mb-3'>
-                        <Form.Label className='fw-bold fs-6 text-uppercase'>Goal Name</Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='Enter a name for your goal'
-                            value={goalName}
-                            onChange={handleGoalNameChange}
-                            required
-                        />
-                    </Form.Group>
-                    <div className='d-flex mt-2'>
-                        <Form.Group controlId='savedAmount' className='me-2'>
-                            <Form.Label className='fw-bold fs-6 text-uppercase'>
-                                {goal ? 'Saved Amount' : 'Starting Amount'}
+            <Modal.Body className='container-background rounded nav-text fw-semibold'>
+                <Form onSubmit={handleSubmit} className='container'>
+                    <div className='row mb-4'>
+                        <Form.Group controlId='goalName' className='col'>
+                            <Form.Label className='text-nowrap'>Goal<span className='red-text'>*</span></Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Name'
+                                value={goalName}
+                                onChange={handleGoalNameChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId='targetDate' className='col'>
+                            <Form.Label className='text-nowrap'>Deadline<span className='red-text'>*</span></Form.Label>
+                            <Form.Control
+                                type='date'
+                                value={targetDate}
+                                onChange={handleTargetDateChange}
+                                placeholder='YYYY-MM-DD'
+                                required
+                            />
+                        </Form.Group>
+                    </div>
+                    <div className='row'>
+                        <Form.Group controlId='savedAmount' className='col'>
+                            <Form.Label className='text-nowrap'>
+                                {goal ? 'Currently Saved' : 'Initial Savings'}
                             </Form.Label>
-                            <div className="input-group mb-3">
-                                <span className="input-group-text">$</span>
+                            <div className='input-group mb-3'>
+                                <span className='input-group-text'><span className='nav-text fw-bold'>$</span></span>
                                 <Form.Control
                                     type='number'
-                                    placeholder='Optional'
+                                    placeholder='Amount'
                                     value={savedAmount}
                                     onChange={handleSavedAmountChange}
                                 />
                             </div>
                         </Form.Group>
-                        <Form.Group controlId='targetAmount' className='ms-2'>
-                            <Form.Label className='fw-bold fs-6 text-uppercase'>Goal Amount</Form.Label>
-                            <div className="input-group mb-3">
-                                <span className="input-group-text">$</span>
+                        <Form.Group controlId='targetAmount' className='col'>
+                            <Form.Label className='text-nowrap'>Target<span className='red-text'>*</span></Form.Label>
+                            <div className='input-group mb-3'>
+                                <span className='input-group-text'><span className='nav-text fw-bold'>$</span></span>
                                 <Form.Control
                                     type='number'
-                                    placeholder='Goal target amount'
+                                    placeholder='Amount'
                                     value={targetAmount}
                                     onChange={handleTargetAmountChange}
                                     required
@@ -140,18 +150,8 @@ const AddGoalForm = ({ goal, show, onClose, onSubmit }) => {
                             </div>
                         </Form.Group>
                     </div>
-                    <Form.Group controlId='targetDate' className='me-3'>
-                        <Form.Label className='fw-bold d-flex align-items-start fw-bold fs-6 text-uppercase'>Goal Deadline</Form.Label>
-                        <Form.Control
-                            type='date'
-                            value={targetDate}
-                            onChange={handleTargetDateChange}
-                            required
-                            className='w-50'
-                        />
-                    </Form.Group>
                     <div className='d-flex justify-content-end'>
-                        <Button className='btn btn-primary btn-md mt-2 fw-bold fs-6' type='submit'>
+                        <Button id='goal-add-btn' className='my-1 fw-bold' type='submit'>
                             {goal ? 'Edit' : 'Add'}
                         </Button>
                     </div>

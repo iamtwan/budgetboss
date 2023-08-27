@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import AccountsList from '../AccountsList';
+import { useState } from 'react';
+import InstitutionList from '../InstitutionList';
 import { mergeAccounts } from '../../../../utils/accountUtils';
 import { useManualData, useLinkedData } from '../../../../services/apiService';
 import { filterManualAccounts, filterLinkedAccounts } from '../../../../utils/helpers';
@@ -25,27 +25,27 @@ const CreditAccountsSection = ({ onOpenEditModal }) => {
     const handleAccountTransactionsClick = async (institutionId, account, type) => {
         try {
             setSelectedAccount({ institutionId, ...account, type });
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
+            console.error(error);
         }
-    };
+    }
 
     const handleAccountClick = (account) => {
         if (account.accountType === "linked") return;
 
         onOpenEditModal(account);
-    };
+    }
 
     const handleCloseModal = () => {
         setSelectedAccount(null);
-    };
+    }
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-    };
+    }
 
     return (
-        <AccountsList
+        <InstitutionList
             institutions={institutions}
             selectedAccount={selectedAccount}
             handleAccountClick={handleAccountClick}
@@ -54,9 +54,8 @@ const CreditAccountsSection = ({ onOpenEditModal }) => {
             manualData={manualData}
             handleCloseModal={handleCloseModal}
             type='credit'
-            title='Credit'
         />
     );
-};
+}
 
 export default CreditAccountsSection;

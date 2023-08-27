@@ -2,13 +2,29 @@
 
 import { useEffect, useRef } from 'react';
 import { Chart, DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import { formatString } from 'utils/helpers';
 
 Chart.register(DoughnutController, ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
+const themeColors = [
+    [174, 195, 176],
+    [89, 131, 146],
+];
+
 const generateRandomColor = () => {
-    const o = Math.round, r = Math.random, s = 255;
-    return `rgba(${o(r() * s)}, ${o(r() * s)}, ${o(r() * s)}, 0.8)`;
-};
+    const o = Math.floor, r = Math.random, s = 255;
+    const randomThemeColor = themeColors[o(r() * themeColors.length)];
+    const colorDistance = 15;
+
+    const getRandomColor = (color) => {
+        const min = Math.max(0, color - colorDistance);
+        const max = Math.min(s, color + colorDistance);
+        return o(min + r() * (max - min));
+    };
+
+    const newColor = randomThemeColor.map(getRandomColor);
+    return `rgba(${newColor[0]}, ${newColor[1]}, ${newColor[2]}, 0.8)`;
+}
 
 const MonthlyPieChart = ({ data }) => {
     const canvasRef = useRef(null);
@@ -18,8 +34,8 @@ const MonthlyPieChart = ({ data }) => {
 
         if (data) {
             categories = Object.keys(data.categories).map(key => ({
-                label: key,
-                percent: data.categories[key]
+                label: formatString(key),
+                percent: (data.categories[key] / data.totalExpenses) * 100
             }));
         }
 
@@ -27,11 +43,14 @@ const MonthlyPieChart = ({ data }) => {
             labels: categories.map(c => c.label),
             datasets: [{
                 data: categories.map(c => c.percent),
-                // backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#32CD32'],
                 backgroundColor: categories.map(() => generateRandomColor()),
-
+                borderColor: '#EFF6E0',
+                borderWidth: 6,
+                hoverBackgroundColor: '#EFF6E0',
+                hoverBorderColor: '#012F44',
+                hoverBorderWidth: 3,
             }]
-        };
+        }
 
         const config = {
             type: 'doughnut',
@@ -40,21 +59,21 @@ const MonthlyPieChart = ({ data }) => {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'right',
+                        position: 'bottom',
                     },
                     tooltip: {
                         callbacks: {
                             label: function (context) {
                                 let label = context.label;
                                 let value = context.parsed;
-                                return `${label}: ${(value * 100).toFixed(2)}%`;
+                                return `${label}: ${Math.round(value)}%`;
                             },
                         },
                     },
                 },
                 cutout: '50%',
             },
-        };
+        }
 
         let chart = null;
         if (canvasRef.current) {
@@ -65,15 +84,18 @@ const MonthlyPieChart = ({ data }) => {
             if (chart) {
                 chart.destroy();
             }
-        };
+        }
     }, [data]);
 
+    if (!data || Object.keys(data.categories).length < 2) {
+        return <div id='pie-msg-bg' className='alert alert-info align-self-center' role='alert'>Add/Link more transactions to display chart.</div>;
+    }
+
     return (
-        <div style={{ width: "500px", height: "500px" }}>
+        <div className='mt-4' style={{ width: '500px', height: '500px' }}>
             <canvas ref={canvasRef} />
         </div>
-        // <canvas className='' ref={canvasRef} />
     );
-};
+}
 
 export default MonthlyPieChart;
