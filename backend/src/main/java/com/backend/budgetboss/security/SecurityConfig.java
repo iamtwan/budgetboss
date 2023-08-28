@@ -29,8 +29,8 @@ public class SecurityConfig {
   private final UserDetailsService userDetailsService;
   private final PasswordEncoder passwordEncoder;
 
-  @Value("${BASE_URL}")
-  private String baseUrl;
+  @Value("${FRONTEND_URL}")
+  private String frontendUrl;
 
   public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
     this.userDetailsService = userDetailsService;
@@ -68,7 +68,7 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowCredentials(true);
-    configuration.addAllowedOrigin(baseUrl);
+    configuration.addAllowedOrigin(frontendUrl);
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
