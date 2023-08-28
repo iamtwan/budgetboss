@@ -1,6 +1,7 @@
 package com.backend.budgetboss.user.verification.dto;
 
 public class RequestCodeDTO {
+
   private String email;
 
   public String getEmail() {
