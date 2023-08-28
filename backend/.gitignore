@@ -33,6 +33,5 @@ build/
 .vscode/
 
 ### APP ENGINE ###
-/src/main/appengine/app.yaml
-
+src/main/appengine/app.yaml
 
