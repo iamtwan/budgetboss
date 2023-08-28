@@ -54,6 +54,7 @@ public class VerificationToken {
 
   public void setToken(String token) {
     this.token = token;
+    this.expirationDate = LocalDateTime.now().plusMinutes(15);
   }
 
   public LocalDateTime getExpirationDate() {
