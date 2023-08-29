@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,6 +48,9 @@ public class UserServiceImpl implements UserService {
   private final JavaMailSender emailSender;
   private final VerificationCodeRepository verificationCodeRepository;
   private final VerificationTokenRepository verificationTokenRepository;
+
+  @Value("${FRONTEND_URL}")
+  private String frontendUrl;
 
   public UserServiceImpl(UserRepository userRepository,
       ModelMapper modelMapper,
@@ -92,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     User user = userRepository.save(modelMapper.map(createUserDTO, User.class));
     Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(createUserDTO.getEmail(), password)
+        new UsernamePasswordAuthenticationToken(email, password)
     );
     setAuthenticationContext(authentication, request, response);
 
@@ -177,7 +181,7 @@ public class UserServiceImpl implements UserService {
   public void sendLink(RequestCodeDTO requestCodeDTO) {
     String email = requestCodeDTO.getEmail();
     String token = UUID.randomUUID().toString();
-    String link = "http://localhost:3000/reset?token=" + token;
+    String link = frontendUrl + "/reset?token=" + token;
 
     if (!userRepository.existsByEmail(email)) {
       return;

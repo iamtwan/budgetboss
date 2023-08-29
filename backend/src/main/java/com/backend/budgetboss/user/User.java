@@ -3,7 +3,6 @@ package com.backend.budgetboss.user;
 import com.backend.budgetboss.goal.Goal;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.manualinstitution.ManualInstitution;
-import com.backend.budgetboss.user.verification.VerificationCode;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

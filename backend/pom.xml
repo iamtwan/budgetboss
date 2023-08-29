@@ -15,12 +15,16 @@
         <version>2.4.4</version>
         <configuration>
           <version>1</version>
-          <projectId>GCLOUD_CONFIG</projectId>
+          <projectId>budgetboss-397300</projectId>
         </configuration>
       </plugin>
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-mail</artifactId>
