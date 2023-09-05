@@ -86,11 +86,11 @@
       <optional>true</optional>
       <scope>runtime</scope>
     </dependency>
-    <dependency>
-      <artifactId>h2</artifactId>
-      <groupId>com.h2database</groupId>
-      <scope>runtime</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <artifactId>h2</artifactId>-->
+<!--      <groupId>com.h2database</groupId>-->
+<!--      <scope>runtime</scope>-->
+<!--    </dependency>-->
     <dependency>
       <artifactId>mysql-connector-j</artifactId>
       <groupId>com.mysql</groupId>

@@ -52,7 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
   public void syncTransactions(Item item) throws IOException {
     accountService.createAccounts(item);
 
-    String cursor = item.getCursor();
+    String cursor = item.getPlaidCursor();
 
     List<Transaction> added = new ArrayList<>();
     List<Transaction> modified = new ArrayList<>();
@@ -85,7 +85,7 @@ public class TransactionServiceImpl implements TransactionService {
       cursor = response.body().getNextCursor();
     }
 
-    item.setCursor(cursor);
+    item.setPlaidCursor(cursor);
 
     List<String> transactionIds = new ArrayList<>();
     List<TransactionEntity> transactionEntities = new ArrayList<>();

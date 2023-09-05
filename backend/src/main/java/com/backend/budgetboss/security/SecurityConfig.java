@@ -44,8 +44,8 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(PathRequest.toH2Console())
-            .permitAll()
+//            .requestMatchers(PathRequest.toH2Console())
+//            .permitAll()
             .requestMatchers("/api/webhooks/**",
                 "/api/users/login",
                 "/api/users/register",
