@@ -3,8 +3,6 @@ package com.backend.budgetboss.webhook.helper;
 import com.backend.budgetboss.item.Item;
 import com.backend.budgetboss.item.ItemRepository;
 import com.backend.budgetboss.item.Status;
-import com.backend.budgetboss.item.helper.ItemHelper;
-import com.plaid.client.model.ItemErrorWebhook;
 import com.plaid.client.model.PlaidError;
 import org.springframework.stereotype.Component;
 

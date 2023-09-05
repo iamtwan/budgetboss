@@ -44,20 +44,24 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(PathRequest.toH2Console())
-            .permitAll()
+//            .requestMatchers(PathRequest.toH2Console())
+//            .permitAll()
             .requestMatchers("/api/webhooks/**",
                 "/api/users/login",
                 "/api/users/register",
                 "/api/users/register/send-code",
                 "/api/users/recover-password",
                 "/api/users/recover-password/send-link",
+                "/_ah/start",
+                "/actuator/health/liveness",
+                "/actuator/health/readiness",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/v3/api-docs/**")
             .permitAll()
             .anyRequest().authenticated())
-        .securityContext(s -> s.securityContextRepository(new HttpSessionSecurityContextRepository()))
+        .securityContext(
+            s -> s.securityContextRepository(new HttpSessionSecurityContextRepository()))
         .logout(logout -> logout.logoutUrl("/api/users/logout")
             .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()));
 

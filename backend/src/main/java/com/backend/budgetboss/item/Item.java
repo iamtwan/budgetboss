@@ -27,7 +27,7 @@ public class Item {
   private String itemId;
   private String institutionId;
   private String institutionName;
-  private String cursor;
+  private String plaidCursor;
   private Status status = Status.GOOD;
 
   @ManyToOne
@@ -85,12 +85,12 @@ public class Item {
     this.institutionName = institutionName;
   }
 
-  public String getCursor() {
-    return cursor;
+  public String getPlaidCursor() {
+    return plaidCursor;
   }
 
-  public void setCursor(String cursor) {
-    this.cursor = cursor;
+  public void setPlaidCursor(String plaidCursor) {
+    this.plaidCursor = plaidCursor;
   }
 
   public Status getStatus() {
@@ -135,7 +135,7 @@ public class Item {
         ", itemId='" + itemId + '\'' +
         ", institutionId='" + institutionId + '\'' +
         ", institutionName='" + institutionName + '\'' +
-        ", cursor='" + cursor + '\'' +
+        ", plaidCursor='" + plaidCursor + '\'' +
         ", status=" + status +
         ", accounts=" + accounts.size() +
         '}';

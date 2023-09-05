@@ -54,6 +54,7 @@ public class VerificationCode {
 
   public void setCode(String code) {
     this.code = code;
+    this.expirationDate = LocalDateTime.now().plusMinutes(15);
   }
 
   public LocalDateTime getExpirationDate() {

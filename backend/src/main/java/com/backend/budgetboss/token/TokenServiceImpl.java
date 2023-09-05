@@ -38,6 +38,12 @@ public class TokenServiceImpl implements TokenService {
   @Value("${BASE_URL}")
   private String baseUrl;
 
+  @Value("${FRONTEND_URL}")
+  private String frontendUrl;
+
+  @Value("${IS_PRODUCTION}")
+  private boolean isProduction;
+
   public TokenServiceImpl(ItemHelper itemHelper,
       ItemRepository itemRepository,
       TransactionService transactionService,
@@ -69,20 +75,22 @@ public class TokenServiceImpl implements TokenService {
       update.setAccountSelectionEnabled(true);
     }
 
-    RestTemplate restTemplate = new RestTemplate();
-    String ngrokApiUrl = "http://localhost:4040/api/tunnels";
-    ResponseEntity<String> ngrokResponse = restTemplate.getForEntity(ngrokApiUrl, String.class);
-
-    ObjectMapper objectMapper = new ObjectMapper();
-    JsonNode root = objectMapper.readTree(ngrokResponse.getBody());
-    JsonNode tunnelsNode = root.path("tunnels");
-
     String publicUrl = baseUrl;
 
-    for (JsonNode tunnelNode : tunnelsNode) {
-      JsonNode publicUrlNode = tunnelNode.path("public_url");
-      publicUrl = publicUrlNode.asText();
-      break;
+    if (!isProduction) {
+      RestTemplate restTemplate = new RestTemplate();
+      String ngrokApiUrl = "http://localhost:4040/api/tunnels";
+      ResponseEntity<String> ngrokResponse = restTemplate.getForEntity(ngrokApiUrl, String.class);
+
+      ObjectMapper objectMapper = new ObjectMapper();
+      JsonNode root = objectMapper.readTree(ngrokResponse.getBody());
+      JsonNode tunnelsNode = root.path("tunnels");
+
+      for (JsonNode tunnelNode : tunnelsNode) {
+        JsonNode publicUrlNode = tunnelNode.path("public_url");
+        publicUrl = publicUrlNode.asText();
+        break;
+      }
     }
 
     LinkTokenCreateRequestUser requestUser = new LinkTokenCreateRequestUser()
@@ -96,7 +104,7 @@ public class TokenServiceImpl implements TokenService {
         .products(products)
         .countryCodes(List.of(CountryCode.US))
         .language("en")
-        .redirectUri(baseUrl + "/oauth")
+        .redirectUri(frontendUrl + "/oauth")
         .webhook(publicUrl + "/api/webhooks")
         .accessToken(accessToken)
         .linkCustomizationName("budgetboss")
@@ -107,7 +115,7 @@ public class TokenServiceImpl implements TokenService {
         .execute();
 
     if (!response.isSuccessful()) {
-      System.out.println(response.errorBody());
+      System.out.println(response.errorBody().string());
       throw new TokenCreationException("Unable to create link token for user: " + user.getEmail());
     }
 

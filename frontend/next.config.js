@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {};
 
-module.exports = nextConfig
+module.exports = nextConfig;
 // module.exports = {
 //     webpack: (config, options) => {
 //         if (!options.dev) {
